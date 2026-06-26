@@ -1010,6 +1010,128 @@
         .print-only {
             display: none;
         }
+
+        /* Timeline Tracker */
+        .tracking-timeline-wrapper {
+            position: relative;
+            padding: 10px 0;
+            width: 100%;
+        }
+        .tracking-timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        .tracking-timeline::before {
+            content: "";
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #334155;
+            z-index: -2;
+        }
+        .timeline-progress {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            height: 4px;
+            background-color: var(--primary);
+            z-index: -1;
+            transition: width 0.5s ease-in-out;
+        }
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        .timeline-step .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #1e293b;
+            border: 3px solid #334155;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        .timeline-step.active .step-icon {
+            background-color: var(--primary);
+            border-color: #ca8a04;
+            transform: scale(1.1);
+            animation: pulseGlow 2s infinite;
+        }
+        .timeline-step.completed .step-icon {
+            background-color: var(--success);
+            border-color: #15803d;
+        }
+        .timeline-step .step-label {
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--text-light);
+            text-align: center;
+        }
+        .timeline-step .step-desc {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 4px;
+        }
+        .timeline-step.active .step-label {
+            color: var(--primary);
+        }
+        .timeline-step.completed .step-label {
+            color: var(--success);
+        }
+        
+        /* Grid Layout for Customer tracking page */
+        @media (max-width: 768px) {
+            .tracking-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .tracking-timeline::before, .timeline-progress {
+                display: none;
+            }
+            .tracking-timeline {
+                flex-direction: column;
+                gap: 20px;
+                align-items: flex-start;
+                padding-left: 20px;
+                border-left: 3px solid #334155;
+            }
+            .timeline-step {
+                flex-direction: row !important;
+                gap: 15px;
+                align-items: center;
+                text-align: left;
+                width: 100%;
+            }
+            .timeline-step .step-icon {
+                margin-bottom: 0;
+            }
+            .timeline-step .step-label, .timeline-step .step-desc {
+                text-align: left;
+            }
+        }
+        
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(234, 179, 8, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1023,18 +1145,157 @@
             <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">Hızlı Teklif & Sipariş Otomasyonu v8</p>
         </div>
         
-        <div style="text-align: left; display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-            <div class="form-group" style="margin: 0;">
-                <label>Giriş Yetkisi</label>
-                <input type="text" id="loginUser" placeholder="Kullanıcı adı (patron veya ortak)" autocomplete="username">
+        <div class="login-tabs" style="display:flex; justify-content:center; gap:8px; margin-top: 15px; margin-bottom: 10px; background-color: var(--bg-dark); padding: 4px; border-radius: 6px; border: 1px solid var(--border);">
+            <button id="tabStaffLogin" type="button" class="btn-toggle active" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('staff')">Yetkili Girişi</button>
+            <button id="tabCustomerTrack" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('customer')">Sipariş Takibi</button>
+        </div>
+        
+        <!-- YETKİLİ GİRİŞİ GRUBU -->
+        <div id="staffLoginGroup" style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="text-align: left; display: flex; flex-direction: column; gap: 12px; margin-top: 5px;">
+                <div class="form-group" style="margin: 0;">
+                    <label>Giriş Yetkisi</label>
+                    <input type="text" id="loginUser" placeholder="Kullanıcı adı (patron veya ortak)" autocomplete="username">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label>Şifre</label>
+                    <input type="password" id="loginPass" placeholder="••••" autocomplete="current-password">
+                </div>
             </div>
-            <div class="form-group" style="margin: 0;">
-                <label>Şifre</label>
-                <input type="password" id="loginPass" placeholder="••••" autocomplete="current-password">
+            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="girisYap(false)">Sisteme Güvenli Giriş Yap</button>
+        </div>
+        
+        <!-- MÜŞTERİ TAKİP GRUBU -->
+        <div id="customerSearchGroup" style="display: none; flex-direction: column; gap: 12px; text-align: left;">
+            <div class="form-group" style="margin: 0; margin-top: 5px;">
+                <label>Telefon Numarası veya Sipariş Kodu</label>
+                <input type="text" id="trackSearchInput" placeholder="Örn: 05551234567 veya dm_8J9aPbc">
+                <small style="color: var(--text-muted); font-size: 11px; margin-top: 4px; display: block; line-height: 1.3;">Sipariş verdiğiniz telefon numarasını veya usta tarafından iletilen sipariş kodunu giriniz.</small>
+            </div>
+            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="sorgulaSiparis()">Siparişi Bul ve Takip Et</button>
+        </div>
+    </div>
+</div>
+
+<!-- 📊 MÜŞTERİ TAKİP EKRANI -->
+<div id="customerTrackingScreen" style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; min-height: 100vh;">
+    <!-- Üst Menü -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="login-logo" style="margin: 0; width: 40px; height: 40px; font-size: 20px;">D</div>
+            <div>
+                <h2 style="font-size: 18px; margin: 0;">Doğançay Mobilya</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Canlı Sipariş Takip Portalı</p>
             </div>
         </div>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="takipKapat()">
+            ← Giriş Ekranına Dön
+        </button>
+    </div>
 
-        <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="girisYap(false)">Sisteme Güvenli Giriş Yap</button>
+    <!-- Çoklu Sipariş Seçim Listesi (Aynı telefona birden fazla sipariş varsa burası görünür) -->
+    <div id="trackingMultiSelect" class="card" style="display: none; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; font-size: 15px; margin-bottom: 10px;">Telefon Numarasına Ait Siparişleriniz</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Takip etmek istediğiniz siparişi seçiniz:</p>
+        <div id="trackingMultiList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+    </div>
+
+    <!-- Sipariş Detay Paneli -->
+    <div id="trackingDetailsPanel" style="display: none;">
+        
+        <!-- 🏆 İlerleme Durumu (Timeline) -->
+        <div class="card" style="margin-bottom: 20px; text-align: center;">
+            <h3 style="margin-top: 0; font-size: 15px; text-align: left; margin-bottom: 20px;">Siparişinizin Durumu</h3>
+            
+            <div class="tracking-timeline-wrapper" style="margin: 20px 0;">
+                <div class="tracking-timeline">
+                    <div class="timeline-progress" id="trackProgressLine" style="width: 0%;"></div>
+                    
+                    <div class="timeline-step" id="step_teklif">
+                        <div class="step-icon">📄</div>
+                        <div class="step-label">Teklif Aşaması</div>
+                        <div class="step-desc">Teklif Hazırlandı</div>
+                    </div>
+                    <div class="timeline-step" id="step_imalat">
+                        <div class="step-icon">🔨</div>
+                        <div class="step-label">İmalat Aşaması</div>
+                        <div class="step-desc">Atölyede İmalatta</div>
+                    </div>
+                    <div class="timeline-step" id="step_montaj">
+                        <div class="step-icon">🚚</div>
+                        <div class="step-label">Montaj Aşaması</div>
+                        <div class="step-desc">Adrese Sevkiyat/Montaj</div>
+                    </div>
+                    <div class="timeline-step" id="step_tamam">
+                        <div class="step-icon">✅</div>
+                        <div class="step-label">Tamamlandı</div>
+                        <div class="step-desc">Teslim Edildi</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="trackStatusBanner" style="font-weight: bold; font-size: 16px; margin-top: 15px; padding: 10px; border-radius: 6px; display: inline-block;"></div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;" class="tracking-grid">
+            
+            <!-- 🎨 Canlı Çizim & Tasarım -->
+            <div class="card" style="display: flex; flex-direction: column; align-items: center; min-height: 400px; justify-content: space-between;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+                    <h3 style="margin: 0; font-size: 14px;">Canlı 2D Tasarım Modeli</h3>
+                    <div style="display: flex; background-color: var(--bg-dark); padding: 3px; border-radius: 6px; border: 1px solid var(--border);">
+                        <button type="button" id="btnTrackBlueprint" onclick="setTrackPreviewMode('blueprint')" class="btn-toggle active" style="font-size: 10px; padding: 4px 8px;">Şematik</button>
+                        <button type="button" id="btnTrackLux" onclick="setTrackPreviewMode('lux')" class="btn-toggle" style="font-size: 10px; padding: 4px 8px;">Lüks 2D</button>
+                    </div>
+                </div>
+                
+                <!-- Buraya canvas programatik olarak taşınacaktır -->
+                <div id="customerCanvasWrapper" style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 10px;"></div>
+                
+                <p style="color: var(--text-muted); font-size: 11px; text-align: center; margin-top: 15px; line-height: 1.3;">
+                    *Bu çizim sipariş detaylarınıza göre bilgisayarımız tarafından anlık olarak çizilmektedir.
+                </p>
+            </div>
+
+            <!-- 📝 Sipariş Detayları & Ödeme -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <!-- Genel Detaylar -->
+                <div class="card">
+                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Sipariş Bilgileri</h3>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Müşteri Adı:</td><td id="trackMusteriVal" style="text-align: right; font-weight: bold;">-</td></tr>
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Tarih:</td><td id="trackTarihVal" style="text-align: right;">-</td></tr>
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Sorumlu Usta:</td><td id="trackPersonelVal" style="text-align: right;">-</td></tr>
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Mobilya Türü:</td><td id="trackTurVal" style="text-align: right;">-</td></tr>
+                        <tr><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted); vertical-align: top;">Teknik Özellikler:</td><td id="trackSpecsVal" style="text-align: right; line-height: 1.4; color: var(--primary); font-weight: 500;">-</td></tr>
+                    </table>
+                </div>
+
+                <!-- Ödeme Durumu -->
+                <div class="card">
+                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Ödeme Planı Özeti</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center;">
+                        <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                            <span style="font-size: 10px; color: var(--text-muted); display: block; margin-bottom: 5px;">Toplam Tutar</span>
+                            <b id="trackToplamVal" style="color: var(--text-light); font-size: 14px;">-</b>
+                        </div>
+                        <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                            <span style="font-size: 10px; color: var(--success); display: block; margin-bottom: 5px;">Ödenen (Kaparo)</span>
+                            <b id="trackKaparoVal" style="color: var(--success); font-size: 14px;">-</b>
+                        </div>
+                        <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
+                            <span style="font-size: 10px; color: #38bdf8; display: block; margin-bottom: 5px;">Kalan Bakiye</span>
+                            <b id="trackKalanVal" style="color: #38bdf8; font-size: 14px;">-</b>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 </div>
 
@@ -1143,6 +1404,10 @@
                         <div class="form-group">
                             <label>Müşteri Adı Soyadı</label>
                             <input type="text" id="customerName" placeholder="Örn: Mustafa Yılmaz">
+                        </div>
+                        <div class="form-group">
+                            <label>Müşteri Telefon No</label>
+                            <input type="tel" id="customerPhone" placeholder="Örn: 05551234567">
                         </div>
                     </div>
 
@@ -2149,8 +2414,54 @@
         hesaplaVeCiz();
     }
 
+    function switchLoginTab(tab) {
+        let btnStaff = document.getElementById('tabStaffLogin');
+        let btnCustomer = document.getElementById('tabCustomerTrack');
+        let staffGroup = document.getElementById('staffLoginGroup');
+        let customerGroup = document.getElementById('customerSearchGroup');
+        
+        if (tab === 'staff') {
+            btnStaff.classList.add('active');
+            btnCustomer.classList.remove('active');
+            staffGroup.style.display = 'flex';
+            customerGroup.style.display = 'none';
+        } else {
+            btnStaff.classList.remove('active');
+            btnCustomer.classList.add('active');
+            staffGroup.style.display = 'none';
+            customerGroup.style.display = 'flex';
+        }
+    }
+
     // 💾 AUTO SESSION LOGIN ON LOAD
     window.onload = function() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let takipDocId = urlParams.get('takip');
+        
+        if (takipDocId) {
+            db.collection("ortak_teklifler").doc(takipDocId).get().then((doc) => {
+                if (doc.exists) {
+                    loadOrderTracking(doc.id, doc.data());
+                } else {
+                    alert("Girdiğiniz Takip Linki geçersiz veya sipariş bulunamadı!");
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    checkAutoLogin();
+                }
+            }).catch(err => {
+                console.error("Takip hatası:", err);
+                checkAutoLogin();
+            });
+        } else {
+            checkAutoLogin();
+        }
+        
+        // Add 3 default empty rows to Cut Optimization table
+        optYasarYeniSatir();
+        optYasarYeniSatir();
+        optYasarYeniSatir();
+    };
+
+    function checkAutoLogin() {
         let kayitliUser = localStorage.getItem('dogancay_user');
         let kayitliPass = localStorage.getItem('dogancay_pass');
         
@@ -2159,12 +2470,7 @@
             document.getElementById('loginPass').value = kayitliPass;
             girisYap(true);
         }
-        
-        // Add 3 default empty rows to Cut Optimization table
-        optYasarYeniSatir();
-        optYasarYeniSatir();
-        optYasarYeniSatir();
-    };
+    }
 
     function girisYap(isAuto) {
         if (isAuto === undefined || isAuto === null) { isAuto = false; }
@@ -3843,6 +4149,7 @@
     // ☁️ BULUT VERİ HAVUZUNA YENİ TEKLİF KAYDET
     function kaydetSistem() {
         let name = document.getElementById('customerName').value.trim();
+        let phone = document.getElementById('customerPhone').value.trim();
         if(!name) { alert("Lütfen müşteri adını girin!"); return; }
         
         let v = hesaplaVeCiz(); 
@@ -3938,12 +4245,14 @@
             };
         }
 
+        inputState.customerPhone = phone;
         inputState.chkUseSheetCosting = document.getElementById('chkUseSheetCosting').checked;
 
         let savePromise;
         if(editingDocId) {
             savePromise = db.collection("ortak_teklifler").doc(editingDocId).update({
                 musteri: name,
+                telefon: phone,
                 personel: staff,
                 m2: v.m2.toFixed(2),
                 kapakAdet: v.kapakAdet,
@@ -3962,6 +4271,7 @@
         } else {
             savePromise = db.collection("ortak_teklifler").add({
                 musteri: name,
+                telefon: phone,
                 personel: staff,
                 durum: "Teklif Verildi",
                 tarih: new Date().toLocaleDateString('tr-TR'),
@@ -4118,7 +4428,8 @@
                 let waToplam = k.toplam;
                 let waKaparo = k.kaparo;
                 let waKalan = k.kalan;
-                let shareMsg = `*DOĞANÇAY MOBİLYA*\n-----------------------------\n*Müşteri:* ${waMusteri}\n*Sipariş Detayı:* ${waSpec}\n\n*Ödeme Özeti:*\n💵 *Toplam:* ${waToplam}\n💰 *Kaparo:* ${waKaparo}\n⏳ *Kalan Bakiye:* *${waKalan}*\n\nSipariş durumunu sistemimizden canlı takip edebilirsiniz. Hayırlı günler dileriz.`;
+                let trackingLink = window.location.origin + window.location.pathname + "?takip=" + doc.id;
+                let shareMsg = `*DOĞANÇAY MOBİLYA*\n-----------------------------\n*Müşteri:* ${waMusteri}\n*Sipariş Detayı:* ${waSpec}\n\n*Ödeme Özeti:*\n💵 *Toplam:* ${waToplam}\n💰 *Kaparo:* ${waKaparo}\n⏳ *Kalan Bakiye:* *${waKalan}*\n\n*Canlı Sipariş Takip Linki:*\n${trackingLink}\n\nSipariş durumunu sistemimizden canlı takip edebilirsiniz. Hayırlı günler dileriz.`;
 
                 item.className = `archive-card ${cssClass}`;
                 item.innerHTML = `
@@ -4145,6 +4456,9 @@
                         <div style="display:flex; gap: 8px; align-items:center;">
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: var(--primary); color: #000; font-weight: bold; border: none;" onclick="teklifDuzenle('${doc.id}')">
                                 Düzenle
+                            </button>
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #0f172a; color: #fff; border: 1px solid #475569;" onclick="kopyalaTakipLinki('${doc.id}')" title="Müşteri Sipariş Takip Linki Kopyala">
+                                🔗 Takip Linki
                             </button>
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px;" onclick="whatsappPaylas('${encodeURIComponent(shareMsg)}')">
                                 WhatsApp
@@ -4219,6 +4533,15 @@
 
     function whatsappPaylas(msgString) {
         window.open("https://api.whatsapp.com/send?text=" + msgString, '_blank');
+    }
+
+    function kopyalaTakipLinki(docId) {
+        let link = window.location.origin + window.location.pathname + "?takip=" + docId;
+        navigator.clipboard.writeText(link).then(() => {
+            alert("Müşteri sipariş takip linki panoya kopyalandı:\n" + link);
+        }).catch(err => {
+            alert("Link kopyalanamadı: " + err);
+        });
     }
 
     // 🖨️ PDF YAZDIRICI (AKTİF TASARIM EKRANINDAN)
@@ -4331,6 +4654,9 @@
 
         if (!onlyClearState) {
             document.getElementById('customerName').value = "";
+            if (document.getElementById('customerPhone')) {
+                document.getElementById('customerPhone').value = "";
+            }
             
             // Reset advance payments and check state
             document.getElementById('g_advance').value = "0";
@@ -4943,7 +5269,248 @@
 
         document.body.classList.add('print-mode-kesim');
         window.print();
-        document.body.classList.remove('print-mode-kesim');
+    }
+
+    // ==========================================
+    // 📊 MÜŞTERİ SİPARİŞ TAKİP PORTALI KODLARI
+    // ==========================================
+    let currentTrackingData = null;
+
+    function sorgulaSiparis() {
+        let query = document.getElementById('trackSearchInput').value.trim();
+        if (!query) { alert("Lütfen Sipariş Kodu veya Telefon Numarası girin!"); return; }
+        
+        let isPhone = /^[0-9+\s()-]{7,15}$/.test(query);
+        let cleanQuery = query.replace(/[^0-9]/g, "");
+        
+        if (isPhone) {
+            let phoneQuery1 = cleanQuery;
+            let phoneQuery2 = cleanQuery.startsWith('0') ? cleanQuery.substring(1) : '0' + cleanQuery;
+            
+            db.collection("ortak_teklifler")
+                .where("telefon", "in", [phoneQuery1, phoneQuery2, query])
+                .get()
+                .then((snapshot) => {
+                    if (snapshot.empty) {
+                        alert("Bu telefon numarasına ait aktif sipariş bulunamadı!");
+                    } else if (snapshot.size === 1) {
+                        let doc = snapshot.docs[0];
+                        loadOrderTracking(doc.id, doc.data());
+                    } else {
+                        showMultiSelectTracking(snapshot);
+                    }
+                })
+                .catch(err => {
+                    alert("Arama hatası: " + err.message);
+                });
+        } else {
+            let docId = query;
+            if (query.startsWith("dm_")) {
+                docId = query.substring(3);
+            }
+            db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    loadOrderTracking(doc.id, doc.data());
+                } else {
+                    alert("Girdiğiniz Sipariş Kodu bulunamadı! Lütfen kodu kontrol edin.");
+                }
+            }).catch(err => {
+                alert("Arama hatası: " + err.message);
+            });
+        }
+    }
+
+    function showMultiSelectTracking(snapshot) {
+        document.getElementById('trackingMultiSelect').style.display = 'block';
+        document.getElementById('trackingDetailsPanel').style.display = 'none';
+        
+        let listContainer = document.getElementById('trackingMultiList');
+        listContainer.innerHTML = '';
+        
+        let localTypeNames = {
+            gardırop: "Gardırop",
+            mutfak: "Mutfak Dolabı",
+            vestiyer: "Vestiyer",
+            banyo: "Banyo Dolabı",
+            udolap: "U-Dolap",
+            ozel: "Özel Tasarım"
+        };
+        
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            let div = document.createElement('div');
+            div.style.padding = '12px';
+            div.style.border = '1px solid var(--border)';
+            div.style.borderRadius = '6px';
+            div.style.backgroundColor = 'var(--bg-dark)';
+            div.style.cursor = 'pointer';
+            div.style.display = 'flex';
+            div.style.justifyContent = 'space-between';
+            div.style.alignItems = 'center';
+            div.style.transition = 'border-color 0.2s';
+            
+            div.onmouseover = function() { this.style.borderColor = 'var(--primary)'; };
+            div.onmouseout = function() { this.style.borderColor = 'var(--border)'; };
+            
+            let mobType = localTypeNames[data.mobilyaTuru] || "Mobilya Siparişi";
+            div.innerHTML = `
+                <div>
+                    <strong style="color:var(--text-light); font-size:13px;">${mobType} (${data.tarih})</strong>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">Tutar: ${data.toplam} | Kalan: ${data.kalan}</div>
+                </div>
+                <span class="badge badge-teklif" style="margin:0;">${data.durum}</span>
+            `;
+            
+            div.onclick = function() {
+                loadOrderTracking(doc.id, data);
+            };
+            listContainer.appendChild(div);
+        });
+        
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('customerTrackingScreen').style.display = 'block';
+    }
+
+    function loadOrderTracking(docId, data) {
+        currentTrackingData = data;
+        currentTrackingData.id = docId;
+        
+        document.getElementById('trackingMultiSelect').style.display = 'none';
+        document.getElementById('trackingDetailsPanel').style.display = 'block';
+        
+        document.getElementById('trackMusteriVal').innerText = data.musteri || "-";
+        document.getElementById('trackTarihVal').innerText = data.tarih || "-";
+        document.getElementById('trackPersonelVal').innerText = data.personel || "Mustafa Doğançay";
+        
+        let localTypeNames = {
+            gardırop: "Gardırop",
+            mutfak: "Mutfak Dolabı",
+            vestiyer: "Vestiyer",
+            banyo: "Banyo Dolabı",
+            udolap: "U-Dolap",
+            ozel: "Özel Tasarım"
+        };
+        document.getElementById('trackTurVal').innerText = localTypeNames[data.mobilyaTuru] || "Özel Proje";
+        
+        let specsText = data.detaylar || `${data.m2} m² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
+        document.getElementById('trackSpecsVal').innerText = specsText;
+        
+        document.getElementById('trackToplamVal').innerText = data.toplam || "0 ₺";
+        document.getElementById('trackKaparoVal').innerText = data.kaparo || "0 ₺";
+        document.getElementById('trackKalanVal').innerText = data.kalan || "0 ₺";
+        
+        setTrackingTimeline(data.durum);
+        
+        if (data.inputState) {
+            renderTrackingDesign(data.inputState);
+        } else {
+            document.getElementById('customerCanvasWrapper').innerHTML = '<div style="color:var(--text-muted); font-size:12px;">Bu sipariş için 2D tasarım modeli bulunmamaktadır.</div>';
+        }
+        
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('customerTrackingScreen').style.display = 'block';
+    }
+
+    function setTrackingTimeline(status) {
+        let steps = ['step_teklif', 'step_imalat', 'step_montaj', 'step_tamam'];
+        steps.forEach(id => {
+            let el = document.getElementById(id);
+            if (el) el.className = 'timeline-step';
+        });
+        
+        let progressLine = document.getElementById('trackProgressLine');
+        let banner = document.getElementById('trackStatusBanner');
+        
+        let activeIndex = 0;
+        
+        if (status === "Teklif Verildi") {
+            activeIndex = 0;
+            banner.innerText = "🟡 Teklif Hazırlandı - Onay Bekliyor";
+            banner.style.backgroundColor = "rgba(234, 179, 8, 0.15)";
+            banner.style.color = "#f59e0b";
+        } else if (status === "Onaylandı / İmalatta") {
+            activeIndex = 1;
+            banner.innerText = "🔵 Siparişiniz Atölyede İmalat Aşamasında";
+            banner.style.backgroundColor = "rgba(59, 130, 246, 0.15)";
+            banner.style.color = "#3b82f6";
+        } else if (status === "Montaj Aşamasında") {
+            activeIndex = 2;
+            banner.innerText = "🟣 Ürünleriniz Adrese Nakliye ve Montaj Aşamasında";
+            banner.style.backgroundColor = "rgba(168, 85, 247, 0.15)";
+            banner.style.color = "#a855f7";
+        } else if (status === "Tamamlandı") {
+            activeIndex = 3;
+            banner.innerText = "🟢 Siparişiniz Tamamlandı ve Teslim Edildi";
+            banner.style.backgroundColor = "rgba(34, 197, 94, 0.15)";
+            banner.style.color = "#22c55e";
+        }
+        
+        for(let i = 0; i <= activeIndex; i++) {
+            let stepId = steps[i];
+            let el = document.getElementById(stepId);
+            if (el) {
+                if (i === activeIndex) {
+                    el.className = 'timeline-step active';
+                } else {
+                    el.className = 'timeline-step completed';
+                }
+            }
+        }
+        
+        let percent = (activeIndex / (steps.length - 1)) * 100;
+        if (progressLine) progressLine.style.width = percent + "%";
+    }
+
+    function renderTrackingDesign(inputState) {
+        let canvas = document.getElementById('dolapCanvas');
+        let trackWrapper = document.getElementById('customerCanvasWrapper');
+        if (canvas && trackWrapper) {
+            trackWrapper.innerHTML = '';
+            trackWrapper.appendChild(canvas);
+        }
+        
+        for (let key in inputState) {
+            let el = document.getElementById(key);
+            if (el) {
+                if (el.type === 'checkbox') {
+                    el.checked = !!inputState[key];
+                } else {
+                    el.value = inputState[key];
+                }
+            }
+        }
+        
+        let savedPreviewMode = 'lux';
+        setTrackPreviewMode(savedPreviewMode);
+    }
+
+    function setTrackPreviewMode(mode) {
+        let btnBlueprint = document.getElementById('btnTrackBlueprint');
+        let btnLux = document.getElementById('btnTrackLux');
+        
+        if (btnBlueprint && btnLux) {
+            if (mode === 'lux') {
+                btnBlueprint.classList.remove('active');
+                btnLux.classList.add('active');
+            } else {
+                btnBlueprint.classList.add('active');
+                btnLux.classList.remove('active');
+            }
+        }
+        setPreviewMode(mode);
+    }
+
+    function takipKapat() {
+        let canvas = document.getElementById('dolapCanvas');
+        let originalWrapper = document.querySelector('#appScreen .canvas-wrapper');
+        if (canvas && originalWrapper) {
+            originalWrapper.insertBefore(canvas, originalWrapper.firstChild);
+        }
+        
+        duzenlemeyiIptalEt(false);
+        
+        document.getElementById('customerTrackingScreen').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'block';
     }
 </script>
 </body>
