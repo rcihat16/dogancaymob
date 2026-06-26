@@ -387,6 +387,32 @@
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
         }
 
+        .preview-mode-toggle {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-toggle {
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 4px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle.active {
+            background-color: var(--primary);
+            color: var(--bg-dark);
+        }
+
         /* Blueprint Canvas Display */
         .canvas-wrapper {
             background-color: #0c111e;
@@ -1522,7 +1548,11 @@
                 <!-- 4. Adım: Canlı CAD 2D Çizim Önizleme -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">🎨 Canlı 2D Şematik Tasarım</h3>
+                        <h3 class="card-title">🎨 Canlı 2D Tasarım</h3>
+                        <div class="preview-mode-toggle">
+                            <button type="button" id="btnModeBlueprint" onclick="setPreviewMode('blueprint')" class="btn-toggle active">Şematik</button>
+                            <button type="button" id="btnModeLux" onclick="setPreviewMode('lux')" class="btn-toggle">Lüks 2D</button>
+                        </div>
                     </div>
                     <div class="canvas-wrapper">
                         <canvas id="dolapCanvas" width="400" height="300"></canvas>
@@ -1536,6 +1566,11 @@
                         <h3 class="card-title">💰 Güncel Hesaplama ve Maliyet Analizi</h3>
                     </div>
                     <div class="summary-box">
+                        <div class="summary-row" style="border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; display: flex; align-items: center;">
+                            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--primary); font-weight: bold; text-transform: none; letter-spacing: normal; width: 100%;">
+                                <input type="checkbox" id="chkUseSheetCosting" onchange="hesaplaVeCiz()" style="width: auto; margin: 0; cursor: pointer; transform: scale(1.2);"> 🪵 Plaka Bazlı Hesapla (Gerçek Fire Dahil)
+                            </label>
+                        </div>
                         <div class="summary-row">
                             <span>Malzeme m² veya Tül Detayı:</span>
                             <span id="lblM2">0.00 m²</span>
@@ -2096,6 +2131,23 @@
     };
 
     let isPatron = false;
+    let previewMode = 'blueprint';
+
+    function setPreviewMode(mode) {
+        previewMode = mode;
+        let btnBlueprint = document.getElementById('btnModeBlueprint');
+        let btnLux = document.getElementById('btnModeLux');
+        if (btnBlueprint && btnLux) {
+            if (mode === 'lux') {
+                btnBlueprint.classList.remove('active');
+                btnLux.classList.add('active');
+            } else {
+                btnBlueprint.classList.add('active');
+                btnLux.classList.remove('active');
+            }
+        }
+        hesaplaVeCiz();
+    }
 
     // 💾 AUTO SESSION LOGIN ON LOAD
     window.onload = function() {
@@ -2314,6 +2366,8 @@
     // 🎨 DİNAMİK DETAY METNİ DERLEYİCİ
     function getSpecificationText() {
         let type = document.getElementById('mobilyaTuru').value;
+        let origText = "";
+
         if(type === 'gardırop') {
             let w = parseFloat(document.getElementById('g_width').value) || 0;
             let h = parseFloat(document.getElementById('g_height').value) || 0;
@@ -2322,7 +2376,7 @@
             let mat = document.getElementById('g_material').value.toUpperCase();
             let ray = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
             let bck = document.getElementById('g_back').options[document.getElementById('g_back').selectedIndex].text;
-            return `Gardırop (${w.toFixed(2)}x${h.toFixed(2)}m) - ${d} Kapak (${mat}) - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
+            origText = `Gardırop (${w.toFixed(2)}x${h.toFixed(2)}m) - ${d} Kapak (${mat}) - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
         } 
         else if(type === 'mutfak') {
             let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
@@ -2331,7 +2385,7 @@
             let dr = parseInt(document.getElementById('k_drawers').value) || 0;
             let ray = document.getElementById('k_ray').options[document.getElementById('k_ray').selectedIndex].text;
             let count = document.getElementById('k_countertop').options[document.getElementById('k_countertop').selectedIndex].text;
-            return `Mutfak Dolabı (Alt: ${ll.toFixed(2)}m / Üst: ${ul.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Tezgah: ${count}`;
+            origText = `Mutfak Dolabı (Alt: ${ll.toFixed(2)}m / Üst: ${ul.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Tezgah: ${count}`;
         }
         else if(type === 'vestiyer') {
             let w = parseFloat(document.getElementById('v_width').value) || 0;
@@ -2340,7 +2394,7 @@
             let dr = parseInt(document.getElementById('v_drawers').value) || 0;
             let hooks = parseInt(document.getElementById('v_hooks').value) || 0;
             let mirror = document.getElementById('v_mirror').options[document.getElementById('v_mirror').selectedIndex].text;
-            return `Vestiyer (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Askı Kancası: ${hooks} Adet - Ayna Sınıfı: ${mirror}`;
+            origText = `Vestiyer (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Askı Kancası: ${hooks} Adet - Ayna Sınıfı: ${mirror}`;
         }
         else if(type === 'banyo') {
             let w = parseFloat(document.getElementById('b_width').value) || 0;
@@ -2348,13 +2402,13 @@
             let mat = document.getElementById('b_material').value.toUpperCase();
             let dr = parseInt(document.getElementById('b_drawers').value) || 0;
             let ext = document.getElementById('b_extras').options[document.getElementById('b_extras').selectedIndex].text;
-            return `Banyo Dolabı (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Ekstra Modül: ${ext}`;
+            origText = `Banyo Dolabı (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Ekstra Modül: ${ext}`;
         }
         else if(type === 'ozel') {
             let desc = document.getElementById('o_desc').value.trim() || "Özel Mobilya Projesi";
             let method = document.getElementById('o_method').options[document.getElementById('o_method').selectedIndex].text;
             let qty = parseFloat(document.getElementById('o_qty').value) || 0;
-            return `Özel Tasarım: ${desc} (Hesap: ${qty} x ${method})`;
+            origText = `Özel Tasarım: ${desc} (Hesap: ${qty} x ${method})`;
         }
         else if(type === 'udolap') {
             let left = parseFloat(document.getElementById('u_left').value) || 0;
@@ -2365,9 +2419,372 @@
             let mat = document.getElementById('u_material').options[document.getElementById('u_material').selectedIndex].text;
             let ray = document.getElementById('u_ray').options[document.getElementById('u_ray').selectedIndex].text;
             let bck = document.getElementById('u_back_panel').options[document.getElementById('u_back_panel').selectedIndex].text;
-            return `U Dolap (Sol: ${left.toFixed(2)}m, Arka: ${back.toFixed(2)}m, Sağ: ${right.toFixed(2)}m, Boy: ${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
+            origText = `U Dolap (Sol: ${left.toFixed(2)}m, Arka: ${back.toFixed(2)}m, Sağ: ${right.toFixed(2)}m, Boy: ${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
         }
-        return "";
+
+        let useSheetCosting = document.getElementById('chkUseSheetCosting') && document.getElementById('chkUseSheetCosting').checked;
+        if (useSheetCosting && type !== 'ozel') {
+            let parts = getPartsListFromCurrentOffer();
+            let gSheets = calculateSheetsDryRun(parts);
+            
+            let w = 2800; let h = 2100;
+            let sizeSelect = document.getElementById('opt_stock_size') ? document.getElementById('opt_stock_size').value : '2800x2100';
+            if(sizeSelect === '2800x2100') { w = 2800; h = 2100; }
+            else if(sizeSelect === '3660x1830') { w = 3660; h = 1830; }
+            else if(document.getElementById('opt_stock_w')) {
+                w = parseInt(document.getElementById('opt_stock_w').value) || 2800;
+                h = parseInt(document.getElementById('opt_stock_h').value) || 2100;
+            }
+            let sheetArea = (w * h) / 1000000;
+            
+            let calcM2 = 0;
+            if (type === 'gardırop') {
+                let gw = parseFloat(document.getElementById('g_width').value) || 0;
+                let gh = parseFloat(document.getElementById('g_height').value) || 0;
+                calcM2 = gw * gh;
+            } else if (type === 'udolap') {
+                let left = parseFloat(document.getElementById('u_left').value) || 0;
+                let back = parseFloat(document.getElementById('u_back').value) || 0;
+                let right = parseFloat(document.getElementById('u_right').value) || 0;
+                let uh = parseFloat(document.getElementById('u_height').value) || 0;
+                calcM2 = (left + back + right) * uh;
+            } else if (type === 'mutfak') {
+                let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
+                calcM2 = ul * 0.8;
+            } else if (type === 'vestiyer') {
+                calcM2 = (parseFloat(document.getElementById('v_width').value) || 0) * (parseFloat(document.getElementById('v_height').value) || 0);
+            } else if (type === 'banyo') {
+                calcM2 = (parseFloat(document.getElementById('b_width').value) || 0) * (parseFloat(document.getElementById('b_height').value) || 0);
+            }
+            
+            let aSheets = Math.ceil(calcM2 / sheetArea);
+            origText += ` [Plaka Bazlı: ${gSheets} Plaka Gövde + ${aSheets} Plaka Arkalık (${w}x${h}mm)]`;
+        }
+
+        return origText;
+    }
+
+    // ==========================================
+    // 🎨 LÜKS 2D ÇİZİM VE HESAPLAMA YARDIMCILARI
+    // ==========================================
+
+    function fillMaterialTexture(ctx, x, y, w, h, materialKey) {
+        if (previewMode === 'blueprint') {
+            ctx.fillStyle = materialKey === 'lake' ? '#f8fafc' : (materialKey === 'cam' ? '#38bdf8' : (materialKey === 'kapaksiz' ? '#1e293b' : '#b45309'));
+            ctx.fillRect(x, y, w, h);
+            return;
+        }
+        
+        // Lüks 2D Modu Dokuları
+        if (materialKey === 'lake') {
+            // Parlak lake kaplama degrade
+            let grad = ctx.createLinearGradient(x, y, x + w, y + h);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.3, '#f8fafc');
+            grad.addColorStop(0.7, '#f1f5f9');
+            grad.addColorStop(1, '#e2e8f0');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, w, h);
+            
+            // Parlama / Işıltı çizgisi
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            
+            let shineGrad = ctx.createLinearGradient(x, y, x + w, y + h);
+            shineGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+            shineGrad.addColorStop(0.48, 'rgba(255, 255, 255, 0)');
+            shineGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.45)');
+            shineGrad.addColorStop(0.52, 'rgba(255, 255, 255, 0)');
+            shineGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = shineGrad;
+            ctx.fillRect(x, y, w, h);
+            
+            ctx.restore();
+        } else if (materialKey === 'cam') {
+            // Yansımalı cam kaplama
+            let grad = ctx.createLinearGradient(x, y, x + w, y + h);
+            grad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
+            grad.addColorStop(0.5, 'rgba(14, 165, 233, 0.2)');
+            grad.addColorStop(1, 'rgba(3, 105, 161, 0.4)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, w, h);
+            
+            // Alüminyum profil çerçeve
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, w, h);
+            
+            // Cam yansıma şeritleri
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x + 4, y + 4, w - 8, h - 8);
+            ctx.clip();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x - 20, y);
+            ctx.lineTo(x + w, y + h);
+            ctx.moveTo(x - 10, y);
+            ctx.lineTo(x + w + 10, y + h);
+            ctx.stroke();
+            ctx.restore();
+        } else if (materialKey === 'kapaksiz') {
+            // Koyu iç derinlik gölgelemesi
+            let grad = ctx.createLinearGradient(x, y, x, y + h);
+            grad.addColorStop(0, '#1e293b');
+            grad.addColorStop(1, '#0f172a');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, w, h);
+            
+            let radGrad = ctx.createRadialGradient(x + w/2, y + h/2, Math.min(w, h)/4, x + w/2, y + h/2, Math.max(w, h)/1.3);
+            radGrad.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            radGrad.addColorStop(1, 'rgba(0, 0, 0, 0.65)');
+            ctx.fillStyle = radGrad;
+            ctx.fillRect(x, y, w, h);
+        } else {
+            // Ahşap / MDF Lam damarlı dokusu
+            let grad = ctx.createLinearGradient(x, y, x + w, y);
+            grad.addColorStop(0, '#a16207');
+            grad.addColorStop(0.5, '#b45309');
+            grad.addColorStop(1, '#78350f');
+            ctx.fillStyle = grad;
+            ctx.fillRect(x, y, w, h);
+            
+            // Dalgalı ağaç damar çizgileri
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x, y, w, h);
+            ctx.clip();
+            
+            ctx.strokeStyle = 'rgba(67, 20, 7, 0.15)';
+            ctx.lineWidth = 1;
+            for (let gx = x - 30; gx < x + w + 30; gx += 16) {
+                ctx.beginPath();
+                ctx.moveTo(gx, y);
+                let cp1x = gx + 15 * Math.sin(y / 15);
+                let cp2x = gx - 15 * Math.sin((y + h) / 15);
+                ctx.bezierCurveTo(cp1x, y + h/3, cp2x, y + 2*h/3, gx, y + h);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+    }
+
+    function getPartsListFromCurrentOffer() {
+        let type = document.getElementById('mobilyaTuru').value;
+        let partsList = [];
+
+        if (type === 'gardırop') {
+            let w = Math.round(parseFloat(document.getElementById('g_width').value) * 1000) || 0;
+            let h = Math.round(parseFloat(document.getElementById('g_height').value) * 1000) || 0;
+            let doors = parseInt(document.getElementById('g_doors').value) || 0;
+            let drawers = parseInt(document.getElementById('g_drawers').value) || 0;
+            let mat = document.getElementById('g_material').value;
+
+            if (w > 0 && h > 0) {
+                partsList.push({ name: "Gardırop Yan Dikme", w: 600, h: h, qty: 2, rotate: false });
+                partsList.push({ name: "Gardırop Tavan/Taban", w: 600, h: w - 36, qty: 2, rotate: false });
+                let partitions = Math.max(1, Math.round(doors / 2));
+                if (partitions > 1) {
+                    partsList.push({ name: "Gardırop Ara Dikme", w: 550, h: h - 180, qty: partitions - 1, rotate: false });
+                }
+                partsList.push({ name: "Gardırop Baza", w: 100, h: w - 36, qty: 2, rotate: false });
+                let partitionWidth = Math.round((w - 36 - (partitions - 1)*18) / partitions);
+                partsList.push({ name: "Gardırop Raf", w: 550, h: partitionWidth, qty: partitions * 3, rotate: true });
+                
+                if (mat !== 'kapaksiz') {
+                    let doorW = Math.round((w / doors) - 4);
+                    let doorH = h - 80;
+                    partsList.push({ name: "Gardırop Kapak", w: doorW, h: doorH, qty: doors, rotate: false });
+                }
+                
+                if (drawers > 0) {
+                    partsList.push({ name: "Çekmece Önü", w: partitionWidth - 10, h: 200, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: partitionWidth - 90, h: 120, qty: drawers * 2, rotate: true });
+                }
+            }
+        } 
+        else if (type === 'udolap') {
+            let left = Math.round(parseFloat(document.getElementById('u_left').value) * 1000) || 0;
+            let back = Math.round(parseFloat(document.getElementById('u_back').value) * 1000) || 0;
+            let right = Math.round(parseFloat(document.getElementById('u_right').value) * 1000) || 0;
+            let h = Math.round(parseFloat(document.getElementById('u_height').value) * 1000) || 0;
+            let drawers = parseInt(document.getElementById('u_drawers').value) || 0;
+            let mat = document.getElementById('u_material').value;
+
+            if (left > 0 && back > 0 && right > 0 && h > 0) {
+                partsList.push({ name: "U-Dolap Sol Yan", w: 600, h: h, qty: 1, rotate: false });
+                partsList.push({ name: "U-Dolap Sağ Yan", w: 600, h: h, qty: 1, rotate: false });
+                partsList.push({ name: "Köşe Dikme (Sol)", w: 582, h: h - 100, qty: 1, rotate: false });
+                partsList.push({ name: "Köşe Dikme (Sağ)", w: 582, h: h - 100, qty: 1, rotate: false });
+
+                partsList.push({ name: "Sol Tavan/Taban", w: 600, h: left - 18, qty: 2, rotate: false });
+                partsList.push({ name: "Arka Tavan/Taban", w: 600, h: back - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Sağ Tavan/Taban", w: 600, h: right - 18, qty: 2, rotate: false });
+
+                partsList.push({ name: "Sol Baza", w: 100, h: left - 18, qty: 2, rotate: false });
+                partsList.push({ name: "Arka Baza", w: 100, h: back - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Sağ Baza", w: 100, h: right - 18, qty: 2, rotate: false });
+
+                partsList.push({ name: "Gövde Rafı (Sol)", w: 550, h: 500, qty: 4, rotate: true });
+                partsList.push({ name: "Gövde Rafı (Arka)", w: 550, h: 600, qty: 6, rotate: true });
+                partsList.push({ name: "Gövde Rafı (Sağ)", w: 550, h: 500, qty: 4, rotate: true });
+
+                if (mat !== 'kapaksiz') {
+                    partsList.push({ name: "Sol Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
+                    partsList.push({ name: "Arka Dolap Kapak", w: 496, h: h - 80, qty: 4, rotate: false });
+                    partsList.push({ name: "Sağ Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
+                }
+
+                if (drawers > 0) {
+                    partsList.push({ name: "Çekmece Önü", w: 490, h: 200, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 410, h: 120, qty: drawers * 2, rotate: true });
+                }
+            }
+        } 
+        else if (type === 'mutfak') {
+            let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
+            let ll = parseFloat(document.getElementById('k_lower_len').value) || 0;
+            let drawers = parseInt(document.getElementById('k_drawers').value) || 0;
+
+            if (ul > 0) {
+                let ulMm = Math.round(ul * 1000);
+                let modules = Math.ceil(ulMm / 600);
+                partsList.push({ name: "Üst Dolap Yan", w: 320, h: 800, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Üst Dolap Alt/Üst", w: 300, h: 564, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Üst Dolap Raf", w: 300, h: 564, qty: modules, rotate: true });
+                partsList.push({ name: "Üst Dolap Kapak", w: 296, h: 796, qty: modules * 2, rotate: false });
+            }
+
+            if (ll > 0) {
+                let llMm = Math.round(ll * 1000);
+                let modules = Math.ceil(llMm / 600);
+                partsList.push({ name: "Alt Dolap Yan", w: 560, h: 720, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Alt Dolap Alt/Bant", w: 560, h: 564, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Alt Dolap Raf", w: 540, h: 564, qty: modules, rotate: true });
+                partsList.push({ name: "Alt Dolap Kapak", w: 296, h: 716, qty: (modules - (drawers > 0 ? 1 : 0)) * 2, rotate: false });
+                partsList.push({ name: "Mutfak Baza", w: 120, h: llMm - 36, qty: 1, rotate: false });
+            }
+
+            if (drawers > 0) {
+                partsList.push({ name: "Mutfak Çekmece Önü", w: 596, h: 176, qty: drawers, rotate: false });
+                partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 510, h: 120, qty: drawers * 2, rotate: true });
+            }
+        } 
+        else if (type === 'vestiyer') {
+            let w = Math.round(parseFloat(document.getElementById('v_width').value) * 1000) || 0;
+            let h = Math.round(parseFloat(document.getElementById('v_height').value) * 1000) || 0;
+            let drawers = parseInt(document.getElementById('v_drawers').value) || 0;
+
+            if (w > 0 && h > 0) {
+                partsList.push({ name: "Vestiyer Yan Dikme", w: 400, h: h, qty: 2, rotate: false });
+                partsList.push({ name: "Vestiyer Tavan/Taban", w: 400, h: w - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Vestiyer Orta Dikme", w: 380, h: h - 180, qty: 1, rotate: false });
+                partsList.push({ name: "Ayakkabılık Rafları", w: 380, h: Math.round(w / 2) - 27, qty: 6, rotate: true });
+                partsList.push({ name: "Vestiyer Kapak", w: Math.round(w / 2) - 10, h: h - 80, qty: 2, rotate: false });
+
+                if (drawers > 0) {
+                    partsList.push({ name: "Vestiyer Çekmece Önü", w: Math.round(w / 2) - 10, h: 180, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 350, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: Math.round(w / 2) - 90, h: 120, qty: drawers * 2, rotate: true });
+                }
+            }
+        }
+        else if (type === 'banyo') {
+            let w = Math.round(parseFloat(document.getElementById('b_width').value) * 1000) || 0;
+            let h = Math.round(parseFloat(document.getElementById('b_height').value) * 1000) || 0;
+            let drawers = parseInt(document.getElementById('b_drawers').value) || 0;
+
+            if (w > 0 && h > 0) {
+                partsList.push({ name: "Banyo Dolabı Yan", w: 500, h: 750, qty: 2, rotate: false });
+                partsList.push({ name: "Banyo Dolabı Alt/Bant", w: 500, h: w - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Banyo Dolabı Kapak", w: Math.round(w / 2) - 8, h: 716, qty: 2, rotate: false });
+
+                if (drawers > 0) {
+                    partsList.push({ name: "Çekmece Önü", w: w - 10, h: 220, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 450, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: w - 90, h: 120, qty: drawers * 2, rotate: true });
+                }
+            }
+        } else {
+            partsList.push({ name: "Özel Tasarım Panel 1", w: 600, h: 1000, qty: 5, rotate: true });
+            partsList.push({ name: "Özel Tasarım Panel 2", w: 400, h: 800, qty: 10, rotate: true });
+        }
+
+        return partsList;
+    }
+
+    function calculateSheetsDryRun(parts) {
+        if (!parts || parts.length === 0) return 0;
+        
+        let sizeSelect = document.getElementById('opt_stock_size') ? document.getElementById('opt_stock_size').value : '2800x2100';
+        let stockW = 2800;
+        let stockH = 2100;
+        if(sizeSelect === '2800x2100') {
+            stockW = 2800; stockH = 2100;
+        } else if(sizeSelect === '3660x1830') {
+            stockW = 3660; stockH = 1830;
+        } else if (document.getElementById('opt_stock_w')) {
+            stockW = parseInt(document.getElementById('opt_stock_w').value) || 2800;
+            stockH = parseInt(document.getElementById('opt_stock_h').value) || 2100;
+        }
+        
+        let kerf = document.getElementById('opt_kerf') ? (parseInt(document.getElementById('opt_kerf').value) || 0) : 4;
+        let margin = document.getElementById('opt_margin') ? (parseInt(document.getElementById('opt_margin').value) || 0) : 20;
+        
+        let flatParts = [];
+        parts.forEach(p => {
+            for(let i = 0; i < p.qty; i++) {
+                flatParts.push({
+                    id: p.name + "_" + i,
+                    name: p.name,
+                    w: p.w,
+                    h: p.h,
+                    rotate: p.rotate
+                });
+            }
+        });
+        
+        let effStockW = stockW - 2 * margin;
+        let effStockH = stockH - 2 * margin;
+        
+        if (effStockW <= 0 || effStockH <= 0) return 1;
+        
+        flatParts.sort((a, b) => {
+            let maxA = Math.max(a.w, a.h);
+            let maxB = Math.max(b.w, b.h);
+            if (maxA !== maxB) return maxB - maxA;
+            return (b.w * b.h) - (a.w * a.h);
+        });
+        
+        let sheets = [];
+        flatParts.forEach(part => {
+            let packed = false;
+            
+            for(let sheet of sheets) {
+                let placement = sheet.packer.insert(part.w, part.h, part.rotate);
+                if (placement) {
+                    packed = true;
+                    break;
+                }
+            }
+            
+            if(!packed) {
+                let newPacker = new GuillotinePacker(effStockW, effStockH, kerf);
+                let placement = newPacker.insert(part.w, part.h, part.rotate);
+                sheets.push({ packer: newPacker });
+            }
+        });
+        
+        return sheets.length;
     }
 
     // 📐 HESAPLAMA MOTORU VE CAD CANVAS ÇİZİCİ
@@ -2432,24 +2849,26 @@
             let yStart = (canvas.height - sH) / 2;
 
             // Outer Cabinet Box
-            ctx.fillStyle = matKey === 'lake' ? '#f8fafc' : (matKey === 'cam' ? '#38bdf8' : (matKey === 'kapaksiz' ? '#1e293b' : '#b45309'));
-            ctx.globalAlpha = 0.85;
-            ctx.fillRect(xStart, yStart, sW, sH);
-            ctx.globalAlpha = 1.0;
-            ctx.strokeStyle = "#e2e8f0";
-            ctx.lineWidth = 3;
+            fillMaterialTexture(ctx, xStart, yStart, sW, sH, matKey);
+            if (previewMode === 'lux') {
+                ctx.strokeStyle = matKey === 'lake' ? '#cbd5e1' : (matKey === 'kapaksiz' ? '#b45309' : '#78350f');
+                ctx.lineWidth = 4;
+            } else {
+                ctx.strokeStyle = "#e2e8f0";
+                ctx.lineWidth = 3;
+            }
             ctx.strokeRect(xStart, yStart, sW, sH);
 
             if (matKey === 'kapaksiz') {
                 // Draw wood frame border thickness
-                ctx.strokeStyle = '#b45309';
-                ctx.lineWidth = 6;
+                ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
+                ctx.lineWidth = previewMode === 'lux' ? 8 : 6;
                 ctx.strokeRect(xStart, yStart, sW, sH);
 
                 // Divide into vertical sections
                 let sections = Math.max(2, Math.round(w)); 
                 let sectionW = (sW - 12) / sections;
-                ctx.strokeStyle = '#b45309';
+                ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
                 ctx.lineWidth = 3;
                 for(let i = 1; i < sections; i++) {
                     let divX = xStart + 6 + i * sectionW;
@@ -2460,6 +2879,9 @@
                 }
 
                 // Draw shelves and hanger rods in each section
+                ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
+                ctx.lineWidth = previewMode === 'lux' ? 4 : 3;
+
                 for(let i = 0; i < sections; i++) {
                     let secX1 = xStart + 6 + i * sectionW;
                     let secX2 = secX1 + sectionW;
@@ -2470,6 +2892,16 @@
                         let shelfH = (sH - 12) / (shelfCount + 1);
                         for(let j = 1; j <= shelfCount; j++) {
                             let shelfY = yStart + 6 + j * shelfH;
+                            
+                            // LED glow under shelf
+                            if (previewMode === 'lux') {
+                                let glow = ctx.createLinearGradient(0, shelfY, 0, shelfY + 16);
+                                glow.addColorStop(0, 'rgba(253, 224, 71, 0.28)');
+                                glow.addColorStop(1, 'rgba(253, 224, 71, 0)');
+                                ctx.fillStyle = glow;
+                                ctx.fillRect(secX1, shelfY, secX2 - secX1, 16);
+                            }
+                            
                             ctx.beginPath();
                             ctx.moveTo(secX1, shelfY);
                             ctx.lineTo(secX2, shelfY);
@@ -2478,6 +2910,16 @@
                     } else {
                         // Section with top shelf, hanger rod
                         let topShelfY = yStart + 6 + (sH - 12) * 0.2;
+                        
+                        // LED glow under top shelf
+                        if (previewMode === 'lux') {
+                            let glow = ctx.createLinearGradient(0, topShelfY, 0, topShelfY + 25);
+                            glow.addColorStop(0, 'rgba(253, 224, 71, 0.25)');
+                            glow.addColorStop(1, 'rgba(253, 224, 71, 0)');
+                            ctx.fillStyle = glow;
+                            ctx.fillRect(secX1, topShelfY, secX2 - secX1, 25);
+                        }
+                        
                         ctx.beginPath();
                         ctx.moveTo(secX1, topShelfY);
                         ctx.lineTo(secX2, topShelfY);
@@ -2485,64 +2927,116 @@
 
                         // hanger rod
                         let rodY = topShelfY + 12;
-                        ctx.strokeStyle = '#94a3b8';
-                        ctx.lineWidth = 2;
+                        if (previewMode === 'lux') {
+                            let chrome = ctx.createLinearGradient(0, rodY - 2, 0, rodY + 2);
+                            chrome.addColorStop(0, '#cbd5e1');
+                            chrome.addColorStop(0.5, '#ffffff');
+                            chrome.addColorStop(1, '#64748b');
+                            ctx.strokeStyle = chrome;
+                            ctx.lineWidth = 3;
+                        } else {
+                            ctx.strokeStyle = '#94a3b8';
+                            ctx.lineWidth = 2;
+                        }
                         ctx.beginPath();
                         ctx.moveTo(secX1 + 4, rodY);
                         ctx.lineTo(secX2 - 4, rodY);
                         ctx.stroke();
 
-                        ctx.strokeStyle = '#b45309';
-                        ctx.lineWidth = 3;
+                        ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
+                        ctx.lineWidth = previewMode === 'lux' ? 4 : 3;
 
                         // simple hanger representation
-                        ctx.fillStyle = '#475569';
                         let hangerCount = 3;
                         let hangerStep = (secX2 - secX1 - 10) / (hangerCount + 1);
                         for (let k = 1; k <= hangerCount; k++) {
                             let hX = secX1 + 5 + k * hangerStep;
+                            ctx.fillStyle = previewMode === 'lux' ? '#ca8a04' : '#475569';
                             ctx.beginPath();
                             ctx.arc(hX, rodY + 2, 2, 0, Math.PI * 2);
                             ctx.fill();
-                            ctx.fillStyle = 'rgba(245, 158, 11, 0.4)';
+                            ctx.fillStyle = previewMode === 'lux' ? 'rgba(254, 240, 138, 0.35)' : 'rgba(245, 158, 11, 0.4)';
                             ctx.fillRect(hX - 5, rodY + 4, 10, 35);
-                            ctx.fillStyle = '#475569';
                         }
                     }
                 }
             } else {
                 // Door Divisions & Handles
                 let doorW = sW / kapakAdet;
-                ctx.strokeStyle = "#475569";
-                ctx.lineWidth = 1.5;
-                for(let i = 1; i < kapakAdet; i++) {
-                    ctx.beginPath();
-                    ctx.moveTo(xStart + (i * doorW), yStart);
-                    ctx.lineTo(xStart + (i * doorW), yStart + sH);
-                    ctx.stroke();
+                ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#475569";
+                ctx.lineWidth = previewMode === 'lux' ? 2 : 1.5;
+                for(let i = 0; i < kapakAdet; i++) {
+                    let dx = xStart + (i * doorW);
+                    if (i > 0) {
+                        ctx.beginPath();
+                        ctx.moveTo(dx, yStart);
+                        ctx.lineTo(dx, yStart + sH);
+                        ctx.stroke();
+                    }
+                    if (previewMode === 'lux') {
+                        fillMaterialTexture(ctx, dx + 1.5, yStart + 1.5, doorW - 3, sH - 3, matKey);
+                    }
                 }
 
                 // Draw handles
-                ctx.fillStyle = "#f59e0b";
                 for(let i = 0; i < kapakAdet; i++) {
                     let handleX = xStart + (i * doorW) + (doorW / 2);
                     let handleY = yStart + (sH / 2) - 15;
-                    ctx.fillRect(handleX - 2, handleY, 4, 30);
+                    
+                    if (previewMode === 'lux') {
+                        ctx.save();
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                        ctx.shadowBlur = 3;
+                        ctx.shadowOffsetX = 1;
+                        ctx.shadowOffsetY = 1;
+                        
+                        ctx.fillStyle = '#b45309'; 
+                        ctx.fillRect(handleX - 4, handleY, 8, 2);
+                        ctx.fillRect(handleX - 4, handleY + 28, 8, 2);
+                        
+                        let handleGrad = ctx.createLinearGradient(handleX - 2, handleY, handleX + 2, handleY);
+                        handleGrad.addColorStop(0, '#fef08a');
+                        handleGrad.addColorStop(0.5, '#eab308');
+                        handleGrad.addColorStop(1, '#ca8a04');
+                        ctx.fillStyle = handleGrad;
+                        ctx.fillRect(handleX - 2, handleY - 2, 4, 34);
+                        ctx.restore();
+                    } else {
+                        ctx.fillStyle = "#f59e0b";
+                        ctx.fillRect(handleX - 2, handleY, 4, 30);
+                    }
                 }
             }
 
             // Draw internal drawers if open concept wireframe is imagined
             if(drawers > 0) {
-                ctx.fillStyle = "rgba(0,0,0,0.3)";
                 let drawerH = 16;
                 let drawerSectionW = sW / (matKey === 'kapaksiz' ? Math.max(2, Math.round(w)) : 2);
                 for(let j = 0; j < drawers; j++) {
                     let dY = (yStart + sH) - (j * (drawerH + 4)) - drawerH - 10;
                     if(dY > yStart) {
-                        ctx.fillRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
-                        ctx.strokeStyle = "#f59e0b";
-                        ctx.lineWidth = 1;
-                        ctx.strokeRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
+                        if (previewMode === 'lux') {
+                            fillMaterialTexture(ctx, xStart + 10, dY, drawerSectionW - 20, drawerH, matKey === 'kapaksiz' ? 'mdf' : matKey);
+                            ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)';
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
+                            
+                            let centerKx = xStart + 10 + (drawerSectionW - 20)/2;
+                            let centerKy = dY + drawerH/2;
+                            ctx.fillStyle = '#fef08a';
+                            ctx.beginPath();
+                            ctx.arc(centerKx, centerKy, 2.5, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.strokeStyle = '#ca8a04';
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        } else {
+                            ctx.fillStyle = "rgba(0,0,0,0.3)";
+                            ctx.fillRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
+                            ctx.strokeStyle = "#f59e0b";
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
+                        }
                     }
                 }
             }
@@ -2592,22 +3086,28 @@
             drawWallSegment(ctx, xStart + sLeftW, yStart, sBackW, sH, "Arka Duvar (" + back.toFixed(2) + " m)", matKey, 0, hinges);
             drawWallSegment(ctx, xStart + sLeftW + sBackW, yStart, sRightW, sH, "Sağ Duvar (" + right.toFixed(2) + " m)", matKey, 0, 0);
 
-            // Draw Wall Seperators (Dashed vertical lines)
-            ctx.strokeStyle = "rgba(245, 158, 11, 0.5)";
-            ctx.setLineDash([4, 4]);
-            ctx.lineWidth = 1.5;
-            
-            ctx.beginPath();
-            ctx.moveTo(xStart + sLeftW, yStart);
-            ctx.lineTo(xStart + sLeftW, yStart + sH);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(xStart + sLeftW + sBackW, yStart);
-            ctx.lineTo(xStart + sLeftW + sBackW, yStart + sH);
-            ctx.stroke();
-
-            ctx.setLineDash([]); // Reset line dash
+            // Draw Wall Seperators (Dashed vertical lines or gold strips)
+            if (previewMode === 'lux') {
+                ctx.strokeStyle = "rgba(234, 179, 8, 0.8)";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(xStart + sLeftW, yStart);
+                ctx.lineTo(xStart + sLeftW, yStart + sH);
+                ctx.moveTo(xStart + sLeftW + sBackW, yStart);
+                ctx.lineTo(xStart + sLeftW + sBackW, yStart + sH);
+                ctx.stroke();
+            } else {
+                ctx.strokeStyle = "rgba(245, 158, 11, 0.5)";
+                ctx.setLineDash([4, 4]);
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(xStart + sLeftW, yStart);
+                ctx.lineTo(xStart + sLeftW, yStart + sH);
+                ctx.moveTo(xStart + sLeftW + sBackW, yStart);
+                ctx.lineTo(xStart + sLeftW + sBackW, yStart + sH);
+                ctx.stroke();
+                ctx.setLineDash([]); // Reset line dash
+            }
 
             // Dimensions
             drawDimension(ctx, xStart, yStart - 12, xStart + sTotalW, yStart - 12, wTotal.toFixed(2) + " m", false);
@@ -2660,52 +3160,120 @@
             }
 
             // 2. Upper Cabinet
-            ctx.fillStyle = matKey === 'lake' ? '#f1f5f9' : '#854d0e';
-            ctx.fillRect(xStartU, 60, sU, 50);
-            ctx.strokeStyle = "#e2e8f0";
+            fillMaterialTexture(ctx, xStartU, 60, sU, 50, matKey);
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#e2e8f0";
             ctx.lineWidth = 2;
             ctx.strokeRect(xStartU, 60, sU, 50);
+            
             // Upper door division lines
             let uDoorsCount = Math.round(ul * 2);
             let uDoorW = sU / uDoorsCount;
-            ctx.strokeStyle = "#475569";
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#475569";
             ctx.lineWidth = 1;
-            for(let i = 1; i < uDoorsCount; i++) {
-                ctx.beginPath(); ctx.moveTo(xStartU + (i*uDoorW), 60); ctx.lineTo(xStartU + (i*uDoorW), 110); ctx.stroke();
+            for(let i = 0; i < uDoorsCount; i++) {
+                let dx = xStartU + (i*uDoorW);
+                if (i > 0) {
+                    ctx.beginPath(); ctx.moveTo(dx, 60); ctx.lineTo(dx, 110); ctx.stroke();
+                }
+                if (previewMode === 'lux') {
+                    fillMaterialTexture(ctx, dx + 1, 61, uDoorW - 2, 48, matKey);
+                    
+                    // Small gold knob handle for upper door
+                    let handleX = dx + (uDoorW / 2);
+                    let handleY = 100;
+                    ctx.fillStyle = '#fef08a';
+                    ctx.beginPath(); ctx.arc(handleX, handleY, 2, 0, Math.PI * 2); ctx.fill();
+                    ctx.strokeStyle = '#ca8a04';
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
             }
 
             // 3. Countertop Slab
             if (countertop !== 'yok') {
-                let ctColors = { laminat: '#94a3b8', ahsap: '#d97706', granit: '#4b5563', cimstone: '#e2e8f0' };
-                ctx.fillStyle = ctColors[countertop] || '#64748b';
-                ctx.fillRect(xStartL - 4, 150, sL + 8, 8);
-                ctx.strokeStyle = "#fff";
-                ctx.lineWidth = 1;
-                ctx.strokeRect(xStartL - 4, 150, sL + 8, 8);
+                if (previewMode === 'lux') {
+                    let ctColorsGrad = ctx.createLinearGradient(xStartL - 4, 150, xStartL - 4, 158);
+                    if (countertop === 'laminat') {
+                        ctColorsGrad.addColorStop(0, '#cbd5e1'); ctColorsGrad.addColorStop(1, '#64748b');
+                    } else if (countertop === 'ahsap') {
+                        ctColorsGrad.addColorStop(0, '#fbbf24'); ctColorsGrad.addColorStop(1, '#b45309');
+                    } else if (countertop === 'granit') {
+                        ctColorsGrad.addColorStop(0, '#4b5563'); ctColorsGrad.addColorStop(1, '#1f2937');
+                    } else if (countertop === 'cimstone') {
+                        ctColorsGrad.addColorStop(0, '#ffffff'); ctColorsGrad.addColorStop(1, '#cbd5e1');
+                    }
+                    ctx.fillStyle = ctColorsGrad;
+                    ctx.fillRect(xStartL - 4, 150, sL + 8, 8);
+                    
+                    // Specular shine line on edge
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(xStartL - 4, 150.5); ctx.lineTo(xStartL + sL + 4, 150.5); ctx.stroke();
+                } else {
+                    let ctColors = { laminat: '#94a3b8', ahsap: '#d97706', granit: '#4b5563', cimstone: '#e2e8f0' };
+                    ctx.fillStyle = ctColors[countertop] || '#64748b';
+                    ctx.fillRect(xStartL - 4, 150, sL + 8, 8);
+                    ctx.strokeStyle = "#fff";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(xStartL - 4, 150, sL + 8, 8);
+                }
             }
 
             // 4. Lower Cabinet
-            ctx.fillStyle = matKey === 'lake' ? '#f1f5f9' : '#854d0e';
-            ctx.fillRect(xStartL, 158, sL, 60);
-            ctx.strokeStyle = "#e2e8f0";
+            fillMaterialTexture(ctx, xStartL, 158, sL, 60, matKey);
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#e2e8f0";
             ctx.lineWidth = 2;
             ctx.strokeRect(xStartL, 158, sL, 60);
+            
             // Lower doors divisions
             let lDoorsCount = Math.round(ll * 2);
             let lDoorW = sL / lDoorsCount;
-            ctx.strokeStyle = "#475569";
-            for(let i = 1; i < lDoorsCount; i++) {
-                ctx.beginPath(); ctx.moveTo(xStartL + (i*lDoorW), 158); ctx.lineTo(xStartL + (i*lDoorW), 218); ctx.stroke();
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#475569";
+            for(let i = 0; i < lDoorsCount; i++) {
+                let dx = xStartL + (i*lDoorW);
+                if (i > 0) {
+                    ctx.beginPath(); ctx.moveTo(dx, 158); ctx.lineTo(dx, 218); ctx.stroke();
+                }
+                if (previewMode === 'lux') {
+                    fillMaterialTexture(ctx, dx + 1, 159, lDoorW - 2, 58, matKey);
+                    
+                    // Draw nice gold bar handles for lower doors
+                    let handleX = dx + (lDoorW / 2);
+                    let handleY = 168;
+                    ctx.fillStyle = '#b45309';
+                    ctx.fillRect(handleX - 1.5, handleY, 3, 10);
+                    ctx.fillStyle = '#fef08a';
+                    ctx.fillRect(handleX - 0.5, handleY, 1, 10);
+                }
             }
             // Draw sink faucet if countertop is set
             if(countertop !== 'yok' && sL > 60) {
-                ctx.strokeStyle = "#cbd5e1";
-                ctx.lineWidth = 3;
-                ctx.beginPath();
-                ctx.moveTo(xStartL + (sL/2), 150);
-                ctx.lineTo(xStartL + (sL/2), 138);
-                ctx.arc(xStartL + (sL/2) - 4, 138, 4, 0, Math.PI, true);
-                ctx.stroke();
+                if (previewMode === 'lux') {
+                    // Chrome faucet styling
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 3.5;
+                    ctx.beginPath();
+                    ctx.moveTo(xStartL + (sL/2), 150);
+                    ctx.lineTo(xStartL + (sL/2), 138);
+                    ctx.arc(xStartL + (sL/2) - 4, 138, 4, 0, Math.PI, true);
+                    ctx.stroke();
+                    
+                    // Faucet handle
+                    ctx.strokeStyle = "#94a3b8";
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(xStartL + (sL/2) - 1, 145);
+                    ctx.lineTo(xStartL + (sL/2) + 3, 143);
+                    ctx.stroke();
+                } else {
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    ctx.moveTo(xStartL + (sL/2), 150);
+                    ctx.lineTo(xStartL + (sL/2), 138);
+                    ctx.arc(xStartL + (sL/2) - 4, 138, 4, 0, Math.PI, true);
+                    ctx.stroke();
+                }
             }
 
             // Dimension labels
@@ -2743,76 +3311,146 @@
             let yStart = (canvas.height - sH) / 2;
 
             // Cabinet Shell
-            ctx.fillStyle = "#1e293b";
-            ctx.fillRect(xStart, yStart, sW, sH);
-            ctx.strokeStyle = "#e2e8f0";
+            fillMaterialTexture(ctx, xStart, yStart, sW, sH, 'kapaksiz');
+            ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : "#e2e8f0";
             ctx.lineWidth = 2.5;
             ctx.strokeRect(xStart, yStart, sW, sH);
 
             // Left Section (Closed Wardrobe doors)
             let secW = sW / 2;
-            ctx.fillStyle = matKey === 'lake' ? '#f1f5f9' : '#854d0e';
-            ctx.fillRect(xStart, yStart, secW, sH);
+            fillMaterialTexture(ctx, xStart, yStart, secW, sH, matKey);
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#e2e8f0";
+            ctx.lineWidth = previewMode === 'lux' ? 2 : 1.5;
             ctx.strokeRect(xStart, yStart, secW, sH);
+            
+            // Draw left section doors separation and handles
+            if (previewMode === 'lux') {
+                let subW = secW / 2;
+                fillMaterialTexture(ctx, xStart + 1, yStart + 1, subW - 2, sH - 2, matKey);
+                fillMaterialTexture(ctx, xStart + subW + 1, yStart + 1, subW - 2, sH - 2, matKey);
+                ctx.strokeRect(xStart, yStart, subW, sH);
+                ctx.strokeRect(xStart + subW, yStart, subW, sH);
+                
+                // 2 Gold handles
+                for (let k = 0; k < 2; k++) {
+                    let handleX = xStart + (k * subW) + (subW / 2);
+                    let handleY = yStart + (sH / 2) - 15;
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                    ctx.shadowBlur = 3;
+                    ctx.shadowOffsetX = 1;
+                    ctx.shadowOffsetY = 1;
+                    ctx.fillStyle = '#b45309'; 
+                    ctx.fillRect(handleX - 3, handleY, 6, 2);
+                    ctx.fillRect(handleX - 3, handleY + 28, 6, 2);
+                    let handleGrad = ctx.createLinearGradient(handleX - 1.5, handleY, handleX + 1.5, handleY);
+                    handleGrad.addColorStop(0, '#fef08a');
+                    handleGrad.addColorStop(0.5, '#eab308');
+                    handleGrad.addColorStop(1, '#ca8a04');
+                    ctx.fillStyle = handleGrad;
+                    ctx.fillRect(handleX - 1.5, handleY - 1, 3, 32);
+                    ctx.restore();
+                }
+            } else {
+                let handleX = xStart + (secW / 2);
+                let handleY = yStart + (sH / 2) - 15;
+                ctx.fillStyle = "#f59e0b";
+                ctx.fillRect(handleX - 2, handleY, 4, 30);
+            }
 
             // Right Section: Mirror and Hook Area
             if (mirror === 'boy') {
-                // Mirror takes 1/3 of the right section
                 let mirW = secW * 0.5;
-                let gr = ctx.createLinearGradient(xStart + secW, yStart, xStart + secW + mirW, yStart);
-                gr.addColorStop(0, '#bae6fd');
-                gr.addColorStop(1, '#e0f2fe');
-                ctx.fillStyle = gr;
-                ctx.fillRect(xStart + secW, yStart, mirW, sH - 40);
-                ctx.strokeStyle = "#e2e8f0";
-                ctx.lineWidth = 1.5;
-                ctx.strokeRect(xStart + secW, yStart, mirW, sH - 40);
+                if (previewMode === 'lux') {
+                    let gr = ctx.createLinearGradient(xStart + secW, yStart, xStart + secW + mirW, yStart);
+                    gr.addColorStop(0, '#e0f2fe');
+                    gr.addColorStop(0.5, '#bae6fd');
+                    gr.addColorStop(1, '#bae6fd');
+                    ctx.fillStyle = gr;
+                    ctx.fillRect(xStart + secW, yStart, mirW, sH - 40);
+                    
+                    // Golden mirror frame border
+                    ctx.strokeStyle = "#ca8a04";
+                    ctx.lineWidth = 2.5;
+                    ctx.strokeRect(xStart + secW + 1, yStart + 1, mirW - 2, sH - 42);
+                } else {
+                    let gr = ctx.createLinearGradient(xStart + secW, yStart, xStart + secW + mirW, yStart);
+                    gr.addColorStop(0, '#bae6fd');
+                    gr.addColorStop(1, '#e0f2fe');
+                    ctx.fillStyle = gr;
+                    ctx.fillRect(xStart + secW, yStart, mirW, sH - 40);
+                    ctx.strokeStyle = "#e2e8f0";
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(xStart + secW, yStart, mirW, sH - 40);
+                }
 
                 // Draw mirror diagonal shine
                 ctx.strokeStyle = "rgba(255,255,255,0.6)";
+                ctx.lineWidth = previewMode === 'lux' ? 2.5 : 1.5;
                 ctx.beginPath();
                 ctx.moveTo(xStart + secW + 5, yStart + 20);
                 ctx.lineTo(xStart + secW + mirW - 5, yStart + mirW + 10);
                 ctx.stroke();
 
                 // Open coat hooks panel (Remaining 1/2 of right section)
-                ctx.fillStyle = "#0f172a";
-                ctx.fillRect(xStart + secW + mirW, yStart, secW - mirW, sH - 40);
+                fillMaterialTexture(ctx, xStart + secW + mirW, yStart, secW - mirW, sH - 40, 'kapaksiz');
+                
                 // Draw hook circles
-                ctx.fillStyle = "#f59e0b";
+                ctx.fillStyle = previewMode === 'lux' ? "#fef08a" : "#f59e0b";
                 for(let h = 0; h < hooks; h++) {
                     let hX = xStart + secW + mirW + (secW - mirW)/2;
-                    let hY = yStart + 25 + (h * 20);
+                    let hY = yStart + 25 + (h * 22);
                     if(hY < yStart + sH - 60) {
-                        ctx.beginPath(); ctx.arc(hX, hY, 3, 0, 2*Math.PI); ctx.fill();
-                        ctx.beginPath(); ctx.moveTo(hX, hY); ctx.lineTo(hX, hY+6); ctx.stroke();
+                        ctx.beginPath(); ctx.arc(hX, hY, previewMode === 'lux' ? 3.5 : 3, 0, 2*Math.PI); ctx.fill();
+                        ctx.strokeStyle = previewMode === 'lux' ? '#ca8a04' : '#f59e0b';
+                        ctx.lineWidth = 1.5;
+                        ctx.beginPath(); ctx.moveTo(hX, hY); ctx.lineTo(hX + 3, hY + 5); ctx.stroke();
                     }
                 }
             } else {
                 // No mirror or small, draw coat hangers
-                ctx.fillStyle = "#0f172a";
-                ctx.fillRect(xStart + secW, yStart, secW, sH - 40);
-                ctx.fillStyle = "#f59e0b";
+                fillMaterialTexture(ctx, xStart + secW, yStart, secW, sH - 40, 'kapaksiz');
+                ctx.fillStyle = previewMode === 'lux' ? "#fef08a" : "#f59e0b";
+                ctx.strokeStyle = previewMode === 'lux' ? '#ca8a04' : '#f59e0b';
+                ctx.lineWidth = 1.5;
                 for(let h = 0; h < hooks; h++) {
                     let hX = xStart + secW + (h * (secW / (hooks + 1))) + (secW / (hooks + 1));
-                    ctx.beginPath(); ctx.arc(hX, yStart + 30, 3, 0, 2*Math.PI); ctx.fill();
+                    let hY = yStart + 30;
+                    ctx.beginPath(); ctx.arc(hX, hY, previewMode === 'lux' ? 3.5 : 3, 0, 2*Math.PI); ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(hX, hY); ctx.lineTo(hX + 3, hY + 5); ctx.stroke();
                 }
             }
 
             // Bottom drawer unit
-            ctx.fillStyle = "#334155";
-            ctx.fillRect(xStart + secW, yStart + sH - 40, secW, 40);
+            fillMaterialTexture(ctx, xStart + secW, yStart + sH - 40, secW, 40, matKey);
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#334155";
+            ctx.lineWidth = 2;
             ctx.strokeRect(xStart + secW, yStart + sH - 40, secW, 40);
+            
             // Draw drawers
             if(drawers > 0) {
                 let drW = secW;
                 let drH = 40 / drawers;
-                ctx.strokeStyle = "#e2e8f0";
+                ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#e2e8f0";
                 ctx.lineWidth = 1;
                 for(let d = 0; d < drawers; d++) {
-                    ctx.strokeRect(xStart + secW, yStart + sH - 40 + (d*drH), drW, drH);
-                    ctx.fillStyle = "#f59e0b";
-                    ctx.fillRect(xStart + secW + (drW/2) - 10, yStart + sH - 40 + (d*drH) + (drH/2) - 1, 20, 2);
+                    let dy = yStart + sH - 40 + (d*drH);
+                    if (previewMode === 'lux') {
+                        fillMaterialTexture(ctx, xStart + secW + 1, dy + 1, drW - 2, drH - 2, matKey);
+                        ctx.strokeRect(xStart + secW, dy, drW, drH);
+                        
+                        // Golden drawer knob
+                        let centerKx = xStart + secW + drW/2;
+                        let centerKy = dy + drH/2;
+                        ctx.fillStyle = '#fef08a';
+                        ctx.beginPath(); ctx.arc(centerKx, centerKy, 2.5, 0, Math.PI * 2); ctx.fill();
+                        ctx.strokeStyle = '#ca8a04';
+                        ctx.stroke();
+                    } else {
+                        ctx.strokeRect(xStart + secW, dy, drW, drH);
+                        ctx.fillStyle = "#f59e0b";
+                        ctx.fillRect(xStart + secW + (drW/2) - 10, dy + (drH/2) - 1, 20, 2);
+                    }
                 }
             }
 
@@ -2850,18 +3488,31 @@
 
             // Bottom Vanity cabinet (usually 80cm high)
             let vH = sH * 0.45;
-            ctx.fillStyle = matKey === 'lake' ? '#e2e8f0' : '#854d0e';
-            ctx.fillRect(xStart, yStart + sH - vH, sW, vH);
-            ctx.strokeStyle = "#fff";
+            fillMaterialTexture(ctx, xStart, yStart + sH - vH, sW, vH, matKey);
+            ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#fff";
             ctx.lineWidth = 2;
             ctx.strokeRect(xStart, yStart + sH - vH, sW, vH);
 
             // Draw drawers
             if(drawers > 0) {
                 let dH = vH / drawers;
-                ctx.strokeStyle = "#475569";
+                ctx.strokeStyle = previewMode === 'lux' ? (matKey === 'lake' ? '#cbd5e1' : '#78350f') : "#475569";
                 for(let d = 0; d < drawers; d++) {
-                    ctx.strokeRect(xStart, yStart + sH - vH + (d*dH), sW, dH);
+                    let dY = yStart + sH - vH + (d*dH);
+                    if (previewMode === 'lux') {
+                        fillMaterialTexture(ctx, xStart + 1.5, dY + 1.5, sW - 3, dH - 3, matKey);
+                        ctx.strokeRect(xStart, dY, sW, dH);
+                        
+                        // Golden drawer handle in center
+                        let hX = xStart + sW/2;
+                        let hY = dY + dH/2 - 1;
+                        ctx.fillStyle = '#b45309';
+                        ctx.fillRect(hX - 10, hY, 20, 2);
+                        ctx.fillStyle = '#fef08a';
+                        ctx.fillRect(hX - 10, hY - 0.5, 20, 1);
+                    } else {
+                        ctx.strokeRect(xStart, dY, sW, dH);
+                    }
                 }
             }
 
@@ -2869,28 +3520,63 @@
             if(extras === 'lavabo' || extras === 'ikisi_de') {
                 ctx.fillStyle = "#fff";
                 ctx.fillRect(xStart + 6, yStart + sH - vH - 6, sW - 12, 6);
+                ctx.strokeStyle = "#94a3b8";
+                ctx.lineWidth = 1;
                 ctx.strokeRect(xStart + 6, yStart + sH - vH - 6, sW - 12, 6);
-                // Tap/faucet
-                ctx.strokeStyle = "#cbd5e1";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(xStart + (sW/2), yStart + sH - vH - 6);
-                ctx.lineTo(xStart + (sW/2), yStart + sH - vH - 18);
-                ctx.lineTo(xStart + (sW/2) - 4, yStart + sH - vH - 18);
-                ctx.stroke();
+                
+                // Chrome Tap/faucet
+                if (previewMode === 'lux') {
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.moveTo(xStart + (sW/2), yStart + sH - vH - 6);
+                    ctx.lineTo(xStart + (sW/2), yStart + sH - vH - 18);
+                    ctx.lineTo(xStart + (sW/2) - 4, yStart + sH - vH - 18);
+                    ctx.stroke();
+                } else {
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(xStart + (sW/2), yStart + sH - vH - 6);
+                    ctx.lineTo(xStart + (sW/2), yStart + sH - vH - 18);
+                    ctx.lineTo(xStart + (sW/2) - 4, yStart + sH - vH - 18);
+                    ctx.stroke();
+                }
             }
 
             // Upper Mirror Module
             if(extras === 'ayna' || extras === 'ikisi_de') {
                 let mH = sH * 0.45;
-                let gr = ctx.createLinearGradient(xStart + 15, yStart, xStart + sW - 15, yStart);
-                gr.addColorStop(0, '#bae6fd');
-                gr.addColorStop(1, '#e0f2fe');
-                ctx.fillStyle = gr;
-                ctx.fillRect(xStart + 15, yStart, sW - 30, mH);
-                ctx.strokeStyle = "#f59e0b";
-                ctx.lineWidth = 1.5;
-                ctx.strokeRect(xStart + 15, yStart, sW - 30, mH);
+                if (previewMode === 'lux') {
+                    let gr = ctx.createLinearGradient(xStart + 15, yStart, xStart + sW - 15, yStart);
+                    gr.addColorStop(0, '#e0f2fe');
+                    gr.addColorStop(0.5, '#bae6fd');
+                    gr.addColorStop(1, '#bae6fd');
+                    ctx.fillStyle = gr;
+                    ctx.fillRect(xStart + 15, yStart, sW - 30, mH);
+                    
+                    // Golden mirror frame border
+                    ctx.strokeStyle = "#ca8a04";
+                    ctx.lineWidth = 2.5;
+                    ctx.strokeRect(xStart + 16, yStart + 1, sW - 32, mH - 2);
+                    
+                    // Diagonal mirror reflection lines
+                    ctx.strokeStyle = "rgba(255,255,255,0.6)";
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(xStart + 25, yStart + 15);
+                    ctx.lineTo(xStart + 70, yStart + mH - 15);
+                    ctx.stroke();
+                } else {
+                    let gr = ctx.createLinearGradient(xStart + 15, yStart, xStart + sW - 15, yStart);
+                    gr.addColorStop(0, '#bae6fd');
+                    gr.addColorStop(1, '#e0f2fe');
+                    ctx.fillStyle = gr;
+                    ctx.fillRect(xStart + 15, yStart, sW - 30, mH);
+                    ctx.strokeStyle = "#f59e0b";
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(xStart + 15, yStart, sW - 30, mH);
+                }
             }
 
             drawDimension(ctx, xStart, yStart - 10, xStart + sW, yStart - 10, w.toFixed(2) + " m", false);
@@ -2942,11 +3628,62 @@
         }
 
         // CALCULATE FINAL SUMMARIES
+        let gövdeSheetCount = 0;
+        let arkalikSheetCount = 0;
+        let useSheetCosting = document.getElementById('chkUseSheetCosting') && document.getElementById('chkUseSheetCosting').checked;
+
+        if (useSheetCosting && type !== 'ozel') {
+            // Get plate dimensions
+            let sizeSelect = document.getElementById('opt_stock_size') ? document.getElementById('opt_stock_size').value : '2800x2100';
+            let stockW = 2800; let stockH = 2100;
+            if(sizeSelect === '2800x2100') { stockW = 2800; stockH = 2100; }
+            else if(sizeSelect === '3660x1830') { stockW = 3660; stockH = 1830; }
+            else if(document.getElementById('opt_stock_w')) {
+                stockW = parseInt(document.getElementById('opt_stock_w').value) || 2800;
+                stockH = parseInt(document.getElementById('opt_stock_h').value) || 2100;
+            }
+            let sheetArea = (stockW * stockH) / 1000000;
+            
+            // Get parts list and run optimization dry run
+            let parts = getPartsListFromCurrentOffer();
+            gövdeSheetCount = calculateSheetsDryRun(parts);
+            
+            // Override dolapTutar
+            let mPrice = dynamicPrices[matKey];
+            if (type === 'vestiyer') mPrice = dynamicPrices.vestiyer_m2 || 3600;
+            if (type === 'banyo') mPrice = dynamicPrices.banyo_m2 || 4000;
+            let sheetPrice = sheetArea * mPrice;
+            dolapTutar = gövdeSheetCount * sheetPrice;
+            
+            // Override arkalikTutar
+            let arkalikM2 = m2;
+            if (type === 'mutfak') {
+                let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
+                arkalikM2 = ul * 0.8;
+            }
+            arkalikSheetCount = Math.ceil(arkalikM2 / sheetArea);
+            
+            let backKey = 'ark4';
+            if (type === 'gardırop') backKey = document.getElementById('g_back').value;
+            if (type === 'udolap') backKey = document.getElementById('u_back_panel').value;
+            
+            let backMatPrice = (backKey === 'ark4' ? dynamicPrices.ark4 : dynamicPrices.mdf);
+            let backSheetPrice = sheetArea * backMatPrice;
+            arkalikTutar = arkalikSheetCount * backSheetPrice;
+            
+            // Override kesimGideri
+            kesimGideri = (gövdeSheetCount + arkalikSheetCount) * sheetArea * (dynamicPrices.kesim_m2 || 350);
+        }
+
         let toplam = dolapTutar + arkalikTutar + cekmeceTutar + menteseTutar + ekstralarTutar + montajTutar;
         let kalan = toplam - advancePayment;
 
         // Populate Summary fields
-        document.getElementById('lblM2').innerText = type === 'ozel' ? (document.getElementById('o_qty').value + " " + document.getElementById('o_method').value.toUpperCase()) : (m2.toFixed(2) + " m²");
+        if (useSheetCosting && type !== 'ozel') {
+            document.getElementById('lblM2').innerText = `${gövdeSheetCount} Plaka Gövde / ${arkalikSheetCount} Plaka Arkalık`;
+        } else {
+            document.getElementById('lblM2').innerText = type === 'ozel' ? (document.getElementById('o_qty').value + " " + document.getElementById('o_method').value.toUpperCase()) : (m2.toFixed(2) + " m²");
+        }
         document.getElementById('lblDolap').innerText = dolapTutar.toLocaleString('tr-TR') + " ₺";
         document.getElementById('lblCekmece').innerText = cekmeceTutar.toLocaleString('tr-TR') + " ₺";
         document.getElementById('lblMentese').innerText = menteseTutar.toLocaleString('tr-TR') + " ₺";
@@ -2956,7 +3693,7 @@
         document.getElementById('lblToplam').innerText = toplam.toLocaleString('tr-TR') + " ₺";
         document.getElementById('lblKalan').innerText = kalan.toLocaleString('tr-TR') + " ₺";
 
-        return { m2, toplam, kaparo: advancePayment, kalan, kapakAdet, type, detailsText: getSpecificationText() };
+        return { m2, toplam, kaparo: advancePayment, kalan, kapakAdet, type, detailsText: getSpecificationText(), useSheetCosting, gövdeSheetCount, arkalikSheetCount };
     }
 
     // Helper to draw CAD dimensions
@@ -3200,6 +3937,8 @@
                 u_advance: parseFloat(document.getElementById('u_advance').value) || 0
             };
         }
+
+        inputState.chkUseSheetCosting = document.getElementById('chkUseSheetCosting').checked;
 
         let savePromise;
         if(editingDocId) {
@@ -3563,7 +4302,11 @@
                     for(let key in data.inputState) {
                         let el = document.getElementById(key);
                         if(el) {
-                            el.value = data.inputState[key];
+                            if (el.type === 'checkbox') {
+                                el.checked = !!data.inputState[key];
+                            } else {
+                                el.value = data.inputState[key];
+                            }
                         }
                     }
                 }
@@ -3589,13 +4332,17 @@
         if (!onlyClearState) {
             document.getElementById('customerName').value = "";
             
-            // Reset advance payments
+            // Reset advance payments and check state
             document.getElementById('g_advance').value = "0";
             document.getElementById('k_advance').value = "0";
             document.getElementById('v_advance').value = "0";
             document.getElementById('b_advance').value = "0";
             document.getElementById('o_advance').value = "0";
             document.getElementById('u_advance').value = "0";
+            
+            if (document.getElementById('chkUseSheetCosting')) {
+                document.getElementById('chkUseSheetCosting').checked = false;
+            }
             
             hesaplaVeCiz();
         }
@@ -3669,158 +4416,24 @@
 
     function tekliftenKesimListesiCikar() {
         let type = document.getElementById('mobilyaTuru').value;
-        let partsList = [];
-
-        if (type === 'gardırop') {
-            let w = Math.round(parseFloat(document.getElementById('g_width').value) * 1000) || 0;
-            let h = Math.round(parseFloat(document.getElementById('g_height').value) * 1000) || 0;
-            let doors = parseInt(document.getElementById('g_doors').value) || 0;
-            let drawers = parseInt(document.getElementById('g_drawers').value) || 0;
-            let mat = document.getElementById('g_material').value;
-
+        if (type === 'gardırop' || type === 'vestiyer' || type === 'banyo') {
+            let w = parseFloat(document.getElementById(type === 'gardırop' ? 'g_width' : (type === 'vestiyer' ? 'v_width' : 'b_width')).value) || 0;
+            let h = parseFloat(document.getElementById(type === 'gardırop' ? 'g_height' : (type === 'vestiyer' ? 'v_height' : 'b_height')).value) || 0;
             if (w <= 0 || h <= 0) { alert("Lütfen teklif ekranında en ve boy değerlerini girin!"); return; }
-
-            // 1. Yan Dikmeler (2 Adet, desenli/damar yönlü, dönebilir = false)
-            partsList.push({ name: "Gardırop Yan Dikme", w: 600, h: h, qty: 2, rotate: false });
-            // 2. Tavan ve Taban (2 Adet, en = w - 36, desenli/damar yönlü, dönebilir = false)
-            partsList.push({ name: "Gardırop Tavan/Taban", w: 600, h: w - 36, qty: 2, rotate: false });
-            // 3. Bölmeler / Ara Dikmeler
-            let partitions = Math.max(1, Math.round(doors / 2));
-            if (partitions > 1) {
-                partsList.push({ name: "Gardırop Ara Dikme", w: 550, h: h - 180, qty: partitions - 1, rotate: false });
-            }
-            // 4. Baza (2 Adet, dönebilir = false)
-            partsList.push({ name: "Gardırop Baza", w: 100, h: w - 36, qty: 2, rotate: false });
-            // 5. Raflar (desensiz/dönebilir = true)
-            let partitionWidth = Math.round((w - 36 - (partitions - 1)*18) / partitions);
-            partsList.push({ name: "Gardırop Raf", w: 550, h: partitionWidth, qty: partitions * 3, rotate: true });
-            
-            // 6. Kapaklar (Kapaksız değilse, desenli/dönebilir = false)
-            if (mat !== 'kapaksiz') {
-                let doorW = Math.round((w / doors) - 4);
-                let doorH = h - 80;
-                partsList.push({ name: "Gardırop Kapak", w: doorW, h: doorH, qty: doors, rotate: false });
-            }
-            
-            // 7. Çekmeceler
-            if (drawers > 0) {
-                partsList.push({ name: "Çekmece Önü", w: partitionWidth - 10, h: 200, qty: drawers, rotate: false });
-                partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: partitionWidth - 90, h: 120, qty: drawers * 2, rotate: true });
-            }
-        } 
-        else if (type === 'udolap') {
-            let left = Math.round(parseFloat(document.getElementById('u_left').value) * 1000) || 0;
-            let back = Math.round(parseFloat(document.getElementById('u_back').value) * 1000) || 0;
-            let right = Math.round(parseFloat(document.getElementById('u_right').value) * 1000) || 0;
-            let h = Math.round(parseFloat(document.getElementById('u_height').value) * 1000) || 0;
-            let drawers = parseInt(document.getElementById('u_drawers').value) || 0;
-            let mat = document.getElementById('u_material').value;
-
+        } else if (type === 'udolap') {
+            let left = parseFloat(document.getElementById('u_left').value) || 0;
+            let back = parseFloat(document.getElementById('u_back').value) || 0;
+            let right = parseFloat(document.getElementById('u_right').value) || 0;
+            let h = parseFloat(document.getElementById('u_height').value) || 0;
             if (left <= 0 || back <= 0 || right <= 0 || h <= 0) { alert("Lütfen teklif ekranında tüm duvar ölçülerini girin!"); return; }
-
-            partsList.push({ name: "U-Dolap Sol Yan", w: 600, h: h, qty: 1, rotate: false });
-            partsList.push({ name: "U-Dolap Sağ Yan", w: 600, h: h, qty: 1, rotate: false });
-            partsList.push({ name: "Köşe Dikme (Sol)", w: 582, h: h - 100, qty: 1, rotate: false });
-            partsList.push({ name: "Köşe Dikme (Sağ)", w: 582, h: h - 100, qty: 1, rotate: false });
-
-            partsList.push({ name: "Sol Tavan/Taban", w: 600, h: left - 18, qty: 2, rotate: false });
-            partsList.push({ name: "Arka Tavan/Taban", w: 600, h: back - 36, qty: 2, rotate: false });
-            partsList.push({ name: "Sağ Tavan/Taban", w: 600, h: right - 18, qty: 2, rotate: false });
-
-            partsList.push({ name: "Sol Baza", w: 100, h: left - 18, qty: 2, rotate: false });
-            partsList.push({ name: "Arka Baza", w: 100, h: back - 36, qty: 2, rotate: false });
-            partsList.push({ name: "Sağ Baza", w: 100, h: right - 18, qty: 2, rotate: false });
-
-            partsList.push({ name: "Gövde Rafı (Sol)", w: 550, h: 500, qty: 4, rotate: true });
-            partsList.push({ name: "Gövde Rafı (Arka)", w: 550, h: 600, qty: 6, rotate: true });
-            partsList.push({ name: "Gövde Rafı (Sağ)", w: 550, h: 500, qty: 4, rotate: true });
-
-            if (mat !== 'kapaksiz') {
-                partsList.push({ name: "Sol Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
-                partsList.push({ name: "Arka Dolap Kapak", w: 496, h: h - 80, qty: 4, rotate: false });
-                partsList.push({ name: "Sağ Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
-            }
-
-            if (drawers > 0) {
-                partsList.push({ name: "Çekmece Önü", w: 490, h: 200, qty: drawers, rotate: false });
-                partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 410, h: 120, qty: drawers * 2, rotate: true });
-            }
-        } 
-        else if (type === 'mutfak') {
+        } else if (type === 'mutfak') {
             let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
             let ll = parseFloat(document.getElementById('k_lower_len').value) || 0;
-            let drawers = parseInt(document.getElementById('k_drawers').value) || 0;
-
-            let maxLen = Math.max(ul, ll) * 1000;
-            if (maxLen <= 0) { alert("Lütfen teklif ekranında mutfak uzunluklarını girin!"); return; }
-
-            if (ul > 0) {
-                let ulMm = Math.round(ul * 1000);
-                let modules = Math.ceil(ulMm / 600);
-                partsList.push({ name: "Üst Dolap Yan", w: 320, h: 800, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Üst Dolap Alt/Üst", w: 300, h: 564, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Üst Dolap Raf", w: 300, h: 564, qty: modules, rotate: true });
-                partsList.push({ name: "Üst Dolap Kapak", w: 296, h: 796, qty: modules * 2, rotate: false });
-            }
-
-            if (ll > 0) {
-                let llMm = Math.round(ll * 1000);
-                let modules = Math.ceil(llMm / 600);
-                partsList.push({ name: "Alt Dolap Yan", w: 560, h: 720, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Alt Dolap Alt/Bant", w: 560, h: 564, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Alt Dolap Raf", w: 540, h: 564, qty: modules, rotate: true });
-                partsList.push({ name: "Alt Dolap Kapak", w: 296, h: 716, qty: (modules - (drawers > 0 ? 1 : 0)) * 2, rotate: false });
-                partsList.push({ name: "Mutfak Baza", w: 120, h: llMm - 36, qty: 1, rotate: false });
-            }
-
-            if (drawers > 0) {
-                partsList.push({ name: "Mutfak Çekmece Önü", w: 596, h: 176, qty: drawers, rotate: false });
-                partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 510, h: 120, qty: drawers * 2, rotate: true });
-            }
-        } 
-        else if (type === 'vestiyer') {
-            let w = Math.round(parseFloat(document.getElementById('v_width').value) * 1000) || 0;
-            let h = Math.round(parseFloat(document.getElementById('v_height').value) * 1000) || 0;
-            let drawers = parseInt(document.getElementById('v_drawers').value) || 0;
-
-            if (w <= 0 || h <= 0) { alert("Lütfen teklif ekranında vestiyer en ve boy değerlerini girin!"); return; }
-
-            partsList.push({ name: "Vestiyer Yan Dikme", w: 400, h: h, qty: 2, rotate: false });
-            partsList.push({ name: "Vestiyer Tavan/Taban", w: 400, h: w - 36, qty: 2, rotate: false });
-            partsList.push({ name: "Vestiyer Orta Dikme", w: 380, h: h - 180, qty: 1, rotate: false });
-            partsList.push({ name: "Ayakkabılık Rafları", w: 380, h: Math.round(w / 2) - 27, qty: 6, rotate: true });
-            partsList.push({ name: "Vestiyer Kapak", w: Math.round(w / 2) - 10, h: h - 80, qty: 2, rotate: false });
-
-            if (drawers > 0) {
-                partsList.push({ name: "Vestiyer Çekmece Önü", w: Math.round(w / 2) - 10, h: 180, qty: drawers, rotate: false });
-                partsList.push({ name: "Çekmece Kutu Yan", w: 350, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: Math.round(w / 2) - 90, h: 120, qty: drawers * 2, rotate: true });
-            }
-        }
-        else if (type === 'banyo') {
-            let w = Math.round(parseFloat(document.getElementById('b_width').value) * 1000) || 0;
-            let h = Math.round(parseFloat(document.getElementById('b_height').value) * 1000) || 0;
-            let drawers = parseInt(document.getElementById('b_drawers').value) || 0;
-
-            if (w <= 0 || h <= 0) { alert("Lütfen teklif ekranında banyo dolabı en ve boy değerlerini girin!"); return; }
-
-            partsList.push({ name: "Banyo Dolabı Yan", w: 500, h: 750, qty: 2, rotate: false });
-            partsList.push({ name: "Banyo Dolabı Alt/Bant", w: 500, h: w - 36, qty: 2, rotate: false });
-            partsList.push({ name: "Banyo Dolabı Kapak", w: Math.round(w / 2) - 8, h: 716, qty: 2, rotate: false });
-
-            if (drawers > 0) {
-                partsList.push({ name: "Çekmece Önü", w: w - 10, h: 220, qty: drawers, rotate: false });
-                partsList.push({ name: "Çekmece Kutu Yan", w: 450, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: w - 90, h: 120, qty: drawers * 2, rotate: true });
-            }
-        } else {
-            partsList.push({ name: "Özel Tasarım Panel 1", w: 600, h: 1000, qty: 5, rotate: true });
-            partsList.push({ name: "Özel Tasarım Panel 2", w: 400, h: 800, qty: 10, rotate: true });
+            if (ul <= 0 && ll <= 0) { alert("Lütfen teklif ekranında mutfak uzunluklarını girin!"); return; }
         }
 
+        let partsList = getPartsListFromCurrentOffer();
+        
         // Clean and reload parts
         optYasarListeyiTemizle();
         partsList.forEach(p => {
