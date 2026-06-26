@@ -16,16 +16,16 @@
     
     <style>
         :root {
-            --bg-dark: #080C14;
-            --bg-deep: #0D1322;
-            --card-bg: #141F35;
-            --border: #223253;
-            --border-focus: #3A558B;
-            --text-main: #F1F5F9;
-            --text-muted: #94A3B8;
-            --primary: #F59E0B; /* Golden Bronze Accent */
-            --primary-hover: #D97706;
-            --primary-glow: rgba(245, 158, 11, 0.15);
+            --bg-dark: #f1f5f9;
+            --bg-deep: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --border-focus: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --primary: #0284c7; /* Sky Blue Accent */
+            --primary-hover: #0369a1;
+            --primary-glow: rgba(2, 132, 199, 0.08);
             --success: #10B981;
             --success-glow: rgba(16, 185, 129, 0.12);
             --danger: #EF4444;
@@ -63,14 +63,14 @@
             background-color: var(--bg-deep);
             border-left: 1px solid var(--border);
             border-right: 1px solid var(--border);
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            box-shadow: 0 0 30px rgba(15, 23, 42, 0.06);
             position: relative;
         }
 
         /* Sidebar Navigation */
         .sidebar {
             width: 260px;
-            background-color: var(--bg-dark);
+            background-color: #ffffff;
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
@@ -83,29 +83,28 @@
 
         .brand {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
             gap: 12px;
             padding-bottom: 20px;
             border-bottom: 2px solid var(--border);
         }
 
         .brand-logo {
-            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--bg-dark);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+            width: 110px;
+            height: 110px;
+            border-radius: 20px;
+            background-image: url('logo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
         }
 
         .brand-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 19px;
+            font-weight: 800;
             letter-spacing: 0.5px;
             line-height: 1.2;
         }
@@ -142,7 +141,7 @@
         }
 
         .nav-item:hover {
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(15, 23, 42, 0.04);
             color: var(--text-main);
         }
 
@@ -215,7 +214,7 @@
             border-radius: 12px;
             padding: 24px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05);
         }
 
         .card-header {
@@ -351,12 +350,12 @@
 
         .btn-primary {
             background-color: var(--primary);
-            color: var(--bg-dark);
+            color: #ffffff;
         }
 
         .btn-primary:hover {
             background-color: var(--primary-hover);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.3);
         }
 
         .btn-secondary {
@@ -390,7 +389,7 @@
         .preview-mode-toggle {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.04);
             padding: 3px;
             border-radius: 6px;
             border: 1px solid var(--border);
@@ -410,7 +409,7 @@
 
         .btn-toggle.active {
             background-color: var(--primary);
-            color: var(--bg-dark);
+            color: #ffffff;
         }
 
         /* Blueprint Canvas Display */
@@ -429,16 +428,16 @@
 
         canvas {
             border-radius: 6px;
-            background: #0f172a;
+            background: #ffffff;
             max-width: 100%;
             height: auto;
-            border: 1px solid #1e293b;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.6);
+            border: 1px solid var(--border);
+            box-shadow: inset 0 0 10px rgba(15, 23, 42, 0.05);
         }
 
         /* Results & Costs Summary Box */
         .summary-box {
-            background: linear-gradient(135deg, #101625, #17223b);
+            background: linear-gradient(135deg, #f8fafc, #f1f5f9);
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 20px;
@@ -449,7 +448,7 @@
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.05);
             font-size: 14px;
             color: var(--text-muted);
         }
@@ -554,7 +553,7 @@
             text-transform: uppercase;
         }
 
-        .badge-teklif { background-color: rgba(245, 158, 11, 0.15); color: var(--primary); }
+        .badge-teklif { background-color: rgba(2, 132, 199, 0.12); color: var(--primary); }
         .badge-imalat { background-color: rgba(59, 130, 246, 0.15); color: var(--info); }
         .badge-montaj { background-color: rgba(168, 85, 247, 0.15); color: #A855F7; }
         .badge-tamam { background-color: rgba(16, 185, 129, 0.15); color: var(--success); }
@@ -693,7 +692,7 @@
             padding: 40px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -701,18 +700,15 @@
         }
 
         .login-logo {
-            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
-            width: 60px;
-            height: 60px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 28px;
-            color: var(--bg-dark);
-            margin: 0 auto 10px auto;
-            box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+            width: 160px;
+            height: 160px;
+            border-radius: 32px;
+            background-image: url('logo.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
         }
 
         /* Screen Visibility Controls */
@@ -800,12 +796,12 @@
                 left: 0;
                 right: 0;
                 height: 64px;
-                background-color: var(--bg-dark);
+                background-color: #ffffff;
                 border-top: 1px solid var(--border);
                 z-index: 99;
                 justify-content: space-around;
                 align-items: center;
-                box-shadow: 0 -4px 20px rgba(0,0,0,0.3);
+                box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05);
             }
 
             .bottom-nav-item {
@@ -1030,7 +1026,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background-color: #334155;
+            background-color: #cbd5e1;
             z-index: -2;
         }
         .timeline-progress {
@@ -1053,8 +1049,8 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background-color: #1e293b;
-            border: 3px solid #334155;
+            background-color: #f1f5f9;
+            border: 3px solid #cbd5e1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1064,7 +1060,7 @@
         }
         .timeline-step.active .step-icon {
             background-color: var(--primary);
-            border-color: #ca8a04;
+            border-color: #0284c7;
             transform: scale(1.1);
             animation: pulseGlow 2s infinite;
         }
@@ -1123,20 +1119,20 @@
         
         @keyframes pulseGlow {
             0% {
-                box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.4);
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4);
             }
             70% {
-                box-shadow: 0 0 0 10px rgba(234, 179, 8, 0);
+                box-shadow: 0 0 0 10px rgba(2, 132, 199, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(234, 179, 8, 0);
+                box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
             }
         }
         /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.75);
+            background-color: rgba(15, 23, 42, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1144,13 +1140,13 @@
             backdrop-filter: blur(4px);
         }
         .modal-content {
-            background-color: var(--bg-card);
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 24px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
             position: relative;
             animation: modalFadeIn 0.3s ease-out;
         }
@@ -1166,7 +1162,7 @@
             line-height: 1;
         }
         .modal-close:hover {
-            color: var(--text-light);
+            color: var(--text-main);
         }
         
         @keyframes modalFadeIn {
@@ -1186,7 +1182,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 12px;
-            background-color: rgba(255,255,255,0.02);
+            background-color: rgba(15, 23, 42, 0.02);
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 12px;
@@ -1207,7 +1203,7 @@
 
         /* Care Guide Box Styles */
         .care-guide-box {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(15, 23, 42, 0.02);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 12px 15px;
@@ -1235,15 +1231,305 @@
         .care-guide-list li strong {
             color: var(--text-main);
         }
+
+        /* Interactive Wardrobe Designer Styles */
+        /* Interactive Wardrobe Designer Styles */
+        .design-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            align-items: start;
+        }
+        @media (max-width: 992px) {
+            .design-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Light Studio theme overrides for designer page */
+        #selfDesignScreen {
+            background-color: #f3f4f6 !important;
+            color: #0f172a !important;
+        }
+        
+        #selfDesignScreen h2, #selfDesignScreen h3, #selfDesignScreen h4, #selfDesignScreen p, #selfDesignScreen label {
+            color: #0f172a !important;
+        }
+        
+        #selfDesignScreen .login-logo {
+            background: transparent !important;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08) !important;
+        }
+
+        #selfDesignScreen p.text-muted, #selfDesignScreen span[id^="lbl"] {
+            color: #475569 !important;
+        }
+        
+        #selfDesignScreen .card {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.02) !important;
+            padding: 24px !important;
+            color: #0f172a !important;
+        }
+        
+        /* Segmented Control Styling */
+        .segmented-control {
+            display: flex;
+            background-color: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 9999px;
+            padding: 3px;
+            gap: 2px;
+            margin-bottom: 12px;
+            width: 100%;
+        }
+        .segmented-control button {
+            flex: 1;
+            border: none;
+            background: transparent;
+            color: #475569;
+            padding: 8px 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+        .segmented-control button.active {
+            background-color: #ffffff;
+            color: #0284c7;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* Inner Template Selector Grid */
+        .template-selector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        #selfDesignScreen .template-card {
+            background-color: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            padding: 16px 12px !important;
+            color: #0f172a !important;
+            transition: all 0.2s ease !important;
+            box-shadow: none !important;
+            text-align: center;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        #selfDesignScreen .template-card:hover {
+            border-color: #cbd5e1 !important;
+            background-color: #f1f5f9 !important;
+        }
+        
+        #selfDesignScreen .template-card.active {
+            border-color: #0284c7 !important;
+            background-color: rgba(2, 132, 199, 0.05) !important;
+            box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.2) !important;
+        }
+
+        #selfDesignScreen .template-card span {
+            color: #64748b !important;
+        }
+        
+        #selfDesignScreen #designTotalPrice {
+            color: #0284c7 !important; /* Sky blue bold price */
+            font-size: 36px !important;
+            font-weight: 800 !important;
+            text-shadow: none !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+        
+        #selfDesignScreen .btn-primary {
+            background: linear-gradient(135deg, #0284c7, #0091ff) !important;
+            border: none !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+            padding: 14px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        #selfDesignScreen .btn-primary:hover {
+            opacity: 0.95 !important;
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4) !important;
+        }
+
+        #selfDesignScreen .btn-secondary {
+            background-color: #ffffff !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #475569 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
+        }
+
+        #selfDesignScreen .btn-secondary:hover {
+            background-color: #f8fafc !important;
+            border-color: #94a3b8 !important;
+        }
+        
+        /* Floating Canvas Buttons Group */
+        .canvas-container-relative {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f3f4f6;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+        }
+        .canvas-float-btn-group {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 10;
+        }
+        .canvas-float-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+        .canvas-float-btn:hover {
+            background-color: #f8fafc;
+            border-color: #0284c7;
+            color: #0284c7;
+            transform: scale(1.08);
+        }
+        .canvas-float-btn.active {
+            background-color: #0284c7;
+            border-color: #0284c7;
+            color: #ffffff;
+        }
+        
+        #selfDesignScreen .btn-toggle {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #475569 !important;
+            border-radius: 9999px !important; /* Oval pill */
+            transition: all 0.2s ease !important;
+            font-weight: 500 !important;
+            font-size: 12px !important;
+            cursor: pointer;
+        }
+        
+        #selfDesignScreen .btn-toggle.active {
+            background-color: #0284c7 !important;
+            border-color: #0284c7 !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2) !important;
+        }
+
+        #selfDesignScreen #designerSectionTabs {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 9999px !important; /* Pill layout container */
+            padding: 4px !important;
+        }
+        
+        /* Segmented control wrapper in configurations */
+        .option-group-wrapper {
+            margin-bottom: 15px;
+        }
+        .option-group-label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475569 !important;
+            margin-bottom: 6px;
+            display: block;
+        }
+        
+        /* Custom Mini Visual Sketch styling for Template Cards */
+        .mini-sketch {
+            width: 50px;
+            height: 60px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            position: relative;
+            background-color: #ffffff;
+            margin-bottom: 6px;
+        }
+        .mini-sketch-shelf-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #cbd5e1;
+        }
+        .mini-sketch-rod-line {
+            position: absolute;
+            left: 10%;
+            top: 20%;
+            width: 80%;
+            height: 2px;
+            background-color: #94a3b8;
+        }
+        .mini-sketch-drawer-box {
+            position: absolute;
+            left: 10%;
+            width: 80%;
+            height: 8px;
+            border: 1px solid #cbd5e1;
+            background-color: #f1f5f9;
+        }
+
+        /* Watermark Backgrounds */
+        .watermark-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background-image: url('logo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
 </head>
 <body>
 
 <!-- 🔑 GİRİŞ EKRANI -->
-<div id="loginScreen">
-    <div class="login-card">
+<div id="loginScreen" style="position: relative; overflow: hidden;">
+    <div class="watermark-bg" style="width: 700px; height: 700px; opacity: 0.045;"></div>
+    <div class="login-card" style="position: relative; z-index: 1;">
         <div>
-            <div class="login-logo">D</div>
+            <div class="login-logo"></div>
             <h2>Doğançay Mobilya</h2>
             <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">Hızlı Teklif & Sipariş Otomasyonu v8</p>
         </div>
@@ -1251,6 +1537,7 @@
         <div class="login-tabs" style="display:flex; justify-content:center; gap:8px; margin-top: 15px; margin-bottom: 10px; background-color: var(--bg-dark); padding: 4px; border-radius: 6px; border: 1px solid var(--border);">
             <button id="tabStaffLogin" type="button" class="btn-toggle active" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('staff')">Yetkili Girişi</button>
             <button id="tabCustomerTrack" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('customer')">Sipariş Takibi</button>
+            <button id="tabSelfDesign" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('design')">Kendin Tasarla</button>
         </div>
         
         <!-- YETKİLİ GİRİŞİ GRUBU -->
@@ -1281,11 +1568,12 @@
 </div>
 
 <!-- 📊 MÜŞTERİ TAKİP EKRANI -->
-<div id="customerTrackingScreen" style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; min-height: 100vh;">
+<div id="customerTrackingScreen" style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; min-height: 100vh; position: relative; overflow: hidden;">
+    <div class="watermark-bg" style="width: 600px; height: 600px; opacity: 0.025;"></div>
     <!-- Üst Menü -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <div class="login-logo" style="margin: 0; width: 40px; height: 40px; font-size: 20px;">D</div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="login-logo" style="margin: 0; width: 100px; height: 100px; border-radius: 18px;"></div>
             <div>
                 <h2 style="font-size: 18px; margin: 0;">Doğançay Mobilya</h2>
                 <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Canlı Sipariş Takip Portalı</p>
@@ -1422,6 +1710,233 @@
     </div>
 </div>
 
+<!-- 🎨 KENDİN TASARLA EKRANI (DESIGN PLANNER) -->
+<div id="selfDesignScreen" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto; min-height: 100vh; position: relative; overflow: hidden;">
+    <div class="watermark-bg" style="width: 700px; height: 700px; opacity: 0.025;"></div>
+    <!-- Üst Menü -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <div class="login-logo" style="margin: 0; width: 100px; height: 100px; border-radius: 18px;"></div>
+            <div>
+                <h2 style="font-size: 18px; margin: 0;">Doğançay Mobilya</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Etkileşimli Dolap Tasarım Sihirbazı</p>
+            </div>
+        </div>
+        <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="takipKapat()">
+            ← Giriş Ekranına Dön
+        </button>
+    </div>
+
+    <!-- Tasarım Alanı Grid -->
+    <div class="design-layout-grid">
+        
+        <!-- Sol Kolon: Görsel Canvas & Çizim Yardımcıları -->
+        <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 550px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
+                <h3 style="margin: 0; font-size: 14px; display: flex; align-items: center; gap: 6px;">
+                    <span>📐</span> Canlı 2D CAD Tasarım Modeli
+                </h3>
+            </div>
+            
+            <!-- Canvas ve Yüzen Butonlar -->
+            <div class="canvas-container-relative">
+                <canvas id="designCanvas" width="600" height="420" style="background:#f3f4f6; border:none; box-shadow:none;"></canvas>
+                
+                <!-- Yüzen Kontrol Butonları (Inzo tarzı) -->
+                <div class="canvas-float-btn-group">
+                    <button type="button" id="btnFloatDoors" onclick="toggleDesignerDoors()" class="canvas-float-btn" title="Kapakları Aç/Kapat">🚪</button>
+                    <button type="button" id="btnFloatRulers" onclick="toggleDesignerRulers()" class="canvas-float-btn active" title="Ölçüleri Göster/Gizle">📐</button>
+                    <button type="button" id="btnFloatSilhouette" onclick="toggleDesignerSilhouette()" class="canvas-float-btn active" title="Referans İnsan Silüeti">🧍</button>
+                </div>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 11px; text-align: center; margin-top: 15px; line-height: 1.4;">
+                *Kanvas üzerindeki yüzen kontrolleri kullanarak tasarımı özelleştirebilirsiniz. Ölçeklendirme milimetriktir.
+            </p>
+        </div>
+
+        <!-- Sağ Kolon: Kontroller & Seçenekler (White Rounded Card) -->
+        <div class="card" style="display: flex; flex-direction: column; gap: 15px; padding: 24px;">
+            
+            <!-- Üst Bölüm: Fiyat Display -->
+            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; font-weight: 600;">Hesaplanan Tutar</span>
+                    <span style="font-size: 11.5px; color: #22c55e; font-weight: 600;">*KDV ve Montaj Dahil</span>
+                </div>
+                <div style="text-align: right;">
+                    <b id="designTotalPrice">0 ₺</b>
+                </div>
+            </div>
+            
+            <!-- Ana Sekme Değiştirici (Dolap vs Modül) -->
+            <div class="segmented-control">
+                <button type="button" id="tabDesignDolap" class="active" onclick="switchDesignerTab('dolap')">Dolap</button>
+                <button type="button" id="tabDesignModul" onclick="switchDesignerTab('modul')">Modül</button>
+            </div>
+            
+            <!-- ================= DOLAP SEKME İÇERİĞİ ================= -->
+            <div id="designerTabContentDolap" style="display: flex; flex-direction: column; gap: 15px;">
+                
+                <!-- Ölçüler -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                        <span style="color: #475569; font-weight: 600;">Dolap Genişliği</span>
+                        <span id="lblDesignWidth" style="color: #0284c7; font-weight: bold; font-family:'Outfit';">200 cm</span>
+                    </div>
+                    <input type="range" id="designWidth" min="100" max="300" step="10" value="200" style="width:100%; accent-color:#0284c7;" oninput="updateDesignerCabinet()">
+                </div>
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
+                        <span style="color: #475569; font-weight: 600;">Dolap Yüksekliği</span>
+                        <span id="lblDesignHeight" style="color: #0284c7; font-weight: bold; font-family:'Outfit';">220 cm</span>
+                    </div>
+                    <input type="range" id="designHeight" min="180" max="260" step="10" value="220" style="width:100%; accent-color:#0284c7;" oninput="updateDesignerCabinet()">
+                </div>
+                
+                <!-- Kapak Durumu -->
+                <div class="option-group-wrapper">
+                    <span class="option-group-label">Dolap Kapağı</span>
+                    <div class="segmented-control" id="ctrlHasDoors">
+                        <button type="button" id="optDoors_yes" class="active" onclick="selectSegmentedOption('hasDoors', 'yes')">Kapaklı</button>
+                        <button type="button" id="optDoors_no" onclick="selectSegmentedOption('hasDoors', 'no')">Kapaksız (Açık)</button>
+                    </div>
+                </div>
+                
+                <!-- Kapak Malzemesi (Kapaklı ise) -->
+                <div class="option-group-wrapper" id="groupMaterial">
+                    <span class="option-group-label">Kapak Malzemesi</span>
+                    <div class="segmented-control" id="ctrlMaterial">
+                        <button type="button" id="optMat_lake" class="active" onclick="selectSegmentedOption('material', 'lake')">Lake</button>
+                        <button type="button" id="optMat_mdf" onclick="selectSegmentedOption('material', 'mdf')">MDF Lam</button>
+                        <button type="button" id="optMat_cam" onclick="selectSegmentedOption('material', 'cam')">Alüminyum Cam</button>
+                    </div>
+                </div>
+                
+                <!-- Kulp Tasarımı (Kapaklı ise) -->
+                <div class="option-group-wrapper" id="groupHandle">
+                    <span class="option-group-label">Kulp Tasarımı</span>
+                    <div class="segmented-control" id="ctrlHandle">
+                        <button type="button" id="optHandle_black" class="active" onclick="selectSegmentedOption('handle', 'black')">Siyah</button>
+                        <button type="button" id="optHandle_chrome" onclick="selectSegmentedOption('handle', 'chrome')">Krom</button>
+                        <button type="button" id="optHandle_gizli" onclick="selectSegmentedOption('handle', 'gizli')">Gizli Bas-Aç</button>
+                    </div>
+                </div>
+                
+                <!-- LED Aydınlatma -->
+                <div class="option-group-wrapper">
+                    <span class="option-group-label">Sensörlü LED Aydınlatma</span>
+                    <div class="segmented-control" id="ctrlLed">
+                        <button type="button" id="optLed_yok" class="active" onclick="selectSegmentedOption('led', 'yok')">Yok</button>
+                        <button type="button" id="optLed_var" onclick="selectSegmentedOption('led', 'var')">Sensörlü LED (+2500 ₺)</button>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- ================= MODÜL SEKME İÇERİĞİ ================= -->
+            <div id="designerTabContentModul" style="display: none; flex-direction: column; gap: 12px;">
+                
+                <!-- Bölme Seçimi -->
+                <div class="option-group-wrapper">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
+                        <span class="option-group-label" style="margin:0;">İç Bölme Seçimi</span>
+                        <span id="lblTotalSections" style="font-size: 11px; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight:bold;">3 Bölme</span>
+                    </div>
+                    <div id="designerSectionTabs" style="display: flex; gap: 4px; padding: 3px; background-color: #f1f5f9; border-radius: 9999px; border: 1px solid #e2e8f0;">
+                        <!-- Butonlar dinamik yüklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Şablon Seçimi Grid -->
+                <div class="option-group-wrapper">
+                    <span class="option-group-label">Bölme İç Şablonu</span>
+                    <div class="template-selector-grid">
+                        <button type="button" class="template-card active" id="tmpl_shelf" onclick="selectSectionTemplate('shelf')">
+                            <div class="mini-sketch" style="display:flex; flex-direction:column; justify-content:space-around; align-items:stretch; padding:4px 0;">
+                                <div class="mini-sketch-shelf-line"></div>
+                                <div class="mini-sketch-shelf-line"></div>
+                                <div class="mini-sketch-shelf-line"></div>
+                                <div class="mini-sketch-shelf-line"></div>
+                            </div>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Raflı Düzen</strong>
+                            <span style="font-size:10.5px; color:#64748b;">5 Adet Raf</span>
+                        </button>
+                        <button type="button" class="template-card" id="tmpl_rod" onclick="selectSectionTemplate('rod')">
+                            <div class="mini-sketch">
+                                <div class="mini-sketch-shelf-line" style="top:25%;"></div>
+                                <div class="mini-sketch-rod-line" style="top:42%;"></div>
+                                <div style="position:absolute; top:44%; left:35%; font-size:12px; line-height:1; user-select:none;">🧥</div>
+                            </div>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Askılı Düzen</strong>
+                            <span style="font-size:10.5px; color:#64748b;">1 Raf + Askı</span>
+                        </button>
+                        <button type="button" class="template-card" id="tmpl_drawer" onclick="selectSectionTemplate('drawer')">
+                            <div class="mini-sketch">
+                                <div class="mini-sketch-shelf-line" style="top:25%;"></div>
+                                <div class="mini-sketch-rod-line" style="top:42%;"></div>
+                                <div class="mini-sketch-drawer-box" style="bottom:12px;"></div>
+                                <div class="mini-sketch-drawer-box" style="bottom:2px;"></div>
+                            </div>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Çekmeceli Düzen</strong>
+                            <span style="font-size:10.5px; color:#64748b;">2 Çekmece + Askı</span>
+                        </button>
+                        <button type="button" class="template-card" id="tmpl_longrod" onclick="selectSectionTemplate('longrod')">
+                            <div class="mini-sketch">
+                                <div class="mini-sketch-rod-line" style="top:20%;"></div>
+                                <div style="position:absolute; top:22%; left:20%; font-size:12px; line-height:1; user-select:none;">🧥</div>
+                                <div style="position:absolute; top:22%; left:50%; font-size:12px; line-height:1; user-select:none;">🧥</div>
+                            </div>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Boy Askı</strong>
+                            <span style="font-size:10.5px; color:#64748b;">Sadece Askı</span>
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Alt Buton: Teklif Al -->
+            <button type="button" class="btn btn-primary btn-block" style="font-size: 14.5px; padding: 14px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;" onclick="openDesignQuoteModal()">
+                <span>🛒</span> Tasarımı Tamamla & Teklif Al
+            </button>
+            
+        </div>
+
+    </div>
+</div>
+
+<!-- 📋 MÜŞTERİ TEKLİF İSTEME MODALI -->
+<div id="designQuoteModal" class="modal-overlay" style="display: none;" onclick="handleDesignOverlayClick(event)">
+    <div class="modal-content" style="max-width: 440px;">
+        <button class="modal-close" onclick="closeDesignQuoteModal()">×</button>
+        <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+            <span>📋</span> Tasarım Teklifini Ustaya İlet
+        </h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+            <div class="form-group" style="margin: 0;">
+                <label>Adınız Soyadınız</label>
+                <input type="text" id="quoteClientName" placeholder="Örn: Ahmet Demir">
+            </div>
+            <div class="form-group" style="margin: 0;">
+                <label>Telefon Numaranız</label>
+                <input type="tel" id="quoteClientPhone" placeholder="Örn: 05551234567">
+            </div>
+            <div class="form-group" style="margin: 0;">
+                <label>Teslimat Adresi ve Notlar</label>
+                <textarea id="quoteClientAddress" placeholder="Örn: Adres bilgisi veya çekmece sayıları/özel istekleriniz..." style="width: 100%; height: 80px; background-color: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-main); padding: 8px 10px; font-size: 13px; font-family: inherit; resize: none;"></textarea>
+            </div>
+            
+            <div style="background-color: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.2); padding: 10px; border-radius: 6px; font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-top: 5px;">
+                ⚠️ Tasarımınız ve detayları Mustafa Usta'ya doğrudan iletilecektir. Tasarım onaylandıktan sonra usta sizinle iletişime geçecektir.
+            </div>
+
+            <button class="btn btn-primary btn-block" style="margin-top: 10px; padding: 10px;" onclick="submitDesignQuote()">Tasarımı Ustaya Gönder ve Kaydet</button>
+        </div>
+    </div>
+</div>
+
 <!-- 💳 ÖDEME GEÇMİŞİ VE TAHSİLAT EKLEME MODALI -->
 <div id="paymentModalOverlay" class="modal-overlay" style="display: none;" onclick="handleOverlayClick(event)">
     <div class="modal-content">
@@ -1485,7 +2000,7 @@
         <!-- SIDEBAR NAV (Desktop) -->
         <aside class="sidebar">
             <div class="brand">
-                <div class="brand-logo">D</div>
+                <div class="brand-logo"></div>
                 <div>
                     <h3 class="brand-title">Doğançay MOB</h3>
                     <span class="brand-subtitle">Atölye ERP & Teklif</span>
@@ -1552,7 +2067,8 @@
         </nav>
 
         <!-- MAIN VIEW PORT -->
-        <main class="main-content">
+        <main class="main-content" style="position: relative; overflow: hidden;">
+            <div class="watermark-bg" style="width: 650px; height: 650px; opacity: 0.025;"></div>
             
             <!-- SECTION 1: TEKLİF OLUŞTURUCU -->
             <section id="teklifView" class="view-section active">
@@ -1562,7 +2078,7 @@
                     </div>
 
                     <!-- Düzenleme Modu Bannerı -->
-                    <div id="editModeBanner" style="display: none; background: rgba(245, 158, 11, 0.12); border: 1px solid #f59e0b; padding: 12px; border-radius: 8px; margin: 15px; color: #f59e0b; font-size: 13px; align-items: center; justify-content: space-between; gap: 10px; box-sizing: border-box;">
+                    <div id="editModeBanner" style="display: none; background: rgba(2, 132, 199, 0.08); border: 1px solid #0284c7; padding: 12px; border-radius: 8px; margin: 15px; color: #0284c7; font-size: 13px; align-items: center; justify-content: space-between; gap: 10px; box-sizing: border-box;">
                         <span style="display: flex; align-items: center; gap: 6px;">
                             <span>⚠️</span> 
                             <span>Şu anda <b><span id="editClientName">Müşteri</span></b> adlı müşterinin siparişini düzenliyorsunuz.</span>
@@ -2384,7 +2900,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-block" style="margin-top: 20px; font-weight: bold; background: linear-gradient(135deg, var(--primary) 0%, #d97706 100%); color: #000;" onclick="optimizasyonHesaplaCiz()">
+                        <button class="btn btn-primary btn-block" style="margin-top: 20px; font-weight: bold; background: linear-gradient(135deg, var(--primary) 0%, #0091ff 100%); color: #fff;" onclick="optimizasyonHesaplaCiz()">
                             ⚡ Plaka Optimizasyonunu Başlat
                         </button>
                     </div>
@@ -2600,24 +3116,45 @@
     function switchLoginTab(tab) {
         let btnStaff = document.getElementById('tabStaffLogin');
         let btnCustomer = document.getElementById('tabCustomerTrack');
+        let btnDesign = document.getElementById('tabSelfDesign');
         let staffGroup = document.getElementById('staffLoginGroup');
         let customerGroup = document.getElementById('customerSearchGroup');
         
         if (tab === 'staff') {
             btnStaff.classList.add('active');
             btnCustomer.classList.remove('active');
+            if (btnDesign) btnDesign.classList.remove('active');
             staffGroup.style.display = 'flex';
             customerGroup.style.display = 'none';
-        } else {
+        } else if (tab === 'customer') {
             btnStaff.classList.remove('active');
             btnCustomer.classList.add('active');
+            if (btnDesign) btnDesign.classList.remove('active');
             staffGroup.style.display = 'none';
             customerGroup.style.display = 'flex';
+        } else if (tab === 'design') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('selfDesignScreen').style.display = 'block';
+            initDesignerCabinet();
         }
     }
 
     // 💾 AUTO SESSION LOGIN ON LOAD
     window.onload = function() {
+        // Listen for changes in Material Prices from Firestore globally
+        db.collection("ayarlar").doc("malzeme_fiyatlari").onSnapshot((doc) => {
+            if(doc.exists) {
+                dynamicPrices = { ...dynamicPrices, ...doc.data() };
+                fiyatInputlariniDoldur();
+            }
+            if (document.getElementById('appScreen').style.display === 'block') {
+                hesaplaVeCiz();
+            }
+            if (document.getElementById('selfDesignScreen').style.display === 'block') {
+                updateDesignerCabinet();
+            }
+        });
+
         let urlParams = new URLSearchParams(window.location.search);
         let takipDocId = urlParams.get('takip');
         
@@ -2683,15 +3220,8 @@
                 muhasebeHesapla();
             }
             
-            // Listen for changes in Material Prices from Firestore
-            db.collection("ayarlar").doc("malzeme_fiyatlari").onSnapshot((doc) => {
-                if(doc.exists) {
-                    // Update matrix preserving defaults for any missing new attributes
-                    dynamicPrices = { ...dynamicPrices, ...doc.data() };
-                    fiyatInputlariniDoldur();
-                }
-                hesaplaVeCiz();
-            });
+            // Listen for changes in Material Prices is handled globally on page load
+            hesaplaVeCiz();
 
             // Run Live updates for Tracking Pool list
             canliGezgin();
@@ -3289,10 +3819,10 @@
         
         // Clear Canvas and Draw Blueprint Grid
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#0c111e";
+        ctx.fillStyle = "#f8fafc";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        ctx.strokeStyle = "#1b2742";
+        ctx.strokeStyle = "#cbd5e1";
         ctx.lineWidth = 1;
         for(let x = 0; x < canvas.width; x += 20) {
             ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
@@ -3318,7 +3848,8 @@
         if(type === 'gardırop') {
             let w = parseFloat(document.getElementById('g_width').value) || 0;
             let h = parseFloat(document.getElementById('g_height').value) || 0;
-            kapakAdet = parseInt(document.getElementById('g_doors').value) || 1;
+            let doorsVal = document.getElementById('g_doors').value;
+            kapakAdet = doorsVal !== "" ? parseInt(doorsVal) : 1;
             let drawers = parseInt(document.getElementById('g_drawers').value) || 0;
             let hinges = parseInt(document.getElementById('g_hinges').value) || 0;
             advancePayment = parseFloat(document.getElementById('g_advance').value) || 0;
@@ -3333,7 +3864,10 @@
             cekmeceTutar = drawers * dynamicPrices[rayKey];
             menteseTutar = hinges * dynamicPrices[hingeKey];
             kesimGideri = m2 * (dynamicPrices.kesim_m2 || 350);
-            montajTutar = dynamicPrices.montaj;
+            montajTutar = dynamicPrices.montaj || 3500;
+            if (editingGLed === 'var') {
+                ekstralarTutar = 2500;
+            }
 
             // DRAW WARDROBE
             let scale = Math.min(260 / w, 180 / h);
@@ -3348,12 +3882,12 @@
                 ctx.strokeStyle = matKey === 'lake' ? '#cbd5e1' : (matKey === 'kapaksiz' ? '#b45309' : '#78350f');
                 ctx.lineWidth = 4;
             } else {
-                ctx.strokeStyle = "#e2e8f0";
+                ctx.strokeStyle = "#64748b";
                 ctx.lineWidth = 3;
             }
             ctx.strokeRect(xStart, yStart, sW, sH);
 
-            if (matKey === 'kapaksiz') {
+            if (matKey === 'kapaksiz' || kapakAdet === 0) {
                 // Draw wood frame border thickness
                 ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
                 ctx.lineWidth = previewMode === 'lux' ? 8 : 6;
@@ -3361,6 +3895,9 @@
 
                 // Divide into vertical sections
                 let sections = Math.max(2, Math.round(w)); 
+                if (editingGModules && editingGModules.length > 0) {
+                    sections = editingGModules.length;
+                }
                 let sectionW = (sW - 12) / sections;
                 ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
                 ctx.lineWidth = 3;
@@ -3380,7 +3917,14 @@
                     let secX1 = xStart + 6 + i * sectionW;
                     let secX2 = secX1 + sectionW;
 
-                    if (i % 2 === 0) {
+                    let moduleType = "shelf";
+                    if (editingGModules && editingGModules[i]) {
+                        moduleType = editingGModules[i];
+                    } else {
+                        moduleType = (i % 2 === 0) ? "shelf" : "rod";
+                    }
+
+                    if (moduleType === 'shelf') {
                         // Section with shelves
                         let shelfCount = 4;
                         let shelfH = (sH - 12) / (shelfCount + 1);
@@ -3401,7 +3945,7 @@
                             ctx.lineTo(secX2, shelfY);
                             ctx.stroke();
                         }
-                    } else {
+                    } else if (moduleType === 'rod') {
                         // Section with top shelf, hanger rod
                         let topShelfY = yStart + 6 + (sH - 12) * 0.2;
                         
@@ -3452,6 +3996,77 @@
                             ctx.fillStyle = previewMode === 'lux' ? 'rgba(254, 240, 138, 0.35)' : 'rgba(245, 158, 11, 0.4)';
                             ctx.fillRect(hX - 5, rodY + 4, 10, 35);
                         }
+                    } else if (moduleType === 'drawer') {
+                        // Top shelf + Hanger rod + 2 Drawers at bottom
+                        let topShelfY = yStart + 6 + (sH - 12) * 0.2;
+                        if (previewMode === 'lux') {
+                            let glow = ctx.createLinearGradient(0, topShelfY, 0, topShelfY + 25);
+                            glow.addColorStop(0, 'rgba(253, 224, 71, 0.25)');
+                            glow.addColorStop(1, 'rgba(253, 224, 71, 0)');
+                            ctx.fillStyle = glow;
+                            ctx.fillRect(secX1, topShelfY, secX2 - secX1, 25);
+                        }
+                        
+                        ctx.beginPath(); ctx.moveTo(secX1, topShelfY); ctx.lineTo(secX2, topShelfY); ctx.stroke();
+                        
+                        let rodY = topShelfY + 12;
+                        if (previewMode === 'lux') {
+                            let chrome = ctx.createLinearGradient(0, rodY - 2, 0, rodY + 2);
+                            chrome.addColorStop(0, '#cbd5e1'); chrome.addColorStop(0.5, '#ffffff'); chrome.addColorStop(1, '#64748b');
+                            ctx.strokeStyle = chrome; ctx.lineWidth = 3;
+                        } else {
+                            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+                        }
+                        ctx.beginPath(); ctx.moveTo(secX1 + 4, rodY); ctx.lineTo(secX2 - 4, rodY); ctx.stroke();
+                        ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
+                        ctx.lineWidth = previewMode === 'lux' ? 4 : 3;
+
+                        // simple hanger representation
+                        let hangerCount = 3;
+                        let hangerStep = (secX2 - secX1 - 10) / (hangerCount + 1);
+                        for (let k = 1; k <= hangerCount; k++) {
+                            let hX = secX1 + 5 + k * hangerStep;
+                            ctx.fillStyle = previewMode === 'lux' ? '#ca8a04' : '#475569';
+                            ctx.beginPath(); ctx.arc(hX, rodY + 2, 2, 0, Math.PI * 2); ctx.fill();
+                            ctx.fillStyle = previewMode === 'lux' ? 'rgba(254, 240, 138, 0.35)' : 'rgba(245, 158, 11, 0.4)';
+                            ctx.fillRect(hX - 5, rodY + 4, 10, 35);
+                        }
+
+                        // Draw 2 Drawers at bottom
+                        let drawerAreaH = (sH - 12) * 0.25;
+                        let drawerH = drawerAreaH / 2 - 4;
+                        for (let d = 0; d < 2; d++) {
+                            let dY = yStart + sH - 6 - drawerAreaH + d * (drawerH + 4) + 2;
+                            ctx.fillStyle = "#1e293b";
+                            ctx.fillRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                            ctx.strokeRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                            ctx.fillStyle = editingGHandle === 'chrome' ? '#cbd5e1' : '#080c14';
+                            ctx.fillRect(secX1 + sectionW/2 - 10, dY + drawerH/2 - 1, 20, 2);
+                        }
+                    } else if (moduleType === 'longrod') {
+                        // Long hanging rod
+                        let rodY = yStart + 6 + 18;
+                        if (previewMode === 'lux') {
+                            let chrome = ctx.createLinearGradient(0, rodY - 2, 0, rodY + 2);
+                            chrome.addColorStop(0, '#cbd5e1'); chrome.addColorStop(0.5, '#ffffff'); chrome.addColorStop(1, '#64748b');
+                            ctx.strokeStyle = chrome; ctx.lineWidth = 3;
+                        } else {
+                            ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+                        }
+                        ctx.beginPath(); ctx.moveTo(secX1 + 4, rodY); ctx.lineTo(secX2 - 4, rodY); ctx.stroke();
+                        ctx.strokeStyle = previewMode === 'lux' ? '#78350f' : '#b45309';
+                        ctx.lineWidth = previewMode === 'lux' ? 4 : 3;
+
+                        // Draw hanger representation (long coats)
+                        let hangerCount = 3;
+                        let hangerStep = (secX2 - secX1 - 10) / (hangerCount + 1);
+                        for (let k = 1; k <= hangerCount; k++) {
+                            let hX = secX1 + 5 + k * hangerStep;
+                            ctx.fillStyle = previewMode === 'lux' ? '#ca8a04' : '#475569';
+                            ctx.beginPath(); ctx.arc(hX, rodY + 2, 2, 0, Math.PI * 2); ctx.fill();
+                            ctx.fillStyle = previewMode === 'lux' ? 'rgba(16, 185, 129, 0.2)' : 'rgba(16, 185, 129, 0.3)';
+                            ctx.fillRect(hX - 5, rodY + 4, 10, 55);
+                        }
                     }
                 }
             } else {
@@ -3472,32 +4087,53 @@
                     }
                 }
 
-                // Draw handles
-                for(let i = 0; i < kapakAdet; i++) {
-                    let handleX = xStart + (i * doorW) + (doorW / 2);
-                    let handleY = yStart + (sH / 2) - 15;
-                    
-                    if (previewMode === 'lux') {
-                        ctx.save();
-                        ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-                        ctx.shadowBlur = 3;
-                        ctx.shadowOffsetX = 1;
-                        ctx.shadowOffsetY = 1;
+                // Draw handles (Chrome, Black, or Hidden based on customer configuration)
+                if (editingGHandle !== 'gizli') {
+                    for(let i = 0; i < kapakAdet; i++) {
+                        let handleX = xStart + (i * doorW) + (doorW / 2);
+                        let handleY = yStart + (sH / 2) - 15;
                         
-                        ctx.fillStyle = '#b45309'; 
-                        ctx.fillRect(handleX - 4, handleY, 8, 2);
-                        ctx.fillRect(handleX - 4, handleY + 28, 8, 2);
-                        
-                        let handleGrad = ctx.createLinearGradient(handleX - 2, handleY, handleX + 2, handleY);
-                        handleGrad.addColorStop(0, '#fef08a');
-                        handleGrad.addColorStop(0.5, '#eab308');
-                        handleGrad.addColorStop(1, '#ca8a04');
-                        ctx.fillStyle = handleGrad;
-                        ctx.fillRect(handleX - 2, handleY - 2, 4, 34);
-                        ctx.restore();
-                    } else {
-                        ctx.fillStyle = "#f59e0b";
-                        ctx.fillRect(handleX - 2, handleY, 4, 30);
+                        if (previewMode === 'lux') {
+                            ctx.save();
+                            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                            ctx.shadowBlur = 3;
+                            ctx.shadowOffsetX = 1;
+                            ctx.shadowOffsetY = 1;
+                            
+                            // Use custom handles colors (Black or Chrome silver), fallback to gold if older proposal
+                            if (editingGHandle === 'black') {
+                                ctx.fillStyle = '#1e293b'; // matte black mount brackets
+                                ctx.fillRect(handleX - 4, handleY, 8, 2);
+                                ctx.fillRect(handleX - 4, handleY + 28, 8, 2);
+                                ctx.fillStyle = '#0f172a'; // black handle bar
+                                ctx.fillRect(handleX - 2, handleY - 2, 4, 34);
+                            } else if (editingGHandle === 'chrome') {
+                                ctx.fillStyle = '#94a3b8'; // chrome brackets
+                                ctx.fillRect(handleX - 4, handleY, 8, 2);
+                                ctx.fillRect(handleX - 4, handleY + 28, 8, 2);
+                                let handleGrad = ctx.createLinearGradient(handleX - 2, handleY, handleX + 2, handleY);
+                                handleGrad.addColorStop(0, '#cbd5e1');
+                                handleGrad.addColorStop(0.5, '#ffffff');
+                                handleGrad.addColorStop(1, '#94a3b8');
+                                ctx.fillStyle = handleGrad; // silver handle bar
+                                ctx.fillRect(handleX - 2, handleY - 2, 4, 34);
+                            } else {
+                                // Default gold
+                                ctx.fillStyle = '#b45309'; 
+                                ctx.fillRect(handleX - 4, handleY, 8, 2);
+                                ctx.fillRect(handleX - 4, handleY + 28, 8, 2);
+                                let handleGrad = ctx.createLinearGradient(handleX - 2, handleY, handleX + 2, handleY);
+                                handleGrad.addColorStop(0, '#fef08a');
+                                handleGrad.addColorStop(0.5, '#eab308');
+                                handleGrad.addColorStop(1, '#ca8a04');
+                                ctx.fillStyle = handleGrad;
+                                ctx.fillRect(handleX - 2, handleY - 2, 4, 34);
+                            }
+                            ctx.restore();
+                        } else {
+                            ctx.fillStyle = editingGHandle === 'chrome' ? '#cbd5e1' : (editingGHandle === 'black' ? '#1e293b' : '#f59e0b');
+                            ctx.fillRect(handleX - 2, handleY, 4, 30);
+                        }
                     }
                 }
             }
@@ -3527,7 +4163,7 @@
                         } else {
                             ctx.fillStyle = "rgba(0,0,0,0.3)";
                             ctx.fillRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
-                            ctx.strokeStyle = "#f59e0b";
+                            ctx.strokeStyle = "#64748b";
                             ctx.lineWidth = 1;
                             ctx.strokeRect(xStart + 10, dY, drawerSectionW - 20, drawerH);
                         }
@@ -3582,7 +4218,7 @@
 
             // Draw Wall Seperators (Dashed vertical lines or gold strips)
             if (previewMode === 'lux') {
-                ctx.strokeStyle = "rgba(234, 179, 8, 0.8)";
+                ctx.strokeStyle = "rgba(2, 132, 199, 0.8)";
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(xStart + sLeftW, yStart);
@@ -3591,7 +4227,7 @@
                 ctx.lineTo(xStart + sLeftW + sBackW, yStart + sH);
                 ctx.stroke();
             } else {
-                ctx.strokeStyle = "rgba(245, 158, 11, 0.5)";
+                ctx.strokeStyle = "rgba(2, 132, 199, 0.5)";
                 ctx.setLineDash([4, 4]);
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
@@ -3848,7 +4484,7 @@
             } else {
                 let handleX = xStart + (secW / 2);
                 let handleY = yStart + (sH / 2) - 15;
-                ctx.fillStyle = "#f59e0b";
+                ctx.fillStyle = "#0284c7";
                 ctx.fillRect(handleX - 2, handleY, 4, 30);
             }
 
@@ -3942,7 +4578,7 @@
                         ctx.stroke();
                     } else {
                         ctx.strokeRect(xStart + secW, dy, drW, drH);
-                        ctx.fillStyle = "#f59e0b";
+                        ctx.fillStyle = "#0284c7";
                         ctx.fillRect(xStart + secW + (drW/2) - 10, dy + (drH/2) - 1, 20, 2);
                     }
                 }
@@ -4089,13 +4725,13 @@
             montajTutar = 0; // included in custom prices
 
             // DRAW BLUEPRINT LOGO ON CANVAS
-            ctx.fillStyle = "rgba(245, 158, 11, 0.08)";
+            ctx.fillStyle = "rgba(2, 132, 199, 0.08)";
             ctx.beginPath();
             ctx.arc(200, 150, 60, 0, 2*Math.PI);
             ctx.fill();
 
             // Draw isometric drafting cube
-            ctx.strokeStyle = "#f59e0b";
+            ctx.strokeStyle = "#0284c7";
             ctx.lineWidth = 1.5;
             // Draw cube lines
             ctx.beginPath();
@@ -4304,7 +4940,7 @@
             }
 
             // Draw handles
-            ctx.fillStyle = "#f59e0b";
+            ctx.fillStyle = "#0284c7";
             for(let i = 0; i < doors; i++) {
                 let hX = x + i*doorW + doorW/2;
                 ctx.fillRect(hX - 1.5, y + h/2 - 10, 3, 20);
@@ -4320,7 +4956,7 @@
                 let dY = (y + h) - (j * (drawerH + 3)) - drawerH - 8;
                 if(dY > y) {
                     ctx.fillRect(x + 4, dY, drawSectionW - 8, drawerH);
-                    ctx.strokeStyle = "#f59e0b";
+                    ctx.strokeStyle = "#64748b";
                     ctx.lineWidth = 1;
                     ctx.strokeRect(x + 4, dY, drawSectionW - 8, drawerH);
                 }
@@ -4381,6 +5017,15 @@
                 g_hinge_type: document.getElementById('g_hinge_type').value,
                 g_advance: parseFloat(document.getElementById('g_advance').value) || 0
             };
+            if (editingGModules) {
+                inputState.g_modules = editingGModules;
+            }
+            if (editingGHandle) {
+                inputState.g_handle = editingGHandle;
+            }
+            if (editingGLed) {
+                inputState.g_led = editingGLed;
+            }
         } else if(v.type === 'mutfak') {
             inputState = {
                 k_lower_len: parseFloat(document.getElementById('k_lower_len').value) || 0,
@@ -4840,6 +5485,9 @@
     }
 
     let editingDocId = null;
+    let editingGModules = null;
+    let editingGHandle = null;
+    let editingGLed = null;
 
     function teklifDuzenle(docId) {
         db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
@@ -4865,12 +5513,31 @@
                         let el = document.getElementById(key);
                         if(el) {
                             if (el.type === 'checkbox') {
-                                el.checked = !!data.inputState[key];
+                                  el.checked = !!data.inputState[key];
                             } else {
-                                el.value = data.inputState[key];
+                                  el.value = data.inputState[key];
                             }
                         }
                     }
+                    
+                    if (data.inputState.g_modules) {
+                        editingGModules = data.inputState.g_modules;
+                    } else {
+                        editingGModules = null;
+                    }
+                    if (data.inputState.g_handle) {
+                        editingGHandle = data.inputState.g_handle;
+                    } else {
+                        editingGHandle = null;
+                    }
+                    if (data.inputState.g_led) {
+                        editingGLed = data.inputState.g_led;
+                    } else {
+                        editingGLed = null;
+                    }
+                } else {
+                    editingGModules = null;
+                    editingGHandle = null;
                 }
                 
                 switchTab('teklifView');
@@ -4885,6 +5552,9 @@
 
     function duzenlemeyiIptalEt(onlyClearState) {
         editingDocId = null;
+        editingGModules = null;
+        editingGHandle = null;
+        editingGLed = null;
         document.getElementById('editModeBanner').style.display = 'none';
         document.getElementById('btnKaydet').innerHTML = `
             <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
@@ -5376,21 +6046,21 @@
         let ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        ctx.fillStyle = "#0c111e";
+        ctx.fillStyle = "#f8fafc";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         let scale = Math.min((canvas.width - 40) / stockW, (canvas.height - 40) / stockH);
         let ox = (canvas.width - stockW * scale) / 2;
         let oy = (canvas.height - stockH * scale) / 2;
 
-        ctx.fillStyle = "#1e293b";
+        ctx.fillStyle = "#e2e8f0";
         ctx.fillRect(ox, oy, stockW * scale, stockH * scale);
         
-        ctx.strokeStyle = "#475569";
+        ctx.strokeStyle = "#94a3b8";
         ctx.lineWidth = 2;
         ctx.strokeRect(ox, oy, stockW * scale, stockH * scale);
 
-        ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+        ctx.strokeStyle = "rgba(15, 23, 42, 0.03)";
         ctx.lineWidth = 1;
         for (let i = -canvas.width; i < canvas.width; i += 20) {
             ctx.beginPath();
@@ -5415,14 +6085,14 @@
             let hues = [195, 35, 145, 280, 80];
             let hue = hues[pIdx % hues.length];
             
-            ctx.fillStyle = `hsla(${hue}, 80%, 25%, 0.7)`;
-            ctx.strokeStyle = `hsla(${hue}, 80%, 50%, 1.0)`;
+            ctx.fillStyle = `hsla(${hue}, 85%, 45%, 0.12)`;
+            ctx.strokeStyle = `hsla(${hue}, 85%, 45%, 1.0)`;
             ctx.lineWidth = 1.5;
             
             ctx.fillRect(px, py, pw, ph);
             ctx.strokeRect(px, py, pw, ph);
 
-            ctx.strokeStyle = `hsla(${hue}, 80%, 40%, 0.25)`;
+            ctx.strokeStyle = `hsla(${hue}, 85%, 45%, 0.25)`;
             ctx.lineWidth = 1;
             if (p.rotated) {
                 for (let gy = py + 6; gy < py + ph - 2; gy += 6) {
@@ -5434,7 +6104,7 @@
                 }
             }
 
-            ctx.fillStyle = "#ffffff";
+            ctx.fillStyle = `hsla(${hue}, 90%, 20%, 1.0)`;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             
@@ -5447,7 +6117,7 @@
             if (pw > 50 && ph > 30) {
                 ctx.fillText(label, px + pw / 2, py + ph / 2 - fontSize/2 - 1);
                 ctx.font = `${fontSize - 1}px Inter`;
-                ctx.fillStyle = "rgba(255,255,255,0.7)";
+                ctx.fillStyle = `hsla(${hue}, 90%, 25%, 0.75)`;
                 ctx.fillText(dims + (p.rotated ? " 🔄" : ""), px + pw / 2, py + ph / 2 + fontSize/2 + 1);
             } else if (pw > 30 && ph > 15) {
                 ctx.fillText(dims, px + pw / 2, py + ph / 2);
@@ -5878,8 +6548,8 @@
         if (status === "Teklif Verildi") {
             activeIndex = 0;
             banner.innerText = "🟡 Teklif Hazırlandı - Onay Bekliyor";
-            banner.style.backgroundColor = "rgba(234, 179, 8, 0.15)";
-            banner.style.color = "#f59e0b";
+            banner.style.backgroundColor = "rgba(217, 119, 6, 0.1)";
+            banner.style.color = "#d97706";
         } else if (status === "Onaylandı / İmalatta") {
             activeIndex = 1;
             banner.innerText = "🔵 Siparişiniz Atölyede İmalat Aşamasında";
@@ -5962,6 +6632,7 @@
         duzenlemeyiIptalEt(false);
         
         document.getElementById('customerTrackingScreen').style.display = 'none';
+        document.getElementById('selfDesignScreen').style.display = 'none';
         document.getElementById('loginScreen').style.display = 'block';
     }
 
@@ -6136,6 +6807,841 @@
             openPaymentModal(activePaymentDocId);
         }).catch(err => {
             alert("Ödeme silinirken hata oluştu: " + err.message);
+        });
+    }
+
+    // =========================================================================
+    // 🎨 ETKİLEŞİMLİ MÜŞTERİ DOLAP TASARIM SİHİRBAZI (KENDİN TASARLA) MANTIĞI
+    // =========================================================================
+    
+    // =========================================================================
+    // 🎨 ETKİLEŞİMLİ MÜŞTERİ DOLAP TASARIM SİHİRBAZI (KENDİN TASARLA) MANTIĞI
+    // =========================================================================
+    
+    let designerCabinet = {
+        width: 200,
+        height: 220,
+        material: 'lake',
+        handle: 'black',
+        hasDoors: 'yes',
+        led: 'yok',
+        modules: ['shelf', 'rod', 'drawer'],
+        activeModuleIdx: 0,
+        doorsOpen: false
+    };
+    
+    let designerActiveTab = 'dolap';
+    let showDesignerRulers = true;
+    let showDesignerSilhouette = true;
+
+    function initDesignerCabinet() {
+        designerCabinet = {
+            width: 200,
+            height: 220,
+            material: 'lake',
+            handle: 'black',
+            hasDoors: 'yes',
+            led: 'yok',
+            modules: ['shelf', 'rod', 'drawer'],
+            activeModuleIdx: 0,
+            doorsOpen: false
+        };
+        
+        // Reset HTML range inputs
+        document.getElementById('designWidth').value = 200;
+        document.getElementById('designHeight').value = 220;
+        
+        // Reset state variables
+        designerActiveTab = 'dolap';
+        showDesignerRulers = true;
+        showDesignerSilhouette = true;
+        
+        // Sync segmented controls
+        switchDesignerTab('dolap');
+        selectSegmentedOption('hasDoors', 'yes');
+        selectSegmentedOption('material', 'lake');
+        selectSegmentedOption('handle', 'black');
+        selectSegmentedOption('led', 'yok');
+        
+        // Sync float button classes
+        let btnDoors = document.getElementById('btnFloatDoors');
+        let btnRulers = document.getElementById('btnFloatRulers');
+        let btnSil = document.getElementById('btnFloatSilhouette');
+        
+        if(btnDoors) {
+            btnDoors.classList.remove('active');
+            btnDoors.innerHTML = "🚪";
+            btnDoors.style.display = "flex";
+        }
+        if(btnRulers) btnRulers.classList.add('active');
+        if(btnSil) btnSil.classList.add('active');
+        
+        updateDesignerCabinet();
+    }
+    
+    function switchDesignerTab(tab) {
+        designerActiveTab = tab;
+        document.getElementById('tabDesignDolap').classList.toggle('active', tab === 'dolap');
+        document.getElementById('tabDesignModul').classList.toggle('active', tab === 'modul');
+        document.getElementById('designerTabContentDolap').style.display = tab === 'dolap' ? 'flex' : 'none';
+        document.getElementById('designerTabContentModul').style.display = tab === 'modul' ? 'flex' : 'none';
+    }
+    
+    function selectSegmentedOption(key, value) {
+        designerCabinet[key] = value;
+        
+        // Sync active class on buttons
+        if (key === 'hasDoors') {
+            document.getElementById('optDoors_yes').classList.toggle('active', value === 'yes');
+            document.getElementById('optDoors_no').classList.toggle('active', value === 'no');
+            
+            // Toggle sub-options visibility
+            document.getElementById('groupMaterial').style.display = value === 'yes' ? 'block' : 'none';
+            
+            // Toggle handles (cam has integrated design or hidden bas-ac doesn't need handle selection sometimes, but let's follow logic)
+            document.getElementById('groupHandle').style.display = (value === 'yes' && designerCabinet.material !== 'cam') ? 'block' : 'none';
+            
+            let btnDoors = document.getElementById('btnFloatDoors');
+            if (value === 'no') {
+                designerCabinet.doorsOpen = true; // force open if no doors
+                if (btnDoors) btnDoors.style.display = 'none';
+            } else {
+                designerCabinet.doorsOpen = false; // default close when door added
+                if (btnDoors) {
+                    btnDoors.style.display = 'flex';
+                    btnDoors.classList.remove('active');
+                }
+            }
+        } else if (key === 'material') {
+            document.getElementById('optMat_lake').classList.toggle('active', value === 'lake');
+            document.getElementById('optMat_mdf').classList.toggle('active', value === 'mdf');
+            document.getElementById('optMat_cam').classList.toggle('active', value === 'cam');
+            
+            // Show handle group unless material is aluminum cam (glass)
+            document.getElementById('groupHandle').style.display = (designerCabinet.hasDoors === 'yes' && value !== 'cam') ? 'block' : 'none';
+        } else if (key === 'handle') {
+            document.getElementById('optHandle_black').classList.toggle('active', value === 'black');
+            document.getElementById('optHandle_chrome').classList.toggle('active', value === 'chrome');
+            document.getElementById('optHandle_gizli').classList.toggle('active', value === 'gizli');
+        } else if (key === 'led') {
+            document.getElementById('optLed_yok').classList.toggle('active', value === 'yok');
+            document.getElementById('optLed_var').classList.toggle('active', value === 'var');
+        }
+        
+        updateDesignerCabinet();
+    }
+    
+    function toggleDesignerDoors() {
+        designerCabinet.doorsOpen = !designerCabinet.doorsOpen;
+        let btn = document.getElementById('btnFloatDoors');
+        if (btn) {
+            btn.classList.toggle('active', designerCabinet.doorsOpen);
+        }
+        drawSelfDesignerCabinet();
+    }
+    
+    function toggleDesignerRulers() {
+        showDesignerRulers = !showDesignerRulers;
+        let btn = document.getElementById('btnFloatRulers');
+        if (btn) btn.classList.toggle('active', showDesignerRulers);
+        drawSelfDesignerCabinet();
+    }
+    
+    function toggleDesignerSilhouette() {
+        showDesignerSilhouette = !showDesignerSilhouette;
+        let btn = document.getElementById('btnFloatSilhouette');
+        if (btn) btn.classList.toggle('active', showDesignerSilhouette);
+        drawSelfDesignerCabinet();
+    }
+
+    function updateDesignerCabinet() {
+        let widthInput = parseInt(document.getElementById('designWidth').value) || 200;
+        let heightInput = parseInt(document.getElementById('designHeight').value) || 220;
+        
+        designerCabinet.width = widthInput;
+        designerCabinet.height = heightInput;
+        
+        // Update Labels
+        document.getElementById('lblDesignWidth').innerText = widthInput + " cm";
+        document.getElementById('lblDesignHeight').innerText = heightInput + " cm";
+        
+        // Calculate appropriate section count based on width:
+        // 100-150cm -> 2 modules
+        // 151-220cm -> 3 modules
+        // 221-300cm -> 4 modules
+        let requiredSections = 3;
+        if (widthInput <= 150) {
+            requiredSections = 2;
+        } else if (widthInput <= 220) {
+            requiredSections = 3;
+        } else {
+            requiredSections = 4;
+        }
+        
+        document.getElementById('lblTotalSections').innerText = requiredSections + " Bölme";
+        
+        // Re-adjust modules array size
+        let currentSections = designerCabinet.modules.length;
+        if (currentSections !== requiredSections) {
+            if (requiredSections > currentSections) {
+                // Add default modules
+                for (let i = currentSections; i < requiredSections; i++) {
+                    let defaultType = i % 2 === 0 ? 'shelf' : 'rod';
+                    if (i === 2 && requiredSections >= 3) defaultType = 'drawer';
+                    designerCabinet.modules.push(defaultType);
+                }
+            } else {
+                // Trim modules
+                designerCabinet.modules = designerCabinet.modules.slice(0, requiredSections);
+            }
+            // Ensure activeModuleIdx is within bounds
+            if (designerCabinet.activeModuleIdx >= requiredSections) {
+                designerCabinet.activeModuleIdx = 0;
+            }
+        }
+        
+        // Render section tabs as segmented pills
+        let tabsContainer = document.getElementById('designerSectionTabs');
+        if (tabsContainer) {
+            tabsContainer.innerHTML = '';
+            for (let i = 0; i < requiredSections; i++) {
+                let btn = document.createElement('button');
+                btn.type = 'button';
+                btn.style.flex = '1';
+                btn.style.border = 'none';
+                btn.style.background = 'transparent';
+                btn.style.padding = '6px 8px';
+                btn.style.fontSize = '12px';
+                btn.style.fontWeight = '600';
+                btn.style.borderRadius = '9999px';
+                btn.style.cursor = 'pointer';
+                btn.style.transition = 'all 0.2s';
+                
+                if (i === designerCabinet.activeModuleIdx) {
+                    btn.style.backgroundColor = '#ffffff';
+                    btn.style.color = '#0284c7';
+                    btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                } else {
+                    btn.style.color = '#475569';
+                }
+                
+                btn.innerText = 'Bölme ' + (i + 1);
+                btn.onclick = (function(idx) {
+                    return function() { selectDesignerModule(idx); };
+                })(i);
+                tabsContainer.appendChild(btn);
+            }
+        }
+        
+        // Highlight active template card
+        let activeTemplate = designerCabinet.modules[designerCabinet.activeModuleIdx];
+        let templates = ['shelf', 'rod', 'drawer', 'longrod'];
+        templates.forEach(t => {
+            let el = document.getElementById('tmpl_' + t);
+            if (el) {
+                if (t === activeTemplate) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            }
+        });
+        
+        // Total pricing math
+        let w = widthInput / 100;
+        let h = heightInput / 100;
+        let m2 = w * h;
+        
+        let matKey = designerCabinet.hasDoors === 'no' ? 'kapaksiz' : designerCabinet.material;
+        let basePrice = dynamicPrices[matKey] || 3200;
+        let dolapTutar = m2 * basePrice;
+        let arkalikTutar = m2 * (dynamicPrices.ark4 || 450);
+        let montajTutar = dynamicPrices.montaj || 3500;
+        
+        let totalDrawers = designerCabinet.modules.filter(m => m === 'drawer').length * 2;
+        let cekmeceTutar = totalDrawers * (dynamicPrices.r_tandem || 950);
+        
+        let totalHinges = designerCabinet.hasDoors === 'yes' ? requiredSections * 4 : 0;
+        let menteseTutar = totalHinges * (dynamicPrices.samet || 80);
+        
+        let ledTutar = designerCabinet.led === 'var' ? 2500 : 0;
+        
+        let totalEstimatedPrice = Math.round(dolapTutar + arkalikTutar + montajTutar + cekmeceTutar + menteseTutar + ledTutar);
+        
+        document.getElementById('designTotalPrice').innerText = totalEstimatedPrice.toLocaleString('tr-TR') + " ₺";
+        
+        drawSelfDesignerCabinet();
+    }
+
+    function selectDesignerModule(idx) {
+        designerCabinet.activeModuleIdx = idx;
+        updateDesignerCabinet();
+    }
+
+    function selectSectionTemplate(templateType) {
+        designerCabinet.modules[designerCabinet.activeModuleIdx] = templateType;
+        updateDesignerCabinet();
+    }
+
+    function drawHumanSilhouette(ctx, x, y, h) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.28)';
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.5)';
+        ctx.lineWidth = 1.5;
+        
+        // Head
+        let headRadius = h * 0.08;
+        let headX = x;
+        let headY = y - h + headRadius;
+        ctx.beginPath();
+        ctx.arc(headX, headY, headRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // Torso & Legs
+        let shoulderW = h * 0.18;
+        let hipW = h * 0.13;
+        let torsoTop = headY + headRadius + 4;
+        let torsoBottom = torsoTop + h * 0.35;
+        let feetY = y;
+        
+        ctx.beginPath();
+        ctx.moveTo(x - shoulderW/2, torsoTop);
+        ctx.lineTo(x + shoulderW/2, torsoTop);
+        ctx.lineTo(x + hipW/2, torsoBottom);
+        ctx.lineTo(x + hipW/3, feetY);
+        ctx.lineTo(x - hipW/3, feetY);
+        ctx.lineTo(x - hipW/2, torsoBottom);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        // Arms
+        ctx.beginPath();
+        ctx.moveTo(x - shoulderW/2, torsoTop);
+        ctx.lineTo(x - shoulderW/2 - 4, torsoTop + h * 0.2);
+        ctx.lineTo(x - 2, torsoTop + h * 0.25);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(x + shoulderW/2, torsoTop);
+        ctx.lineTo(x + shoulderW/2 + 4, torsoTop + h * 0.2);
+        ctx.lineTo(x + 2, torsoTop + h * 0.25);
+        ctx.stroke();
+        
+        ctx.restore();
+    }
+
+    // Helper function to draw rounded dimension pills
+    function drawDimensionPill(ctx, text, x, y) {
+        ctx.save();
+        ctx.font = "bold 9px Inter";
+        let textWidth = ctx.measureText(text).width;
+        let padX = 6;
+        let padY = 3;
+        let rectW = textWidth + padX * 2;
+        let rectH = 14;
+        
+        // Soft Shadow
+        ctx.shadowColor = "rgba(15, 23, 42, 0.08)";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetY = 1;
+        
+        ctx.fillStyle = "#ffffff";
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 1;
+        
+        let rx = x - rectW / 2;
+        let ry = y - rectH / 2;
+        let radius = 4;
+        
+        ctx.beginPath();
+        ctx.moveTo(rx + radius, ry);
+        ctx.lineTo(rx + rectW - radius, ry);
+        ctx.quadraticCurveTo(rx + rectW, ry, rx + rectW, ry + radius);
+        ctx.lineTo(rx + rectW, ry + rectH - radius);
+        ctx.quadraticCurveTo(rx + rectW, ry + rectH, rx + rectW - radius, ry + rectH);
+        ctx.lineTo(rx + radius, ry + rectH);
+        ctx.quadraticCurveTo(rx, ry + rectH, rx, ry + rectH - radius);
+        ctx.lineTo(rx, ry + radius);
+        ctx.quadraticCurveTo(rx, ry, rx + radius, ry);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.shadowColor = "transparent";
+        ctx.fillStyle = "#475569";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(text, x, y);
+        ctx.restore();
+    }
+
+    // Helper to draw visual clothes hanging in wardrobe
+    function drawHangingClothes(ctx, x, y, width) {
+        // Clothes hangers & garments visualization
+        let clothCount = Math.floor(width / 20);
+        if (clothCount < 1) clothCount = 1;
+        let colors = ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa", "#f472b6"];
+        let step = width / (clothCount + 1);
+        
+        for (let k = 1; k <= clothCount; k++) {
+            let cx = x + k * step;
+            let cy = y + 4;
+            
+            ctx.save();
+            // Draw Hanger hook
+            ctx.strokeStyle = "#94a3b8";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.arc(cx, cy - 2, 2, Math.PI, 0);
+            ctx.stroke();
+            
+            // Hanger triangle
+            ctx.beginPath();
+            ctx.moveTo(cx - 5, cy);
+            ctx.lineTo(cx + 5, cy);
+            ctx.lineTo(cx, cy - 2);
+            ctx.closePath();
+            ctx.stroke();
+            
+            // Garment
+            ctx.fillStyle = colors[(k - 1) % colors.length];
+            ctx.fillRect(cx - 7, cy + 1, 14, 28);
+            
+            // Garment details (collar fold)
+            ctx.fillStyle = "rgba(0, 0, 0, 0.12)";
+            ctx.beginPath();
+            ctx.moveTo(cx - 3, cy + 1);
+            ctx.lineTo(cx, cy + 5);
+            ctx.lineTo(cx + 3, cy + 1);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function drawSelfDesignerCabinet() {
+        let canvas = document.getElementById('designCanvas');
+        if (!canvas) return;
+        let ctx = canvas.getContext('2d');
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Studio Background (Light gray studio mode)
+        ctx.fillStyle = "#f3f4f6";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        let w = designerCabinet.width;
+        let h = designerCabinet.height;
+        
+        // pxPerCm scale configuration to fit nicely in 600x420 canvas
+        let scale = 300 / Math.max(260, w, h);
+        let sW = w * scale;
+        let sH = h * scale;
+        
+        // Shift right of human silhouette (human at x=75, canvas width=600)
+        let xStart = 160 + (360 - sW) / 2;
+        let yStart = 350 - sH;
+        
+        // Ground line
+        ctx.strokeStyle = "#cbd5e1";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(10, 350);
+        ctx.lineTo(canvas.width - 10, 350);
+        ctx.stroke();
+        
+        // Human silhouette next to wardrobe
+        if (showDesignerSilhouette) {
+            let humanHeightCm = 175;
+            let sHumanH = humanHeightCm * scale;
+            drawHumanSilhouette(ctx, 75, 350, sHumanH);
+            
+            // Human label
+            ctx.fillStyle = "#64748b";
+            ctx.font = "600 10px Inter";
+            ctx.textAlign = "center";
+            ctx.fillText("İnsan Boyu (1.75m)", 75, 368);
+        }
+        
+        // Cabinet Interior Box Background
+        ctx.fillStyle = "#f8fafc";
+        ctx.fillRect(xStart, yStart, sW, sH);
+        
+        let sections = designerCabinet.modules.length;
+        let sectionW = (sW - 12) / sections;
+        let realSectionW = Math.round(w / sections);
+        
+        // Draw module contents
+        for (let i = 0; i < sections; i++) {
+            let secX1 = xStart + 6 + i * sectionW;
+            let secX2 = secX1 + sectionW;
+            let moduleType = designerCabinet.modules[i];
+            
+            // Sensor LED lighting visual glow representation (soft warm glow)
+            if (designerCabinet.led === 'var') {
+                let glow = ctx.createLinearGradient(0, yStart + 6, 0, yStart + 90);
+                glow.addColorStop(0, 'rgba(245, 158, 11, 0.16)');
+                glow.addColorStop(1, 'rgba(245, 158, 11, 0)');
+                ctx.fillStyle = glow;
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+            }
+            
+            if (moduleType === 'shelf') {
+                // Soft pink pastel background for shelf section
+                ctx.fillStyle = "rgba(244, 63, 94, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let shelfCount = 4;
+                let shelfH = (sH - 12) / (shelfCount + 1);
+                let realShelfH = Math.round(h / (shelfCount + 1));
+                
+                // Draw wood planks instead of lines
+                ctx.fillStyle = "#cbd5e1";
+                for(let j = 1; j <= shelfCount; j++) {
+                    let shelfY = yStart + 6 + j * shelfH;
+                    ctx.fillRect(secX1, shelfY - 1.5, sectionW, 3);
+                }
+                
+                // Write height labels inside shelf spaces
+                if (showDesignerRulers) {
+                    for (let j = 0; j <= shelfCount; j++) {
+                        let labelY = yStart + 6 + (j + 0.5) * shelfH;
+                        drawDimensionPill(ctx, realShelfH + " cm", secX1 + sectionW/2, labelY);
+                    }
+                }
+                
+            } else if (moduleType === 'rod') {
+                // Soft gold pastel background for rod section
+                ctx.fillStyle = "rgba(234, 179, 8, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let topShelfPercent = 0.2;
+                let topShelfY = yStart + 6 + (sH - 12) * topShelfPercent;
+                
+                // Top shelf plank
+                ctx.fillStyle = "#cbd5e1";
+                ctx.fillRect(secX1, topShelfY - 1.5, sectionW, 3);
+                
+                // Hanger rod
+                let rodY = topShelfY + 12;
+                drawHangingClothes(ctx, secX1, rodY, sectionW);
+                
+                // Height labels
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h * topShelfPercent) + " cm", secX1 + sectionW/2, yStart + 6 + ((sH - 12) * topShelfPercent)/2);
+                    drawDimensionPill(ctx, Math.round(h * (1 - topShelfPercent)) + " cm", secX1 + sectionW/2, topShelfY + ((sH - 12) * (1 - topShelfPercent))/2);
+                }
+                
+            } else if (moduleType === 'drawer') {
+                // Soft steel blue pastel background for drawer section
+                ctx.fillStyle = "rgba(71, 85, 105, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let topShelfPercent = 0.2;
+                let topShelfY = yStart + 6 + (sH - 12) * topShelfPercent;
+                
+                // Top shelf plank
+                ctx.fillStyle = "#cbd5e1";
+                ctx.fillRect(secX1, topShelfY - 1.5, sectionW, 3);
+                
+                // Hanger rod & Clothes
+                let rodY = topShelfY + 12;
+                drawHangingClothes(ctx, secX1, rodY, sectionW);
+                
+                let drawerAreaH = (sH - 12) * 0.25;
+                let drawerH = drawerAreaH / 2 - 4;
+                for (let d = 0; d < 2; d++) {
+                    let dY = yStart + sH - 6 - drawerAreaH + d * (drawerH + 4) + 2;
+                    
+                    // Draw drawer panel front
+                    ctx.fillStyle = "#e2e8f0";
+                    ctx.fillRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                    
+                    // Shadow gap simulated
+                    ctx.fillStyle = "rgba(15, 23, 42, 0.05)";
+                    ctx.fillRect(secX1 + 4, dY + drawerH - 2, sectionW - 8, 2);
+                    
+                    // Draw non-gold handles (chrome or dark gray/black handle)
+                    ctx.fillStyle = designerCabinet.handle === 'chrome' ? '#94a3b8' : '#0f172a';
+                    ctx.fillRect(secX1 + sectionW/2 - 12, dY + drawerH/2 - 1.5, 24, 3);
+                }
+                
+                // Height labels
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h * topShelfPercent) + " cm", secX1 + sectionW/2, yStart + 6 + ((sH - 12) * topShelfPercent)/2);
+                    drawDimensionPill(ctx, Math.round(h * (1 - topShelfPercent - 0.25)) + " cm", secX1 + sectionW/2, topShelfY + ((sH - 12) * (1 - topShelfPercent - 0.25))/2);
+                    drawDimensionPill(ctx, Math.round(h * 0.25) + " cm", secX1 + sectionW/2, yStart + sH - 6 - drawerAreaH/2);
+                }
+                
+            } else if (moduleType === 'longrod') {
+                // Soft green pastel background
+                ctx.fillStyle = "rgba(16, 185, 129, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let rodY = yStart + 6 + 18;
+                drawHangingClothes(ctx, secX1, rodY, sectionW);
+                
+                // Height label
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h) + " cm", secX1 + sectionW/2, yStart + sH/2);
+                }
+            }
+            
+            // Draw section width label inside the section (above ground)
+            if (showDesignerRulers) {
+                drawDimensionPill(ctx, realSectionW + " cm", secX1 + sectionW/2, yStart + sH - 14);
+            }
+        }
+        
+        // Draw Outer Carcass Frame
+        ctx.strokeStyle = '#334155'; // Dark slate steel frame
+        ctx.lineWidth = 8;
+        ctx.strokeRect(xStart, yStart, sW, sH);
+        
+        // Draw inner dividers
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 3;
+        for(let i = 1; i < sections; i++) {
+            let divX = xStart + 6 + i * sectionW;
+            ctx.beginPath();
+            ctx.moveTo(divX, yStart + 6);
+            ctx.lineTo(divX, yStart + sH - 6);
+            ctx.stroke();
+        }
+        
+        // Highlight active module selection visually (cyan frame)
+        if (designerCabinet.doorsOpen) {
+            let activeX = xStart + 6 + designerCabinet.activeModuleIdx * sectionW;
+            ctx.strokeStyle = "#0284c7"; // sky blue active highlight
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 3]);
+            ctx.strokeRect(activeX + 2, yStart + 8, sectionW - 4, sH - 16);
+            ctx.setLineDash([]);
+        }
+        
+        // Draw closed doors if configured
+        if (designerCabinet.hasDoors === 'yes' && designerCabinet.doorsOpen === false) {
+            let doorW = sW / sections;
+            let matKey = designerCabinet.material;
+            
+            let doorFillStyle = "rgba(241, 245, 249, 0.97)"; // lake default (Gloss White)
+            if (matKey === 'mdf') {
+                doorFillStyle = "#b45309"; // mdf lam warm brown wood
+            } else if (matKey === 'cam') {
+                doorFillStyle = "rgba(14, 165, 233, 0.28)"; // glassy blue transparent
+            }
+            
+            for (let i = 0; i < sections; i++) {
+                let dx = xStart + i * doorW;
+                
+                // Door panel filling
+                ctx.fillStyle = doorFillStyle;
+                ctx.fillRect(dx + 2, yStart + 2, doorW - 4, sH - 4);
+                
+                // MDF vertical grain pattern simulation
+                if (matKey === 'mdf') {
+                    ctx.strokeStyle = "#92400e";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(dx + doorW / 3, yStart + 5);
+                    ctx.lineTo(dx + doorW / 3, yStart + sH - 5);
+                    ctx.moveTo(dx + (doorW * 2) / 3, yStart + 15);
+                    ctx.lineTo(dx + (doorW * 2) / 3, yStart + sH - 15);
+                    ctx.stroke();
+                }
+                
+                // Door frame outline
+                ctx.strokeStyle = matKey === 'cam' ? 'rgba(2, 132, 199, 0.65)' : 'rgba(0,0,0,0.1)';
+                ctx.lineWidth = matKey === 'cam' ? 3 : 1.5;
+                ctx.strokeRect(dx + 2, yStart + 2, doorW - 4, sH - 4);
+                
+                // Glass glossy diagonal shines for Cam
+                if (matKey === 'cam') {
+                    ctx.strokeStyle = "rgba(255,255,255,0.45)";
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(dx + 12, yStart + 24);
+                    ctx.lineTo(dx + doorW - 12, yStart + 24 + doorW - 24);
+                    ctx.stroke();
+                }
+                
+                // Draw handle (avoiding gold handles, using black or chrome as requested)
+                if (designerCabinet.handle !== 'gizli' && matKey !== 'cam') {
+                    let handleX = dx + doorW / 2;
+                    let handleY = yStart + sH / 2 - 15;
+                    ctx.fillStyle = designerCabinet.handle === 'chrome' ? '#cbd5e1' : '#1e293b'; // chrome silver or black steel
+                    
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+                    ctx.shadowBlur = 3;
+                    ctx.shadowOffsetY = 1;
+                    
+                    ctx.fillRect(handleX - 2, handleY, 4, 30);
+                    ctx.restore();
+                }
+                
+                // Cam vertical profile handles
+                if (matKey === 'cam') {
+                    let handleX = dx + doorW - 5;
+                    if (i === sections - 1) handleX = dx + 5; // Left edge of the last door
+                    ctx.fillStyle = '#0f172a'; // Profile color black
+                    ctx.fillRect(handleX - 1.5, yStart + 15, 3, sH - 30);
+                }
+            }
+        }
+        
+        // Rulers
+        if (showDesignerRulers) {
+            ctx.strokeStyle = "#0284c7";
+            ctx.fillStyle = "#0284c7";
+            ctx.lineWidth = 1.5;
+            
+            // Height Ruler
+            let rulerX = xStart - 25;
+            ctx.beginPath(); ctx.moveTo(rulerX, yStart); ctx.lineTo(rulerX, yStart + sH); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(rulerX - 4, yStart + 6); ctx.lineTo(rulerX, yStart); ctx.lineTo(rulerX + 4, yStart + 6);
+            ctx.moveTo(rulerX - 4, yStart + sH - 6); ctx.lineTo(rulerX, yStart + sH); ctx.lineTo(rulerX + 4, yStart + sH - 6);
+            ctx.fill();
+            
+            ctx.save();
+            ctx.translate(rulerX - 12, yStart + sH/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.font = "bold 11px Outfit";
+            ctx.textAlign = "center";
+            ctx.fillText(h + " cm", 0, 0);
+            ctx.restore();
+            
+            // Width Ruler
+            let rulerY = yStart + sH + 20;
+            ctx.beginPath(); ctx.moveTo(xStart, rulerY); ctx.lineTo(xStart + sW, rulerY); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(xStart + 6, rulerY - 4); ctx.lineTo(xStart, rulerY); ctx.lineTo(xStart + 6, rulerY + 4);
+            ctx.moveTo(xStart + sW - 6, rulerY - 4); ctx.lineTo(xStart + sW, rulerY); ctx.lineTo(xStart + sW - 6, rulerY + 4);
+            ctx.fill();
+            
+            ctx.font = "bold 11px Outfit";
+            ctx.textAlign = "center";
+            ctx.fillText(w + " cm", xStart + sW/2, rulerY + 15);
+        }
+    }
+
+    function openDesignQuoteModal() {
+        document.getElementById('quoteClientName').value = "";
+        document.getElementById('quoteClientPhone').value = "";
+        document.getElementById('quoteClientAddress').value = "";
+        document.getElementById('designQuoteModal').style.display = 'flex';
+    }
+
+    function closeDesignQuoteModal() {
+        document.getElementById('designQuoteModal').style.display = 'none';
+    }
+
+    function handleDesignOverlayClick(event) {
+        if(event.target === document.getElementById('designQuoteModal')) {
+            closeDesignQuoteModal();
+        }
+    }
+
+    function submitDesignQuote() {
+        let name = document.getElementById('quoteClientName').value.trim();
+        let phone = document.getElementById('quoteClientPhone').value.trim();
+        let note = document.getElementById('quoteClientAddress').value.trim();
+        
+        if (!name) { alert("Lütfen adınızı soyadınızı giriniz!"); return; }
+        if (!phone) { alert("Lütfen telefon numaranızı giriniz!"); return; }
+        
+        let widthVal = parseInt(document.getElementById('designWidth').value) || 200;
+        let heightVal = parseInt(document.getElementById('designHeight').value) || 220;
+        let w = widthVal / 100;
+        let h = heightVal / 100;
+        let m2 = w * h;
+        
+        let matKey = designerCabinet.hasDoors === 'no' ? 'kapaksiz' : designerCabinet.material;
+        let basePrice = dynamicPrices[matKey] || 3200;
+        let dolapTutar = m2 * basePrice;
+        let arkalikTutar = m2 * (dynamicPrices.ark4 || 450);
+        let kesimGideri = m2 * (dynamicPrices.kesim_m2 || 350);
+        let montajTutar = dynamicPrices.montaj || 3500;
+        
+        let totalDrawers = designerCabinet.modules.filter(m => m === 'drawer').length * 2;
+        let cekmeceTutar = totalDrawers * (dynamicPrices.r_tandem || 950);
+        
+        let totalHinges = designerCabinet.hasDoors === 'yes' ? designerCabinet.modules.length * 4 : 0;
+        let menteseTutar = totalHinges * (dynamicPrices.samet || 80);
+        
+        let ledTutar = designerCabinet.led === 'var' ? 2500 : 0;
+        
+        let totalPrice = Math.round(dolapTutar + arkalikTutar + montajTutar + cekmeceTutar + menteseTutar + ledTutar);
+        
+        let customCode = "dm_" + Math.random().toString(36).substr(2, 7).toUpperCase();
+        
+        let matName = "Lake Kapak";
+        if (matKey === 'mdf') matName = "MDF Lam Kapak";
+        if (matKey === 'cam') matName = "Alüminyum Cam Kapak";
+        if (matKey === 'kapaksiz') matName = "Kapaksız (Açık Dolap)";
+        
+        let inputState = {
+            g_width: w,
+            g_height: h,
+            g_doors: designerCabinet.hasDoors === 'yes' ? designerCabinet.modules.length : 0,
+            g_drawers: totalDrawers,
+            g_material: matKey,
+            g_ray: "r_tandem",
+            g_back: "ark4",
+            g_hinges: totalHinges,
+            g_hinge_type: "samet",
+            g_advance: 0,
+            g_modules: designerCabinet.modules,
+            g_handle: designerCabinet.handle,
+            g_led: designerCabinet.led,
+            customerPhone: phone,
+            chkUseSheetCosting: false
+        };
+        
+        // Auto default delivery date to +25 days from today
+        let targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + 25);
+        let year = targetDate.getFullYear();
+        let month = String(targetDate.getMonth() + 1).padStart(2, '0');
+        let day = String(targetDate.getDate()).padStart(2, '0');
+        let deliveryDateVal = `${year}-${month}-${day}`;
+        
+        let detailText = `Müşteri Kendin Tasarla Planı - Ebat: ${widthVal}x${heightVal}cm, Bölmeler: ${designerCabinet.modules.join(', ')} - Notlar: ${note}`;
+        
+        db.collection("ortak_teklifler").doc(customCode).set({
+            musteri: "Tasarım: " + name,
+            telefon: phone,
+            tahminiTeslimat: deliveryDateVal,
+            personel: "Berat Aziz Doğançay",
+            durum: "Teklif Verildi",
+            tarih: new Date().toLocaleDateString('tr-TR'),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            m2: m2.toFixed(2),
+            kapakAdet: designerCabinet.hasDoors === 'yes' ? designerCabinet.modules.length : 0,
+            kapak: matName,
+            ray: "Frenli Tandem Gizli Ray",
+            toplamNum: totalPrice,
+            kaparoNum: 0,
+            kalanNum: totalPrice,
+            toplam: totalPrice.toLocaleString('tr-TR') + " ₺",
+            kaparo: "0 ₺",
+            kalan: totalPrice.toLocaleString('tr-TR') + " ₺",
+            mobilyaTuru: "gardırop",
+            detaylar: detailText,
+            inputState: inputState,
+            odemeler: []
+        }).then(() => {
+            alert(`Tasarımınız başarıyla kaydedildi ve Mustafa Usta'ya iletildi!\n\nSipariş Takip Kodunuz: ${customCode}\n\nBu kodla siparişinizin durumunu "Sipariş Takibi" sekmesinden izleyebilirsiniz.`);
+            closeDesignQuoteModal();
+            takipKapat(); // return to login screen
+        }).catch(err => {
+            alert("Teklif iletilirken hata oluştu: " + err.message);
         });
     }
 </script>
