@@ -1,5 +1,15 @@
 import { db } from './firebase-config.js';
 window.db = db;
+
+// Cross-module proxy functions to bypass ESM strict scope limitations
+const hesaplaVeCiz = (...args) => window.hesaplaVeCiz(...args);
+const updateDesignerCabinet = (...args) => window.updateDesignerCabinet(...args);
+const initDesignerCabinet = (...args) => window.initDesignerCabinet(...args);
+const initErpReviewsListener = (...args) => window.initErpReviewsListener(...args);
+const optYasarYeniSatir = (...args) => window.optYasarYeniSatir(...args);
+const loadLoginReviews = (...args) => window.loadLoginReviews(...args);
+const drawSelfDesignerCabinet = (...args) => window.drawSelfDesignerCabinet(...args);
+
     // Default Price Matrix Configuration (Will sync with bulut Firestore dynamic data)
     window.dynamicPrices = {
         lake: 4800,

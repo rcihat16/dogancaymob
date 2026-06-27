@@ -1,4 +1,7 @@
-    function fillMaterialTexture(ctx, x, y, w, h, materialKey) {
+    // Cross-module proxy functions to bypass ESM strict scope limitations
+const getSpecificationText = (...args) => window.getSpecificationText(...args);
+
+function fillMaterialTexture(ctx, x, y, w, h, materialKey) {
         if (previewMode === 'blueprint') {
             ctx.fillStyle = materialKey === 'lake' ? '#f8fafc' : (materialKey === 'cam' ? '#38bdf8' : (materialKey === 'kapaksiz' ? '#1e293b' : '#b45309'));
             ctx.fillRect(x, y, w, h);
