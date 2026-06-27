@@ -1895,15 +1895,5 @@ window.submitDesignQuote = submitDesignQuote;
 // Initial calls on load
 document.addEventListener('DOMContentLoaded', () => {
     checkAutoLogin();
-    
-    // Initialize Zoom & Pan on CAD canvases
-    if (window.initCanvasZoomPan) {
-        window.initCanvasZoomPan('dolapCanvas', () => {
-            if (window.hesaplaVeCiz) window.hesaplaVeCiz();
-        });
-        window.initCanvasZoomPan('designCanvas', () => {
-            if (window.drawSelfDesignerCabinet) window.drawSelfDesignerCabinet();
-        });
-    }
 });
 
