@@ -1,4 +1,4 @@
-﻿import { db } from './firebase-config.js';
+import { db } from './firebase-config.js';
 window.db = db;
     // Default Price Matrix Configuration (Will sync with bulut Firestore dynamic data)
     window.dynamicPrices = {
@@ -1885,5 +1885,15 @@ window.submitDesignQuote = submitDesignQuote;
 // Initial calls on load
 document.addEventListener('DOMContentLoaded', () => {
     checkAutoLogin();
+    
+    // Initialize Zoom & Pan on CAD canvases
+    if (window.initCanvasZoomPan) {
+        window.initCanvasZoomPan('dolapCanvas', () => {
+            if (window.hesaplaVeCiz) window.hesaplaVeCiz();
+        });
+        window.initCanvasZoomPan('designCanvas', () => {
+            if (window.drawSelfDesignerCabinet) window.drawSelfDesignerCabinet();
+        });
+    }
 });
 

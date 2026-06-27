@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
@@ -15,6 +15,19 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0284c7">
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => console.log('Service Worker registered successfully:', reg.scope))
+                    .catch((err) => console.warn('Service Worker registration failed:', err));
+            });
+        }
+    </script>
 </head>
 <body>
 
@@ -306,6 +319,11 @@
             <!-- Canvas ve Yüzen Butonlar -->
             <div class="canvas-container-relative">
                 <canvas id="designCanvas" width="600" height="420" style="background:#f3f4f6; border:none; box-shadow:none;"></canvas>
+                <div class="canvas-zoom-controls">
+                    <button type="button" class="canvas-zoom-btn" onclick="zoomCanvas('designCanvas', 1.15)" title="Yaklaş">➕</button>
+                    <button type="button" class="canvas-zoom-btn" onclick="zoomCanvas('designCanvas', 0.85)" title="Uzaklaş">➖</button>
+                    <button type="button" class="canvas-zoom-btn" onclick="resetCanvasZoom('designCanvas')" title="Sıfırla" style="font-size: 10px; font-weight: bold; width: 44px;">Sıfırla</button>
+                </div>
                 
                 <!-- Yüzen Kontrol Butonları (Inzo tarzı) -->
                 <div class="canvas-float-btn-group">
@@ -1107,6 +1125,11 @@
                     </div>
                     <div class="canvas-wrapper">
                         <canvas id="dolapCanvas" width="400" height="300"></canvas>
+                        <div class="canvas-zoom-controls">
+                            <button type="button" class="canvas-zoom-btn" onclick="zoomCanvas('dolapCanvas', 1.15)" title="Yaklaş">➕</button>
+                            <button type="button" class="canvas-zoom-btn" onclick="zoomCanvas('dolapCanvas', 0.85)" title="Uzaklaş">➖</button>
+                            <button type="button" class="canvas-zoom-btn" onclick="resetCanvasZoom('dolapCanvas')" title="Sıfırla" style="font-size: 10px; font-weight: bold; width: 44px;">Sıfırla</button>
+                        </div>
                         <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Çizim girdiğiniz en, boy ve bölmelere göre ölçeklenerek çizilir.</p>
                     </div>
                 </div>

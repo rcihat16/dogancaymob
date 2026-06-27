@@ -1,0 +1,17 @@
+{
+  "name": "Doğançay Mobilya ERP & Teklif",
+  "short_name": "Doğançay ERP",
+  "description": "Doğançay Mobilya Profesyonel ERP, CAD Tasarım Sihirbazı & Teklif Takip Sistemi",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#0284c7",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -17,3 +17,17 @@ if (!window.firebase) {
 }
 
 export const db = window.firebase.firestore();
+
+// Enable offline persistence in Firestore for offline support
+db.settings({
+    cacheSizeBytes: window.firebase.firestore.CACHE_SIZE_UNLIMITED
+});
+db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+    if (err.code == 'failed-precondition') {
+        console.warn("Firestore persistence failed: Multiple tabs open.");
+    } else if (err.code == 'unimplemented') {
+        console.warn("Firestore persistence failed: Browser lacks persistence support.");
+    } else {
+        console.warn("Firestore persistence failed:", err.message);
+    }
+});

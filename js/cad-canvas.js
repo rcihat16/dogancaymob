@@ -1,4 +1,4 @@
-﻿    function fillMaterialTexture(ctx, x, y, w, h, materialKey) {
+    function fillMaterialTexture(ctx, x, y, w, h, materialKey) {
         if (previewMode === 'blueprint') {
             ctx.fillStyle = materialKey === 'lake' ? '#f8fafc' : (materialKey === 'cam' ? '#38bdf8' : (materialKey === 'kapaksiz' ? '#1e293b' : '#b45309'));
             ctx.fillRect(x, y, w, h);
@@ -323,18 +323,33 @@
         let canvas = document.getElementById('dolapCanvas'); 
         let ctx = canvas.getContext('2d');
         
-        // Clear Canvas and Draw Blueprint Grid
+        // Clear Canvas and Draw Background
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = "#f8fafc";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
+        ctx.save();
+        // Zoom and Pan
+        let scale = window.dolapCanvasZoomScale || 1.0;
+        let panX = window.dolapCanvasPanX || 0;
+        let panY = window.dolapCanvasPanY || 0;
+        ctx.translate(panX, panY);
+        ctx.scale(scale, scale);
+        
         ctx.strokeStyle = "#cbd5e1";
         ctx.lineWidth = 1;
-        for(let x = 0; x < canvas.width; x += 20) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+        
+        // Extended grid coordinates to support panning
+        let gridMinX = -canvas.width * 2;
+        let gridMaxX = canvas.width * 3;
+        let gridMinY = -canvas.height * 2;
+        let gridMaxY = canvas.height * 3;
+        
+        for(let x = gridMinX; x < gridMaxX; x += 20) {
+            ctx.beginPath(); ctx.moveTo(x, gridMinY); ctx.lineTo(x, gridMaxY); ctx.stroke();
         }
-        for(let y = 0; y < canvas.height; y += 20) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+        for(let y = gridMinY; y < gridMaxY; y += 20) {
+            ctx.beginPath(); ctx.moveTo(gridMinX, y); ctx.lineTo(gridMaxX, y); ctx.stroke();
         }
 
         // Shared calculation vars
@@ -1329,6 +1344,7 @@
         document.getElementById('lblToplam').innerText = toplam.toLocaleString('tr-TR') + " ₺";
         document.getElementById('lblKalan').innerText = kalan.toLocaleString('tr-TR') + " ₺";
 
+        ctx.restore();
         return { m2, toplam, kaparo: advancePayment, kalan, kapakAdet, type, detailsText: getSpecificationText(), useSheetCosting, gövdeSheetCount, arkalikSheetCount };
     }
 
@@ -1892,6 +1908,14 @@
         ctx.fillStyle = "#f3f4f6";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
+        ctx.save();
+        // Zoom and Pan
+        let scaleVal = window.designCanvasZoomScale || 1.0;
+        let panXVal = window.designCanvasPanX || 0;
+        let panYVal = window.designCanvasPanY || 0;
+        ctx.translate(panXVal, panYVal);
+        ctx.scale(scaleVal, scaleVal);
+        
         let w = designerCabinet.width;
         let h = designerCabinet.height;
         
@@ -2182,6 +2206,201 @@
             ctx.beginPath(); ctx.moveTo(xStart, rulerY); ctx.lineTo(xStart + sW, rulerY); ctx.stroke();
             ctx.beginPath();
             ctx.moveTo(xStart + 6, rulerY - 4); ctx.lineTo(xStart, rulerY); ctx.lineTo(xStart + 6, rulerY + 4);
+                
+                // Height labels
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h * topShelfPercent) + " cm", secX1 + sectionW/2, yStart + 6 + ((sH - 12) * topShelfPercent)/2);
+                    drawDimensionPill(ctx, Math.round(h * (1 - topShelfPercent)) + " cm", secX1 + sectionW/2, topShelfY + ((sH - 12) * (1 - topShelfPercent))/2);
+                }
+                
+            } else if (moduleType === 'drawer') {
+                // Soft steel blue pastel background for drawer section
+                ctx.fillStyle = "rgba(71, 85, 105, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let topShelfPercent = 0.2;
+                let topShelfY = yStart + 6 + (sH - 12) * topShelfPercent;
+                
+                // Top shelf plank
+                ctx.fillStyle = "#cbd5e1";
+                ctx.fillRect(secX1, topShelfY - 1.5, sectionW, 3);
+                
+                // Hanger rod & Clothes
+                let rodY = topShelfY + 12;
+                drawHangingClothes(ctx, secX1, rodY, sectionW);
+                
+                let drawerAreaH = (sH - 12) * 0.25;
+                let drawerH = drawerAreaH / 2 - 4;
+                for (let d = 0; d < 2; d++) {
+                    let dY = yStart + sH - 6 - drawerAreaH + d * (drawerH + 4) + 2;
+                    
+                    // Draw drawer panel front
+                    ctx.fillStyle = "#e2e8f0";
+                    ctx.fillRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                    ctx.strokeStyle = "#cbd5e1";
+                    ctx.lineWidth = 1;
+                    ctx.strokeRect(secX1 + 4, dY, sectionW - 8, drawerH);
+                    
+                    // Shadow gap simulated
+                    ctx.fillStyle = "rgba(15, 23, 42, 0.05)";
+                    ctx.fillRect(secX1 + 4, dY + drawerH - 2, sectionW - 8, 2);
+                    
+                    // Draw non-gold handles (chrome or dark gray/black handle)
+                    ctx.fillStyle = designerCabinet.handle === 'chrome' ? '#94a3b8' : '#0f172a';
+                    ctx.fillRect(secX1 + sectionW/2 - 12, dY + drawerH/2 - 1.5, 24, 3);
+                }
+                
+                // Height labels
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h * topShelfPercent) + " cm", secX1 + sectionW/2, yStart + 6 + ((sH - 12) * topShelfPercent)/2);
+                    drawDimensionPill(ctx, Math.round(h * (1 - topShelfPercent - 0.25)) + " cm", secX1 + sectionW/2, topShelfY + ((sH - 12) * (1 - topShelfPercent - 0.25))/2);
+                    drawDimensionPill(ctx, Math.round(h * 0.25) + " cm", secX1 + sectionW/2, yStart + sH - 6 - drawerAreaH/2);
+                }
+                
+            } else if (moduleType === 'longrod') {
+                // Soft green pastel background
+                ctx.fillStyle = "rgba(16, 185, 129, 0.03)";
+                ctx.fillRect(secX1, yStart + 6, sectionW, sH - 12);
+                
+                let rodY = yStart + 6 + 18;
+                drawHangingClothes(ctx, secX1, rodY, sectionW);
+                
+                // Height label
+                if (showDesignerRulers) {
+                    drawDimensionPill(ctx, Math.round(h) + " cm", secX1 + sectionW/2, yStart + sH/2);
+                }
+            }
+            
+            // Draw section width label inside the section (above ground)
+            if (showDesignerRulers) {
+                drawDimensionPill(ctx, realSectionW + " cm", secX1 + sectionW/2, yStart + sH - 14);
+            }
+        }
+        
+        // Draw Outer Carcass Frame
+        ctx.strokeStyle = '#334155'; // Dark slate steel frame
+        ctx.lineWidth = 8;
+        ctx.strokeRect(xStart, yStart, sW, sH);
+        
+        // Draw inner dividers
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 3;
+        for(let i = 1; i < sections; i++) {
+            let divX = xStart + 6 + i * sectionW;
+            ctx.beginPath();
+            ctx.moveTo(divX, yStart + 6);
+            ctx.lineTo(divX, yStart + sH - 6);
+            ctx.stroke();
+        }
+        
+        // Highlight active module selection visually (cyan frame)
+        if (designerCabinet.doorsOpen) {
+            let activeX = xStart + 6 + designerCabinet.activeModuleIdx * sectionW;
+            ctx.strokeStyle = "#0284c7"; // sky blue active highlight
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 3]);
+            ctx.strokeRect(activeX + 2, yStart + 8, sectionW - 4, sH - 16);
+            ctx.setLineDash([]);
+        }
+        
+        // Draw closed doors if configured
+        if (designerCabinet.hasDoors === 'yes' && designerCabinet.doorsOpen === false) {
+            let doorW = sW / sections;
+            let matKey = designerCabinet.material;
+            
+            let doorFillStyle = "rgba(241, 245, 249, 0.97)"; // lake default (Gloss White)
+            if (matKey === 'mdf') {
+                doorFillStyle = "#b45309"; // mdf lam warm brown wood
+            } else if (matKey === 'cam') {
+                doorFillStyle = "rgba(14, 165, 233, 0.28)"; // glassy blue transparent
+            }
+            
+            for (let i = 0; i < sections; i++) {
+                let dx = xStart + i * doorW;
+                
+                // Door panel filling
+                ctx.fillStyle = doorFillStyle;
+                ctx.fillRect(dx + 2, yStart + 2, doorW - 4, sH - 4);
+                
+                // MDF vertical grain pattern simulation
+                if (matKey === 'mdf') {
+                    ctx.strokeStyle = "#92400e";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(dx + doorW / 3, yStart + 5);
+                    ctx.lineTo(dx + doorW / 3, yStart + sH - 5);
+                    ctx.moveTo(dx + (doorW * 2) / 3, yStart + 15);
+                    ctx.lineTo(dx + (doorW * 2) / 3, yStart + sH - 15);
+                    ctx.stroke();
+                }
+                
+                // Door frame outline
+                ctx.strokeStyle = matKey === 'cam' ? 'rgba(2, 132, 199, 0.65)' : 'rgba(0,0,0,0.1)';
+                ctx.lineWidth = matKey === 'cam' ? 3 : 1.5;
+                ctx.strokeRect(dx + 2, yStart + 2, doorW - 4, sH - 4);
+                
+                // Glass glossy diagonal shines for Cam
+                if (matKey === 'cam') {
+                    ctx.strokeStyle = "rgba(255,255,255,0.45)";
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(dx + 12, yStart + 24);
+                    ctx.lineTo(dx + doorW - 12, yStart + 24 + doorW - 24);
+                    ctx.stroke();
+                }
+                
+                // Draw handle (avoiding gold handles, using black or chrome as requested)
+                if (designerCabinet.handle !== 'gizli' && matKey !== 'cam') {
+                    let handleX = dx + doorW / 2;
+                    let handleY = yStart + sH / 2 - 15;
+                    ctx.fillStyle = designerCabinet.handle === 'chrome' ? '#cbd5e1' : '#1e293b'; // chrome silver or black steel
+                    
+                    ctx.save();
+                    ctx.shadowColor = 'rgba(0,0,0,0.12)';
+                    ctx.shadowBlur = 3;
+                    ctx.shadowOffsetY = 1;
+                    
+                    ctx.fillRect(handleX - 2, handleY, 4, 30);
+                    ctx.restore();
+                }
+                
+                // Cam vertical profile handles
+                if (matKey === 'cam') {
+                    let handleX = dx + doorW - 5;
+                    if (i === sections - 1) handleX = dx + 5; // Left edge of the last door
+                    ctx.fillStyle = '#0f172a'; // Profile color black
+                    ctx.fillRect(handleX - 1.5, yStart + 15, 3, sH - 30);
+                }
+            }
+        }
+        
+        // Rulers
+        if (showDesignerRulers) {
+            ctx.strokeStyle = "#0284c7";
+            ctx.fillStyle = "#0284c7";
+            ctx.lineWidth = 1.5;
+            
+            // Height Ruler
+            let rulerX = xStart - 25;
+            ctx.beginPath(); ctx.moveTo(rulerX, yStart); ctx.lineTo(rulerX, yStart + sH); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(rulerX - 4, yStart + 6); ctx.lineTo(rulerX, yStart); ctx.lineTo(rulerX + 4, yStart + 6);
+            ctx.moveTo(rulerX - 4, yStart + sH - 6); ctx.lineTo(rulerX, yStart + sH); ctx.lineTo(rulerX + 4, yStart + sH - 6);
+            ctx.fill();
+            
+            ctx.save();
+            ctx.translate(rulerX - 12, yStart + sH/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.font = "bold 11px Outfit";
+            ctx.textAlign = "center";
+            ctx.fillText(h + " cm", 0, 0);
+            ctx.restore();
+            
+            // Width Ruler
+            let rulerY = yStart + sH + 20;
+            ctx.beginPath(); ctx.moveTo(xStart, rulerY); ctx.lineTo(xStart + sW, rulerY); ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(xStart + 6, rulerY - 4); ctx.lineTo(xStart, rulerY); ctx.lineTo(xStart + 6, rulerY + 4);
             ctx.moveTo(xStart + sW - 6, rulerY - 4); ctx.lineTo(xStart + sW, rulerY); ctx.lineTo(xStart + sW - 6, rulerY + 4);
             ctx.fill();
             
@@ -2189,6 +2408,7 @@
             ctx.textAlign = "center";
             ctx.fillText(w + " cm", xStart + sW/2, rulerY + 15);
         }
+        ctx.restore();
     }
 
 // Bind CAD functions and state variables to window for global access
@@ -2211,4 +2431,169 @@ window.drawHumanSilhouette = drawHumanSilhouette;
 window.drawDimensionPill = drawDimensionPill;
 window.drawHangingClothes = drawHangingClothes;
 window.drawSelfDesignerCabinet = drawSelfDesignerCabinet;
+
+function initCanvasZoomPan(canvasId, onDraw) {
+    let canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    let zoomKey = canvasId === 'dolapCanvas' ? 'dolapCanvasZoomScale' : 'designCanvasZoomScale';
+    let panXKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanX' : 'designCanvasPanX';
+    let panYKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanY' : 'designCanvasPanY';
+
+    window[zoomKey] = window[zoomKey] || 1.0;
+    window[panXKey] = window[panXKey] || 0;
+    window[panYKey] = window[panYKey] || 0;
+
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    // Mouse wheel zoom
+    canvas.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        let zoomIntensity = 0.08;
+        let mouseX = e.offsetX;
+        let mouseY = e.offsetY;
+
+        let oldScale = window[zoomKey];
+        let wheel = e.deltaY < 0 ? 1 : -1;
+        let newScale = oldScale + wheel * zoomIntensity * oldScale;
+
+        newScale = Math.max(0.4, Math.min(6.0, newScale));
+
+        window[panXKey] = mouseX - (mouseX - window[panXKey]) * (newScale / oldScale);
+        window[panYKey] = mouseY - (mouseY - window[panYKey]) * (newScale / oldScale);
+        window[zoomKey] = newScale;
+
+        onDraw();
+    }, { passive: false });
+
+    // Drag to Pan (Mouse)
+    canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.offsetX - window[panXKey];
+        startY = e.offsetY - window[panYKey];
+        canvas.style.cursor = 'grabbing';
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        window[panXKey] = e.offsetX - startX;
+        window[panYKey] = e.offsetY - startY;
+        onDraw();
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            canvas.style.cursor = 'default';
+        }
+    });
+
+    // Touch events for Mobile (Drag and Pinch)
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    let lastDist = 0;
+    let isPinching = false;
+
+    canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            isDragging = true;
+            let rect = canvas.getBoundingClientRect();
+            lastTouchX = e.touches[0].clientX - rect.left;
+            lastTouchY = e.touches[0].clientY - rect.top;
+            startX = lastTouchX - window[panXKey];
+            startY = lastTouchY - window[panYKey];
+        } else if (e.touches.length === 2) {
+            isPinching = true;
+            isDragging = false;
+            let dx = e.touches[0].clientX - e.touches[1].clientX;
+            let dy = e.touches[0].clientY - e.touches[1].clientY;
+            lastDist = Math.sqrt(dx * dx + dy * dy);
+        }
+    });
+
+    canvas.addEventListener('touchmove', (e) => {
+        let rect = canvas.getBoundingClientRect();
+        if (isDragging && e.touches.length === 1) {
+            e.preventDefault();
+            let touchX = e.touches[0].clientX - rect.left;
+            let touchY = e.touches[0].clientY - rect.top;
+            window[panXKey] = touchX - startX;
+            window[panYKey] = touchY - startY;
+            onDraw();
+        } else if (isPinching && e.touches.length === 2) {
+            e.preventDefault();
+            let dx = e.touches[0].clientX - e.touches[1].clientX;
+            let dy = e.touches[0].clientY - e.touches[1].clientY;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+
+            let midX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+            let midY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+
+            let oldScale = window[zoomKey];
+            let newScale = oldScale * (dist / lastDist);
+            newScale = Math.max(0.4, Math.min(6.0, newScale));
+
+            window[panXKey] = midX - (midX - window[panXKey]) * (newScale / oldScale);
+            window[panYKey] = midY - (midY - window[panYKey]) * (newScale / oldScale);
+            window[zoomKey] = newScale;
+
+            lastDist = dist;
+            onDraw();
+        }
+    });
+
+    canvas.addEventListener('touchend', () => {
+        isDragging = false;
+        isPinching = false;
+    });
+}
+
+function zoomCanvas(canvasId, factor) {
+    let canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    let zoomKey = canvasId === 'dolapCanvas' ? 'dolapCanvasZoomScale' : 'designCanvasZoomScale';
+    let panXKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanX' : 'designCanvasPanX';
+    let panYKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanY' : 'designCanvasPanY';
+
+    let oldScale = window[zoomKey] || 1.0;
+    let newScale = oldScale * factor;
+    newScale = Math.max(0.4, Math.min(6.0, newScale));
+
+    // Zoom relative to center of canvas
+    let midX = canvas.width / 2;
+    let midY = canvas.height / 2;
+    
+    window[panXKey] = midX - (midX - (window[panXKey] || 0)) * (newScale / oldScale);
+    window[panYKey] = midY - (midY - (window[panYKey] || 0)) * (newScale / oldScale);
+    window[zoomKey] = newScale;
+
+    if (canvasId === 'dolapCanvas') {
+        hesaplaVeCiz();
+    } else {
+        drawSelfDesignerCabinet();
+    }
+}
+
+function resetCanvasZoom(canvasId) {
+    let zoomKey = canvasId === 'dolapCanvas' ? 'dolapCanvasZoomScale' : 'designCanvasZoomScale';
+    let panXKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanX' : 'designCanvasPanX';
+    let panYKey = canvasId === 'dolapCanvas' ? 'dolapCanvasPanY' : 'designCanvasPanY';
+
+    window[zoomKey] = 1.0;
+    window[panXKey] = 0;
+    window[panYKey] = 0;
+
+    if (canvasId === 'dolapCanvas') {
+        hesaplaVeCiz();
+    } else {
+        drawSelfDesignerCabinet();
+    }
+}
+
+window.initCanvasZoomPan = initCanvasZoomPan;
+window.zoomCanvas = zoomCanvas;
+window.resetCanvasZoom = resetCanvasZoom;
 
