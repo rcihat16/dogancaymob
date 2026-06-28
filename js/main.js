@@ -3,7 +3,7 @@
 
 // State Variables
     // Default Price Matrix Configuration (Will sync with bulut Firestore dynamic data)
-    let dynamicPrices = {
+    var dynamicPrices = {
         lake: 4800,
         mdf: 3200,
         cam: 1200,
@@ -26,8 +26,8 @@
         kapaksiz: 6350
     };
 
-    let isPatron = false;
-    let previewMode = 'blueprint';
+    var isPatron = false;
+    var previewMode = 'blueprint';
 
     function setPreviewMode(mode) {
         previewMode = mode;
@@ -944,10 +944,10 @@
         });
     }
 
-    let editingDocId = null;
-    let editingGModules = null;
-    let editingGHandle = null;
-    let editingGLed = null;
+    var editingDocId = null;
+    var editingGModules = null;
+    var editingGHandle = null;
+    var editingGLed = null;
 
     function teklifDuzenle(docId) {
         db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
@@ -1496,7 +1496,7 @@
     // ==========================================
     // ⭐ MÜŞTERİ DEĞERLENDİRME & YORUM FONKSİYONLARI
     // ==========================================
-    let currentInteractiveRating = 0;
+    var currentInteractiveRating = 0;
 
 
 // Payments and Dialog Controllers
@@ -1556,8 +1556,8 @@
     // ==========================================
     // 💳 KISMİ ÖDEME (TAHSİLAT) TAKİP KODLARI
     // ==========================================
-    let activePaymentDocId = null;
-    let activePaymentDocData = null;
+    var activePaymentDocId = null;
+    var activePaymentDocData = null;
 
     function openPaymentModal(docId) {
         activePaymentDocId = docId;
@@ -1735,7 +1735,7 @@
     // 🎨 ETKİLEŞİMLİ MÜŞTERİ DOLAP TASARIM SİHİRBAZI (KENDİN TASARLA) MANTIĞI
     // =========================================================================
     
-    let designerCabinet = {
+    var designerCabinet = {
         width: 200,
         height: 220,
         material: 'lake',
@@ -1747,12 +1747,13 @@
         doorsOpen: false
     };
     
-    let designerActiveTab = 'dolap';
-    let showDesignerRulers = true;
-    let showDesignerSilhouette = true;
+    var designerActiveTab = 'dolap';
+    var showDesignerRulers = true;
+    var showDesignerSilhouette = true;
 
 
 // Setup global listener integrations on load
 document.addEventListener('DOMContentLoaded', () => {
     checkAutoLogin();
+    loadLoginReviews();
 });
