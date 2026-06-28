@@ -1,0 +1,1758 @@
+// ğŸš€ DOÄANÃ‡AY MOBÄ°LYA MAIN APPLICATION STATE & LOGIC
+// ==================================================
+
+// State Variables
+    // Default Price Matrix Configuration (Will sync with bulut Firestore dynamic data)
+    let dynamicPrices = {
+        lake: 4800,
+        mdf: 3200,
+        cam: 1200,
+        ark4: 450,
+        r_tele: 400,
+        r_tandem: 950,
+        r_blum: 1800,
+        samet: 80,
+        blum: 180,
+        montaj: 3500,
+        kesim_m2: 350,
+        
+        // New items defaults
+        tezgah_laminat: 1500,
+        tezgah_ahsap: 3000,
+        tezgah_granit: 5000,
+        tezgah_cimstone: 7500,
+        vestiyer_m2: 3600,
+        banyo_m2: 4000,
+        kapaksiz: 6350
+    };
+
+    let isPatron = false;
+    let previewMode = 'blueprint';
+
+    function setPreviewMode(mode) {
+        previewMode = mode;
+        let btnBlueprint = document.getElementById('btnModeBlueprint');
+        let btnLux = document.getElementById('btnModeLux');
+        if (btnBlueprint && btnLux) {
+            if (mode === 'lux') {
+                btnBlueprint.classList.remove('active');
+                btnLux.classList.add('active');
+            } else {
+                btnBlueprint.classList.add('active');
+                btnLux.classList.remove('active');
+            }
+        }
+        hesaplaVeCiz();
+    }
+
+    function switchLoginTab(tab) {
+        let btnStaff = document.getElementById('tabStaffLogin');
+        let btnCustomer = document.getElementById('tabCustomerTrack');
+        let btnDesign = document.getElementById('tabSelfDesign');
+        let staffGroup = document.getElementById('staffLoginGroup');
+        let customerGroup = document.getElementById('customerSearchGroup');
+        
+        if (tab === 'staff') {
+            btnStaff.classList.add('active');
+            btnCustomer.classList.remove('active');
+            if (btnDesign) btnDesign.classList.remove('active');
+            staffGroup.style.display = 'flex';
+            customerGroup.style.display = 'none';
+        } else if (tab === 'customer') {
+            btnStaff.classList.remove('active');
+            btnCustomer.classList.add('active');
+            if (btnDesign) btnDesign.classList.remove('active');
+            staffGroup.style.display = 'none';
+            customerGroup.style.display = 'flex';
+        } else if (tab === 'design') {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('selfDesignScreen').style.display = 'block';
+            initDesignerCabinet();
+        }
+    }
+
+    // ğŸ’¾ AUTO SESSION LOGIN ON LOAD
+    window.onload = function() {
+        // Listen for changes in Material Prices from Firestore globally
+        db.collection("ayarlar").doc("malzeme_fiyatlari").onSnapshot((doc) => {
+            if(doc.exists) {
+                dynamicPrices = { ...dynamicPrices, ...doc.data() };
+                fiyatInputlariniDoldur();
+            }
+            if (document.getElementById('appScreen').style.display === 'block') {
+                hesaplaVeCiz();
+            }
+            if (document.getElementById('selfDesignScreen').style.display === 'block') {
+                updateDesignerCabinet();
+            }
+        });
+
+        let urlParams = new URLSearchParams(window.location.search);
+        let takipDocId = urlParams.get('takip');
+        
+        if (takipDocId) {
+            db.collection("ortak_teklifler").doc(takipDocId).get().then((doc) => {
+                if (doc.exists) {
+                    loadOrderTracking(doc.id, doc.data());
+                } else {
+                    alert("GirdiÄŸiniz Takip Linki geÃ§ersiz veya sipariÅŸ bulunamadÄ±!");
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    checkAutoLogin();
+                }
+            }).catch(err => {
+                console.error("Takip hatasÄ±:", err);
+                checkAutoLogin();
+            });
+        } else {
+            checkAutoLogin();
+        }
+        
+        // Add 3 default empty rows to Cut Optimization table
+        optYasarYeniSatir();
+        optYasarYeniSatir();
+        optYasarYeniSatir();
+    };
+
+    function checkAutoLogin() {
+        let kayitliUser = localStorage.getItem('dogancay_user');
+        let kayitliPass = localStorage.getItem('dogancay_pass');
+        
+        if (kayitliUser && kayitliPass) {
+            document.getElementById('loginUser').value = kayitliUser;
+            document.getElementById('loginPass').value = kayitliPass;
+            girisYap(true);
+        }
+    }
+
+    function girisYap(isAuto) {
+        if (isAuto === undefined || isAuto === null) { isAuto = false; }
+        
+        let user = document.getElementById('loginUser').value.trim();
+        let pass = document.getElementById('loginPass').value.trim();
+        
+        if((user === "ortak" && pass === "5566") || (user === "patron" && pass === "1234")) {
+            localStorage.setItem('dogancay_user', user);
+            localStorage.setItem('dogancay_pass', pass);
+
+            document.getElementById('loginScreen').style.display = "none";
+            document.getElementById('appScreen').style.display = "block";
+            
+            // Set User Profiles Visuals
+            document.getElementById('avatarName').innerText = user.charAt(0).toUpperCase();
+            document.getElementById('profileName').innerText = user === "patron" ? "Patron (YÃ¶netim)" : "Ortak GiriÅŸi";
+            document.getElementById('profileRole').innerText = "DoÄŸanÃ§ay Mobilya Yetkilisi";
+            let mProfile = document.getElementById('mobileProfileName');
+            if (mProfile) mProfile.innerText = user === "patron" ? "Patron (YÃ¶netim)" : "Ortak GiriÅŸi";
+
+            if(user === "patron") {
+                isPatron = true;
+                // Show admin views in Nav Menu
+                document.getElementById('navMuhasebe').style.display = "flex";
+                document.getElementById('navAyarlar').style.display = "flex";
+                document.getElementById('mNavMuhasebe').style.display = "flex";
+                document.getElementById('mNavAyarlar').style.display = "flex";
+                muhasebeHesapla();
+            }
+            
+            // Listen for changes in Material Prices is handled globally on page load
+            hesaplaVeCiz();
+
+            // Run Live updates for Tracking Pool list
+            canliGezgin();
+            initErpReviewsListener();
+        } else {
+            if(isAuto === false) { alert("HatalÄ± kullanÄ±cÄ± adÄ± veya ÅŸifre!"); }
+        }
+    }
+
+    function cikisYap() {
+        if(confirm("Sistem oturumunu kapatmak istediÄŸinize emin misiniz?")) {
+            localStorage.removeItem('dogancay_user');
+            localStorage.removeItem('dogancay_pass');
+            location.reload();
+        }
+    }
+
+    function switchTab(viewId, buttonEl) {
+        // Close payments modal when switching tabs
+        if (typeof closePaymentModal === 'function') {
+            closePaymentModal();
+        }
+
+        // Toggle view container visibilities
+        document.querySelectorAll('.view-section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(viewId).classList.add('active');
+
+        // Toggle nav items highlight styles
+        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.bottom-nav-item').forEach(btn => btn.classList.remove('active'));
+
+        // Handle active indicators
+        if(buttonEl) {
+            buttonEl.classList.add('active');
+        }
+
+        // Trigger redraw if returning to calculator screen
+        if(viewId === 'teklifView') {
+            setTimeout(hesaplaVeCiz, 50);
+        }
+    }
+
+    function selectFurnitureType(type, element) {
+        document.getElementById('mobilyaTuru').value = type;
+        
+        // Toggle selection visuals
+        document.querySelectorAll('.type-card').forEach(card => card.classList.remove('active'));
+        if(element) {
+            element.classList.add('active');
+        } else {
+            document.querySelectorAll('.type-card').forEach(card => {
+                let clk = card.getAttribute('onclick');
+                if(clk && clk.includes("'" + type + "'")) {
+                    card.classList.add('active');
+                }
+            });
+        }
+
+        // Toggle input segments
+        document.querySelectorAll('.furniture-form-group').forEach(fg => fg.style.display = 'none');
+        
+        if (type === 'gardÄ±rop') {
+            document.getElementById('formGardÄ±rop').style.display = 'block';
+        } else if (type === 'mutfak') {
+            document.getElementById('formMutfak').style.display = 'block';
+        } else if (type === 'vestiyer') {
+            document.getElementById('formVestiyer').style.display = 'block';
+        } else if (type === 'banyo') {
+            document.getElementById('formBanyo').style.display = 'block';
+        } else if (type === 'ozel') {
+            document.getElementById('formOzel').style.display = 'block';
+            adjustOzelMethodLabel();
+        } else if (type === 'udolap') {
+            document.getElementById('formUDolap').style.display = 'block';
+        }
+
+        hesaplaVeCiz();
+    }
+
+    function adjustOzelMethodLabel() {
+        let method = document.getElementById('o_method').value;
+        let lbl = document.getElementById('lblOzelQty');
+        if(method === 'm2') {
+            lbl.innerText = "Ã–lÃ§Ã¼ AlanÄ± (mÂ²)";
+        } else if(method === 'mt') {
+            lbl.innerText = "Uzunluk (MetretÃ¼l)";
+        } else {
+            lbl.innerText = "Miktar / Adet";
+        }
+    }
+
+    function fiyatInputlariniDoldur() {
+        try {
+            // Levha
+            document.getElementById('p_lake').value = dynamicPrices.lake;
+            document.getElementById('p_mdf').value = dynamicPrices.mdf;
+            document.getElementById('p_cam').value = dynamicPrices.cam;
+            document.getElementById('p_ark4').value = dynamicPrices.ark4;
+            document.getElementById('p_kapaksiz').value = dynamicPrices.kapaksiz || 6350;
+            
+            // Ray
+            document.getElementById('p_r_tele').value = dynamicPrices.r_tele;
+            document.getElementById('p_r_tandem').value = dynamicPrices.r_tandem;
+            document.getElementById('p_r_blum').value = dynamicPrices.r_blum;
+            
+            // MenteÅŸe
+            document.getElementById('p_samet').value = dynamicPrices.samet;
+            document.getElementById('p_blum').value = dynamicPrices.blum;
+            
+            // Mutfak TezgahÄ±
+            document.getElementById('p_t_laminat').value = dynamicPrices.tezgah_laminat || 1500;
+            document.getElementById('p_t_ahsap').value = dynamicPrices.tezgah_ahsap || 3000;
+            document.getElementById('p_t_granit').value = dynamicPrices.tezgah_granit || 5000;
+            document.getElementById('p_t_cimstone').value = dynamicPrices.tezgah_cimstone || 7500;
+            
+            // Vestiyer & Banyo
+            document.getElementById('p_vestiyer').value = dynamicPrices.vestiyer_m2 || 3600;
+            document.getElementById('p_banyo').value = dynamicPrices.banyo_m2 || 4000;
+            
+            // AtÃ¶lye
+            document.getElementById('p_kesim_m2').value = dynamicPrices.kesim_m2 || 350;
+            document.getElementById('p_montaj').value = dynamicPrices.montaj || 3500;
+        } catch(e) {
+            console.error("Fiyat doldurma hatasÄ±: ", e);
+        }
+    }
+
+    function fiyatlariBulutaKaydet() {
+        try {
+            db.collection("ayarlar").doc("malzeme_fiyatlari").set({
+                lake: parseFloat(document.getElementById('p_lake').value),
+                mdf: parseFloat(document.getElementById('p_mdf').value),
+                cam: parseFloat(document.getElementById('p_cam').value),
+                ark4: parseFloat(document.getElementById('p_ark4').value),
+                kapaksiz: parseFloat(document.getElementById('p_kapaksiz').value),
+                
+                r_tele: parseFloat(document.getElementById('p_r_tele').value),
+                r_tandem: parseFloat(document.getElementById('p_r_tandem').value),
+                r_blum: parseFloat(document.getElementById('p_r_blum').value),
+                
+                samet: parseFloat(document.getElementById('p_samet').value),
+                blum: parseFloat(document.getElementById('p_blum').value),
+                
+                tezgah_laminat: parseFloat(document.getElementById('p_t_laminat').value),
+                tezgah_ahsap: parseFloat(document.getElementById('p_t_ahsap').value),
+                tezgah_granit: parseFloat(document.getElementById('p_t_granit').value),
+                tezgah_cimstone: parseFloat(document.getElementById('p_t_cimstone').value),
+                
+                vestiyer_m2: parseFloat(document.getElementById('p_vestiyer').value),
+                banyo_m2: parseFloat(document.getElementById('p_banyo').value),
+                
+                kesim_m2: parseFloat(document.getElementById('p_kesim_m2').value),
+                montaj: parseFloat(document.getElementById('p_montaj').value)
+            }).then(() => {
+                alert("Yeni fiyat listesi baÅŸarÄ±yla buluta kilitlendi!");
+                switchTab('teklifView');
+            }).catch(err => {
+                alert("Kaydetme baÅŸarÄ±sÄ±z (Firebase HatasÄ±): " + err.message);
+            });
+        } catch(e) {
+            alert("Sistem HatasÄ± (JS Exception): " + e.message);
+        }
+    }
+
+    // ğŸ¨ DÄ°NAMÄ°K DETAY METNÄ° DERLEYÄ°CÄ°
+    function getSpecificationText() {
+        let type = document.getElementById('mobilyaTuru').value;
+        let origText = "";
+
+        if(type === 'gardÄ±rop') {
+            let w = parseFloat(document.getElementById('g_width').value) || 0;
+            let h = parseFloat(document.getElementById('g_height').value) || 0;
+            let d = parseInt(document.getElementById('g_doors').value) || 0;
+            let dr = parseInt(document.getElementById('g_drawers').value) || 0;
+            let mat = document.getElementById('g_material').value.toUpperCase();
+            let ray = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
+            let bck = document.getElementById('g_back').options[document.getElementById('g_back').selectedIndex].text;
+            origText = `GardÄ±rop (${w.toFixed(2)}x${h.toFixed(2)}m) - ${d} Kapak (${mat}) - ${dr} Ã‡ekmece (${ray}) - ArkalÄ±k: ${bck}`;
+        } 
+        else if(type === 'mutfak') {
+            let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
+            let ll = parseFloat(document.getElementById('k_lower_len').value) || 0;
+            let mat = document.getElementById('k_material').value.toUpperCase();
+            let dr = parseInt(document.getElementById('k_drawers').value) || 0;
+            let ray = document.getElementById('k_ray').options[document.getElementById('k_ray').selectedIndex].text;
+            let count = document.getElementById('k_countertop').options[document.getElementById('k_countertop').selectedIndex].text;
+            origText = `Mutfak DolabÄ± (Alt: ${ll.toFixed(2)}m / Ãœst: ${ul.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece (${ray}) - Tezgah: ${count}`;
+        }
+        else if(type === 'vestiyer') {
+            let w = parseFloat(document.getElementById('v_width').value) || 0;
+            let h = parseFloat(document.getElementById('v_height').value) || 0;
+            let mat = document.getElementById('v_material').value.toUpperCase();
+            let dr = parseInt(document.getElementById('v_drawers').value) || 0;
+            let hooks = parseInt(document.getElementById('v_hooks').value) || 0;
+            let mirror = document.getElementById('v_mirror').options[document.getElementById('v_mirror').selectedIndex].text;
+            origText = `Vestiyer (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece - AskÄ± KancasÄ±: ${hooks} Adet - Ayna SÄ±nÄ±fÄ±: ${mirror}`;
+        }
+        else if(type === 'banyo') {
+            let w = parseFloat(document.getElementById('b_width').value) || 0;
+            let h = parseFloat(document.getElementById('b_height').value) || 0;
+            let mat = document.getElementById('b_material').value.toUpperCase();
+            let dr = parseInt(document.getElementById('b_drawers').value) || 0;
+            let ext = document.getElementById('b_extras').options[document.getElementById('b_extras').selectedIndex].text;
+            origText = `Banyo DolabÄ± (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece - Ekstra ModÃ¼l: ${ext}`;
+        }
+        else if(type === 'ozel') {
+            let desc = document.getElementById('o_desc').value.trim() || "Ã–zel Mobilya Projesi";
+            let method = document.getElementById('o_method').options[document.getElementById('o_method').selectedIndex].text;
+            let qty = parseFloat(document.getElementById('o_qty').value) || 0;
+            origText = `Ã–zel TasarÄ±m: ${desc} (Hesap: ${qty} x ${method})`;
+        }
+        else if(type === 'udolap') {
+            let left = parseFloat(document.getElementById('u_left').value) || 0;
+            let back = parseFloat(document.getElementById('u_back').value) || 0;
+            let right = parseFloat(document.getElementById('u_right').value) || 0;
+            let h = parseFloat(document.getElementById('u_height').value) || 0;
+            let dr = parseInt(document.getElementById('u_drawers').value) || 0;
+            let mat = document.getElementById('u_material').options[document.getElementById('u_material').selectedIndex].text;
+            let ray = document.getElementById('u_ray').options[document.getElementById('u_ray').selectedIndex].text;
+            let bck = document.getElementById('u_back_panel').options[document.getElementById('u_back_panel').selectedIndex].text;
+            origText = `U Dolap (Sol: ${left.toFixed(2)}m, Arka: ${back.toFixed(2)}m, SaÄŸ: ${right.toFixed(2)}m, Boy: ${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece (${ray}) - ArkalÄ±k: ${bck}`;
+        }
+
+        let useSheetCosting = document.getElementById('chkUseSheetCosting') && document.getElementById('chkUseSheetCosting').checked;
+        if (useSheetCosting && type !== 'ozel') {
+            let parts = getPartsListFromCurrentOffer();
+            let gSheets = calculateSheetsDryRun(parts);
+            
+            let w = 2800; let h = 2100;
+            let sizeSelect = document.getElementById('opt_stock_size') ? document.getElementById('opt_stock_size').value : '2800x2100';
+            if(sizeSelect === '2800x2100') { w = 2800; h = 2100; }
+            else if(sizeSelect === '3660x1830') { w = 3660; h = 1830; }
+            else if(document.getElementById('opt_stock_w')) {
+                w = parseInt(document.getElementById('opt_stock_w').value) || 2800;
+                h = parseInt(document.getElementById('opt_stock_h').value) || 2100;
+            }
+            let sheetArea = (w * h) / 1000000;
+            
+            let calcM2 = 0;
+            if (type === 'gardÄ±rop') {
+                let gw = parseFloat(document.getElementById('g_width').value) || 0;
+                let gh = parseFloat(document.getElementById('g_height').value) || 0;
+                calcM2 = gw * gh;
+            } else if (type === 'udolap') {
+                let left = parseFloat(document.getElementById('u_left').value) || 0;
+                let back = parseFloat(document.getElementById('u_back').value) || 0;
+                let right = parseFloat(document.getElementById('u_right').value) || 0;
+                let uh = parseFloat(document.getElementById('u_height').value) || 0;
+                calcM2 = (left + back + right) * uh;
+            } else if (type === 'mutfak') {
+                let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
+                calcM2 = ul * 0.8;
+            } else if (type === 'vestiyer') {
+                calcM2 = (parseFloat(document.getElementById('v_width').value) || 0) * (parseFloat(document.getElementById('v_height').value) || 0);
+            } else if (type === 'banyo') {
+                calcM2 = (parseFloat(document.getElementById('b_width').value) || 0) * (parseFloat(document.getElementById('b_height').value) || 0);
+            }
+            
+            let aSheets = Math.ceil(calcM2 / sheetArea);
+            origText += ` [Plaka BazlÄ±: ${gSheets} Plaka GÃ¶vde + ${aSheets} Plaka ArkalÄ±k (${w}x${h}mm)]`;
+        }
+
+        return origText;
+    }
+
+    // ==========================================
+    // ğŸ¨ LÃœKS 2D Ã‡Ä°ZÄ°M VE HESAPLAMA YARDIMCILARI
+    // ==========================================
+
+
+// Accounting and Save Actions
+    function kaydetSistem() {
+        let name = document.getElementById('customerName').value.trim();
+        let phone = document.getElementById('customerPhone').value.trim();
+        let deliveryDateVal = document.getElementById('customerDeliveryDate').value;
+        if (!deliveryDateVal) {
+            let targetDate = new Date();
+            targetDate.setDate(targetDate.getDate() + 25);
+            let year = targetDate.getFullYear();
+            let month = String(targetDate.getMonth() + 1).padStart(2, '0');
+            let day = String(targetDate.getDate()).padStart(2, '0');
+            deliveryDateVal = `${year}-${month}-${day}`;
+        }
+        if(!name) { alert("LÃ¼tfen mÃ¼ÅŸteri adÄ±nÄ± girin!"); return; }
+        
+        let v = hesaplaVeCiz(); 
+        let staff = document.getElementById('staffName').value;
+        
+        let selectRay = "Ray Yok";
+        if(v.type === 'gardÄ±rop') selectRay = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
+        if(v.type === 'mutfak') selectRay = document.getElementById('k_ray').options[document.getElementById('k_ray').selectedIndex].text;
+        if(v.type === 'vestiyer') selectRay = document.getElementById('v_ray').options[document.getElementById('v_ray').selectedIndex].text;
+        if(v.type === 'banyo') selectRay = document.getElementById('b_ray').options[document.getElementById('b_ray').selectedIndex].text;
+        if(v.type === 'udolap') selectRay = document.getElementById('u_ray').options[document.getElementById('u_ray').selectedIndex].text;
+
+        let matName = "Malzeme Belirtilmedi";
+        if(v.type === 'gardÄ±rop') matName = document.getElementById('g_material').options[document.getElementById('g_material').selectedIndex].text;
+        if(v.type === 'mutfak') matName = document.getElementById('k_material').options[document.getElementById('k_material').selectedIndex].text;
+        if(v.type === 'vestiyer') matName = document.getElementById('v_material').options[document.getElementById('v_material').selectedIndex].text;
+        if(v.type === 'banyo') matName = document.getElementById('b_material').options[document.getElementById('b_material').selectedIndex].text;
+        if(v.type === 'udolap') matName = document.getElementById('u_material').options[document.getElementById('u_material').selectedIndex].text;
+
+        // Compile inputState for edit restoration
+        let inputState = {};
+        if(v.type === 'gardÄ±rop') {
+            inputState = {
+                g_width: parseFloat(document.getElementById('g_width').value) || 0,
+                g_height: parseFloat(document.getElementById('g_height').value) || 0,
+                g_doors: parseInt(document.getElementById('g_doors').value) || 0,
+                g_drawers: parseInt(document.getElementById('g_drawers').value) || 0,
+                g_ray: document.getElementById('g_ray').value,
+                g_material: document.getElementById('g_material').value,
+                g_back: document.getElementById('g_back').value,
+                g_hinges: parseInt(document.getElementById('g_hinges').value) || 0,
+                g_hinge_type: document.getElementById('g_hinge_type').value,
+                g_advance: parseFloat(document.getElementById('g_advance').value) || 0
+            };
+            if (editingGModules) {
+                inputState.g_modules = editingGModules;
+            }
+            if (editingGHandle) {
+                inputState.g_handle = editingGHandle;
+            }
+            if (editingGLed) {
+                inputState.g_led = editingGLed;
+            }
+        } else if(v.type === 'mutfak') {
+            inputState = {
+                k_lower_len: parseFloat(document.getElementById('k_lower_len').value) || 0,
+                k_upper_len: parseFloat(document.getElementById('k_upper_len').value) || 0,
+                k_material: document.getElementById('k_material').value,
+                k_drawers: parseInt(document.getElementById('k_drawers').value) || 0,
+                k_ray: document.getElementById('k_ray').value,
+                k_hinges: parseInt(document.getElementById('k_hinges').value) || 0,
+                k_hinge_type: document.getElementById('k_hinge_type').value,
+                k_countertop: document.getElementById('k_countertop').value,
+                k_advance: parseFloat(document.getElementById('k_advance').value) || 0
+            };
+        } else if(v.type === 'vestiyer') {
+            inputState = {
+                v_width: parseFloat(document.getElementById('v_width').value) || 0,
+                v_height: parseFloat(document.getElementById('v_height').value) || 0,
+                v_material: document.getElementById('v_material').value,
+                v_drawers: parseInt(document.getElementById('v_drawers').value) || 0,
+                v_ray: document.getElementById('v_ray').value,
+                v_hooks: parseInt(document.getElementById('v_hooks').value) || 0,
+                v_hinges: parseInt(document.getElementById('v_hinges').value) || 0,
+                v_hinge_type: document.getElementById('v_hinge_type').value,
+                v_mirror: document.getElementById('v_mirror').value,
+                v_advance: parseFloat(document.getElementById('v_advance').value) || 0
+            };
+        } else if(v.type === 'banyo') {
+            inputState = {
+                b_width: parseFloat(document.getElementById('b_width').value) || 0,
+                b_height: parseFloat(document.getElementById('b_height').value) || 0,
+                b_material: document.getElementById('b_material').value,
+                b_drawers: parseInt(document.getElementById('b_drawers').value) || 0,
+                b_ray: document.getElementById('b_ray').value,
+                b_hinges: parseInt(document.getElementById('b_hinges').value) || 0,
+                b_extras: document.getElementById('b_extras').value,
+                b_advance: parseFloat(document.getElementById('b_advance').value) || 0
+            };
+        } else if(v.type === 'ozel') {
+            inputState = {
+                o_desc: document.getElementById('o_desc').value,
+                o_method: document.getElementById('o_method').value,
+                o_qty: parseFloat(document.getElementById('o_qty').value) || 0,
+                o_unit_price: parseFloat(document.getElementById('o_unit_price').value) || 0,
+                o_extras: parseFloat(document.getElementById('o_extras').value) || 0,
+                o_advance: parseFloat(document.getElementById('o_advance').value) || 0
+            };
+        } else if(v.type === 'udolap') {
+            inputState = {
+                u_left: parseFloat(document.getElementById('u_left').value) || 0,
+                u_back: parseFloat(document.getElementById('u_back').value) || 0,
+                u_right: parseFloat(document.getElementById('u_right').value) || 0,
+                u_height: parseFloat(document.getElementById('u_height').value) || 0,
+                u_drawers: parseInt(document.getElementById('u_drawers').value) || 0,
+                u_ray: document.getElementById('u_ray').value,
+                u_material: document.getElementById('u_material').value,
+                u_back_panel: document.getElementById('u_back_panel').value,
+                u_hinges: parseInt(document.getElementById('u_hinges').value) || 0,
+                u_hinge_type: document.getElementById('u_hinge_type').value,
+                u_advance: parseFloat(document.getElementById('u_advance').value) || 0
+            };
+        }
+
+        inputState.customerPhone = phone;
+        inputState.customerDeliveryDate = deliveryDateVal;
+        inputState.chkUseSheetCosting = document.getElementById('chkUseSheetCosting').checked;
+
+        let savePromise;
+        if(editingDocId) {
+            savePromise = db.collection("ortak_teklifler").doc(editingDocId).get().then((doc) => {
+                if(doc.exists) {
+                    let docData = doc.data();
+                    let odemeler = docData.odemeler || [];
+                    
+                    if(odemeler.length === 0) {
+                        if (v.kaparo > 0) {
+                            odemeler = [{
+                                tutar: v.kaparo,
+                                aciklama: "Ä°lk Kaparo",
+                                tarih: docData.tarih || new Date().toLocaleDateString('tr-TR')
+                            }];
+                        }
+                    } else {
+                        // Ä°lk Ã¶deme kaydÄ±nÄ± formda dÃ¼zenlenen yeni kaparo deÄŸerine gÃ¶re gÃ¼ncelle
+                        odemeler[0].tutar = v.kaparo;
+                    }
+                    
+                    let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
+                    let kalanVal = v.toplam - totalAlinan;
+                    
+                    return db.collection("ortak_teklifler").doc(editingDocId).update({
+                        musteri: name,
+                        telefon: phone,
+                        tahminiTeslimat: deliveryDateVal,
+                        personel: staff,
+                        m2: v.m2.toFixed(2),
+                        kapakAdet: v.kapakAdet,
+                        kapak: matName,
+                        ray: selectRay,
+                        toplamNum: v.toplam,
+                        kaparoNum: totalAlinan,
+                        kalanNum: kalanVal,
+                        toplam: v.toplam.toLocaleString('tr-TR') + " â‚º",
+                        kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
+                        kalan: kalanVal.toLocaleString('tr-TR') + " â‚º",
+                        mobilyaTuru: v.type,
+                        detaylar: v.detailsText,
+                        inputState: inputState,
+                        odemeler: odemeler
+                    });
+                } else {
+                    throw new Error("SipariÅŸ bulunamadÄ±!");
+                }
+            });
+        } else {
+            let odemeler = [];
+            if(v.kaparo > 0) {
+                odemeler = [{
+                    tutar: v.kaparo,
+                    aciklama: "Ä°lk Kaparo",
+                    tarih: new Date().toLocaleDateString('tr-TR')
+                }];
+            }
+            
+            savePromise = db.collection("ortak_teklifler").add({
+                musteri: name,
+                telefon: phone,
+                tahminiTeslimat: deliveryDateVal,
+                personel: staff,
+                durum: "Teklif Verildi",
+                tarih: new Date().toLocaleDateString('tr-TR'),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                m2: v.m2.toFixed(2),
+                kapakAdet: v.kapakAdet,
+                kapak: matName,
+                ray: selectRay,
+                toplamNum: v.toplam,
+                kaparoNum: v.kaparo,
+                kalanNum: v.kalan,
+                toplam: v.toplam.toLocaleString('tr-TR') + " â‚º",
+                kaparo: v.kaparo.toLocaleString('tr-TR') + " â‚º",
+                kalan: v.kalan.toLocaleString('tr-TR') + " â‚º",
+                mobilyaTuru: v.type,
+                detaylar: v.detailsText,
+                inputState: inputState,
+                odemeler: odemeler
+            });
+        }
+
+        savePromise.then(() => {
+            alert(editingDocId ? "SipariÅŸ baÅŸarÄ±yla gÃ¼ncellendi!" : "Teklif baÅŸarÄ±yla bulut havuzuna kaydedildi!");
+            duzenlemeyiIptalEt(true);
+            switchTab('takipView');
+        }).catch(err => {
+            alert("KayÄ±t hatasÄ±: " + err.message);
+        });
+    }
+
+    // ğŸ’¸ YENÄ° GÄ°DER KAYDETME
+    function giderKaydet() {
+        let tur = document.getElementById('expType').value;
+        let tutar = parseFloat(document.getElementById('expAmount').value) || 0;
+        let desc = document.getElementById('expDesc').value.trim();
+        
+        if(tutar <= 0) { alert("LÃ¼tfen geÃ§erli bir tutar girin!"); return; }
+
+        db.collection("giderler").add({
+            tur: tur,
+            tutar: tutar,
+            aciklama: desc,
+            tarih: new Date().toLocaleDateString('tr-TR'),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            alert("Gider baÅŸarÄ±yla kasaya iÅŸlendi!");
+            document.getElementById('expAmount').value = "";
+            document.getElementById('expDesc').value = "";
+        }).catch(err => {
+            alert("Gider kaydÄ± hatasÄ±: " + err.message);
+        });
+    }
+
+    // ğŸ“Š MUHASEBE RAPOR HESAPLAYICISI
+    function muhasebeHesapla() {
+        db.collection("ortak_teklifler").onSnapshot((snapshot) => {
+            let totalCiro = 0; 
+            let totalAlacak = 0;
+            snapshot.forEach((doc) => {
+                let data = doc.data();
+                // We count ciro for any confirmed order (Imalat, Montaj, Tamamlandi)
+                if(data.durum !== "Teklif Verildi") {
+                    totalCiro += (data.toplamNum || 0);
+                    totalAlacak += (data.kalanNum || 0);
+                }
+            });
+
+            db.collection("giderler").onSnapshot((gSnapshot) => {
+                let totalGider = 0;
+                let giderDiv = document.getElementById('giderList');
+                giderDiv.innerHTML = "";
+
+                gSnapshot.forEach((gDoc) => {
+                    let g = gDoc.data();
+                    totalGider += g.tutar;
+
+                    let gItem = document.createElement('div');
+                    gItem.className = "expense-item";
+                    gItem.innerHTML = `
+                        <div class="expense-item-info">
+                            <span class="expense-item-desc">${g.aciklama || g.tur}</span>
+                            <span class="expense-item-cat">${g.tur} (${g.tarih})</span>
+                        </div>
+                        <div class="expense-item-cost">-${g.tutar.toLocaleString('tr-TR')} â‚º</div>
+                        ${isPatron ? `<button class="btn-delete-item" title="Sil" onclick="giderSil('${gDoc.id}')">
+                            <svg style="width:16px; height:16px; fill:currentColor;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        </button>` : ''}
+                    `;
+                    giderDiv.appendChild(gItem);
+                });
+
+                if(gSnapshot.empty) {
+                    giderDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px 0;">Gider kaydÄ± bulunmuyor.</div>';
+                }
+
+                let netKar = totalCiro - totalGider;
+                
+                // Write numbers in UI
+                document.getElementById('m_ciro').innerText = totalCiro.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('m_gider').innerText = totalGider.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('m_kar').innerText = netKar.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('m_alacak').innerText = totalAlacak.toLocaleString('tr-TR') + " â‚º";
+
+                // Visual Bars and Percentages
+                let totalPool = totalCiro > 0 ? totalCiro : (totalGider > 0 ? totalGider : 1);
+                let expPercent = Math.min(100, Math.round((totalGider / totalPool) * 100));
+                let profitPercent = Math.max(0, 100 - expPercent);
+                
+                if (totalCiro === 0 && totalGider > 0) {
+                    expPercent = 100;
+                    profitPercent = 0;
+                }
+
+                document.getElementById('giderOran').innerText = expPercent + "%";
+                document.getElementById('karOran').innerText = profitPercent + "%";
+                document.getElementById('barGider').style.width = expPercent + "%";
+                document.getElementById('barKar').style.width = profitPercent + "%";
+            });
+        });
+    }
+
+    // ğŸŒŸ MÃœÅTERÄ° YORUMLARI ERP LÄ°STENER'I
+
+// General Actions, Print and WhatsApp
+    function canliGezgin() {
+        let search = document.getElementById('searchClient').value.toLowerCase().trim();
+        let statusFilter = document.getElementById('filterStatus').value;
+
+        db.collection("ortak_teklifler").orderBy("timestamp", "desc").onSnapshot((querySnapshot) => {
+            let listeDiv = document.getElementById('archiveList'); 
+            listeDiv.innerHTML = "";
+            let counter = 0;
+
+            querySnapshot.forEach((doc) => {
+                let k = doc.data();
+                
+                // Search Filters
+                if(search && !k.musteri.toLowerCase().includes(search)) return;
+                if(statusFilter && k.durum !== statusFilter) return;
+
+                counter++;
+
+                let item = document.createElement('div');
+                let cssClass = "status-teklif";
+                let badgeClass = "badge-teklif";
+                
+                if(k.durum === "OnaylandÄ± / Ä°malatta") { cssClass = "status-imalat"; badgeClass = "badge-imalat"; }
+                else if(k.durum === "Montaj AÅŸamasÄ±nda") { cssClass = "status-montaj"; badgeClass = "badge-montaj"; }
+                else if(k.durum === "TamamlandÄ±") { cssClass = "status-tamam"; badgeClass = "badge-tamam"; }
+
+                // Fallback for old database rows missing detailed descriptions
+                let specsText = k.detaylar || `${k.m2} mÂ² / ${k.kapakAdet} Kapak (${k.kapak || 'Lake'}) - Ray: ${k.ray || 'Klasik'}`;
+                
+                // Clean short variables for WhatsApp sharing from list
+                let waMusteri = k.musteri;
+                let waSpec = specsText;
+                let waToplam = k.toplam;
+                let waKaparo = k.kaparo;
+                let waKalan = k.kalan;
+                let trackingLink = window.location.origin + window.location.pathname + "?takip=" + doc.id;
+                let shareMsg = `*DOÄANÃ‡AY MOBÄ°LYA*\n-----------------------------\n*MÃ¼ÅŸteri:* ${waMusteri}\n*SipariÅŸ DetayÄ±:* ${waSpec}\n\n*Ã–deme Ã–zeti:*\nğŸ’µ *Toplam:* ${waToplam}\nğŸ’° *Kaparo:* ${waKaparo}\nâ³ *Kalan Bakiye:* *${waKalan}*\n\n*CanlÄ± SipariÅŸ Takip Linki:*\n${trackingLink}\n\nSipariÅŸ durumunu sistemimizden canlÄ± takip edebilirsiniz. HayÄ±rlÄ± gÃ¼nler dileriz.`;
+
+                item.className = `archive-card ${cssClass}`;
+                item.innerHTML = `
+                    <div class="archive-top">
+                        <span class="archive-client">ğŸ‘¤ ${k.musteri}</span>
+                        <span class="archive-date">ğŸ“… ${k.tarih}</span>
+                    </div>
+                    <div class="archive-details">
+                        âœï¸ <b>TasarÄ±mcÄ±:</b> ${k.personel}<br>
+                        ğŸ“ <b>Ã–zellikler:</b> ${specsText}<br>
+                        ğŸ’µ <b>Hesap:</b> Toplam: <b style="color:var(--primary); font-size:14px;">${k.toplam}</b> | AlÄ±nan: <span style="color:var(--success); font-weight:600;">${k.kaparo}</span> | Kalan Alacak: <b style="color:#38bdf8;">${k.kalan}</b>
+                    </div>
+                    <div class="archive-actions">
+                        <div>
+                            <span class="badge ${badgeClass}">${k.durum}</span>
+                            <select onchange="durumGuncelle('${doc.id}', this.value)" style="margin-left:8px; display:inline-block; vertical-align:middle; border-radius:4px; padding:3px 5px;">
+                                <option value="">âš™ï¸ Durumu DeÄŸiÅŸtir</option>
+                                <option value="Teklif Verildi">ğŸŸ¡ Teklif AÅŸamasÄ±</option>
+                                <option value="OnaylandÄ± / Ä°malatta">ğŸ”µ Ä°malat AÅŸamasÄ±</option>
+                                <option value="Montaj AÅŸamasÄ±nda">ğŸŸ£ Montaj AÅŸamasÄ±</option>
+                                <option value="TamamlandÄ±">ğŸŸ¢ TamamlandÄ± (Teslim)</option>
+                            </select>
+                        </div>
+                        <div style="display:flex; gap: 8px; align-items:center;">
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: var(--primary); color: #000; font-weight: bold; border: none;" onclick="teklifDuzenle('${doc.id}')">
+                                DÃ¼zenle
+                            </button>
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #22c55e; color: #000; font-weight: bold; border: none;" onclick="openPaymentModal('${doc.id}')">
+                                ğŸ’³ Ã–demeler
+                            </button>
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #0f172a; color: #fff; border: 1px solid #475569;" onclick="kopyalaTakipLinki('${doc.id}')" title="MÃ¼ÅŸteri SipariÅŸ Takip Linki Kopyala">
+                                ğŸ”— Takip Linki
+                            </button>
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px;" onclick="whatsappPaylas('${encodeURIComponent(shareMsg)}')">
+                                WhatsApp
+                            </button>
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px;" onclick="yazdirListeden('${doc.id}')">
+                                YazdÄ±r (PDF)
+                            </button>
+                            ${isPatron ? `<button class="btn-delete-item" title="KayÄ±t Sil" onclick="sistemdenSil('${doc.id}')">
+                                <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                            </button>` : ''}
+                        </div>
+                    </div>
+                `;
+                listeDiv.appendChild(item);
+            });
+
+            if(counter === 0) {
+                listeDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">Arama kriterlerine uygun sipariÅŸ bulunamadÄ±.</div>';
+            }
+        });
+    }
+
+    function durumGuncelle(docId, yeniDurum) { 
+        if(yeniDurum) {
+            db.collection("ortak_teklifler").doc(docId).update({ 
+                durum: yeniDurum 
+            }).then(() => {
+                alert("SipariÅŸ durumu gÃ¼ncellendi!");
+            }).catch(err => {
+                alert("Hata: " + err.message);
+            });
+        } 
+    }
+    
+    function sistemdenSil(docId) { 
+        if(confirm("Bu kaydÄ± bulut veri tabanÄ±ndan tamamen silmek istediÄŸinize emin misiniz? (Bu iÅŸlem geri alÄ±namaz!)")) {
+            db.collection("ortak_teklifler").doc(docId).delete().then(() => {
+                alert("KayÄ±t silindi!");
+            }); 
+        }
+    }
+
+    function giderSil(docId) {
+        if(confirm("Bu gider kaydÄ±nÄ± kasadan silmek istediÄŸinize emin misiniz?")) {
+            db.collection("giderler").doc(docId).delete().then(() => {
+                alert("Gider silindi!");
+            });
+        }
+    }
+
+    // ğŸ’¬ WHATSAPP MESAJ GÃ–NDERÄ°MÄ° (AKTÄ°F TASARIM EKRANINDAN)
+    function whatsappSistem() {
+        let musteri = document.getElementById('customerName').value.trim() || "DeÄŸerli MÃ¼ÅŸterimiz";
+        let spec = getSpecificationText();
+        let v = hesaplaVeCiz();
+        
+        let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m Mobilya", udolap: "U Dolap" };
+        
+        let mesaj = `*DOÄANÃ‡AY MOBÄ°LYA*\n`;
+        mesaj += `-----------------------------\n`;
+        mesaj += `*MÃ¼ÅŸteri:* ${musteri}\n`;
+        mesaj += `*ÃœrÃ¼n Grubu:* ${typeNames[v.type]}\n`;
+        mesaj += `*TasarÄ±m DetayÄ±:* ${spec}\n\n`;
+        mesaj += `*Ã–DEME PLANI Ã–ZETÄ°:*\n`;
+        mesaj += `ğŸ’µ *Toplam Tutar:* *${v.toplam.toLocaleString('tr-TR')} â‚º*\n`;
+        mesaj += `ğŸ’° *AlÄ±nan Kaparo:* ${v.kaparo.toLocaleString('tr-TR')} â‚º\n`;
+        mesaj += `â³ *Montaj Sonu Kalan:* *${v.kalan.toLocaleString('tr-TR')} â‚º*\n\n`;
+        mesaj += `SipariÅŸ detaylarÄ±nÄ±z atÃ¶lye imalat havuzumuza kaydedilmiÅŸtir. Bizi tercih ettiÄŸiniz iÃ§in teÅŸekkÃ¼r ederiz.`;
+        
+        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(mesaj), '_blank');
+    }
+
+    function whatsappPaylas(msgString) {
+        window.open("https://api.whatsapp.com/send?text=" + msgString, '_blank');
+    }
+
+    function kopyalaTakipLinki(docId) {
+        let link = window.location.origin + window.location.pathname + "?takip=" + docId;
+        navigator.clipboard.writeText(link).then(() => {
+            alert("MÃ¼ÅŸteri sipariÅŸ takip linki panoya kopyalandÄ±:\n" + link);
+        }).catch(err => {
+            alert("Link kopyalanamadÄ±: " + err);
+        });
+    }
+
+    // ğŸ–¨ï¸ PDF YAZDIRICI (AKTÄ°F TASARIM EKRANINDAN)
+    function yazdirTeklif() {
+        let canvas = document.getElementById('dolapCanvas');
+        let printImg = document.getElementById('printCanvasImg');
+        printImg.src = canvas.toDataURL("image/png");
+        
+        document.getElementById('printCustomer').innerText = document.getElementById('customerName').value.trim() || "MÃ¼ÅŸteri Belirtilmedi";
+        document.getElementById('printStaff').innerText = document.getElementById('staffName').value;
+        document.getElementById('printDate').innerText = new Date().toLocaleDateString('tr-TR');
+        
+        let type = document.getElementById('mobilyaTuru').value;
+        let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m", udolap: "U Dolap" };
+        document.getElementById('printType').innerText = typeNames[type];
+        document.getElementById('printSpecs').innerText = getSpecificationText();
+        
+        let v = hesaplaVeCiz();
+        document.getElementById('printTotal').innerText = v.toplam.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('printAdvance').innerText = v.kaparo.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('printBalance').innerText = v.kalan.toLocaleString('tr-TR') + " â‚º";
+        
+        document.body.classList.add('print-mode-teklif');
+        window.print();
+        document.body.classList.remove('print-mode-teklif');
+    }
+
+    // ğŸ–¨ï¸ LÄ°STEDEN YAZDIRMA (KAYITLI ESKÄ°/YENÄ° SÄ°PARÄ°ÅÄ° PDF YAPMA)
+    function yazdirListeden(docId) {
+        db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
+            if(doc.exists) {
+                let data = doc.data();
+                
+                document.getElementById('printCustomer').innerText = data.musteri;
+                document.getElementById('printStaff').innerText = data.personel;
+                document.getElementById('printDate').innerText = data.tarih || new Date().toLocaleDateString('tr-TR');
+                
+                let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m", udolap: "U Dolap" };
+                document.getElementById('printType').innerText = typeNames[data.mobilyaTuru] || "GardÄ±rop";
+                document.getElementById('printSpecs').innerText = data.detaylar || `${data.m2} mÂ² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
+                
+                document.getElementById('printTotal').innerText = data.toplam;
+                document.getElementById('printAdvance').innerText = data.kaparo;
+                document.getElementById('printBalance').innerText = data.kalan;
+                
+                // Hide canvas drawing block in list prints since we print old details
+                document.getElementById('printCanvasImg').parentElement.style.display = 'none';
+                
+                document.body.classList.add('print-mode-teklif');
+                window.print();
+                document.body.classList.remove('print-mode-teklif');
+                
+                // Reset visibility for canvas box
+                document.getElementById('printCanvasImg').parentElement.style.display = 'block';
+            }
+        });
+    }
+
+    let editingDocId = null;
+    let editingGModules = null;
+    let editingGHandle = null;
+    let editingGLed = null;
+
+    function teklifDuzenle(docId) {
+        db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
+            if(doc.exists) {
+                let data = doc.data();
+                editingDocId = docId;
+                
+                document.getElementById('editClientName').innerText = data.musteri || "";
+                document.getElementById('editModeBanner').style.display = 'flex';
+                document.getElementById('btnKaydet').innerHTML = `
+                    <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+                    DeÄŸiÅŸiklikleri Kaydet (SipariÅŸi GÃ¼ncelle)
+                `;
+                
+                document.getElementById('customerName').value = data.musteri || "";
+                document.getElementById('staffName').value = data.personel || "Mustafa DoÄŸanÃ§ay";
+                
+                let type = data.mobilyaTuru || "gardÄ±rop";
+                selectFurnitureType(type);
+                
+                if(data.inputState) {
+                    for(let key in data.inputState) {
+                        let el = document.getElementById(key);
+                        if(el) {
+                            if (el.type === 'checkbox') {
+                                  el.checked = !!data.inputState[key];
+                            } else {
+                                  el.value = data.inputState[key];
+                            }
+                        }
+                    }
+                    
+                    if (data.inputState.g_modules) {
+                        editingGModules = data.inputState.g_modules;
+                    } else {
+                        editingGModules = null;
+                    }
+                    if (data.inputState.g_handle) {
+                        editingGHandle = data.inputState.g_handle;
+                    } else {
+                        editingGHandle = null;
+                    }
+                    if (data.inputState.g_led) {
+                        editingGLed = data.inputState.g_led;
+                    } else {
+                        editingGLed = null;
+                    }
+                } else {
+                    editingGModules = null;
+                    editingGHandle = null;
+                }
+                
+                switchTab('teklifView');
+                hesaplaVeCiz();
+            } else {
+                alert("SipariÅŸ bulunamadÄ±!");
+            }
+        }).catch(err => {
+            alert("Hata: " + err.message);
+        });
+    }
+
+    function duzenlemeyiIptalEt(onlyClearState) {
+        editingDocId = null;
+        editingGModules = null;
+        editingGHandle = null;
+        editingGLed = null;
+        document.getElementById('editModeBanner').style.display = 'none';
+        document.getElementById('btnKaydet').innerHTML = `
+            <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+            SipariÅŸi Ortak Bulut Havuzuna Kaydet
+        `;
+
+        if (!onlyClearState) {
+            document.getElementById('customerName').value = "";
+            if (document.getElementById('customerPhone')) {
+                document.getElementById('customerPhone').value = "";
+            }
+            if (document.getElementById('customerDeliveryDate')) {
+                document.getElementById('customerDeliveryDate').value = "";
+            }
+            
+            // Reset advance payments and check state
+            document.getElementById('g_advance').value = "0";
+            document.getElementById('k_advance').value = "0";
+            document.getElementById('v_advance').value = "0";
+            document.getElementById('b_advance').value = "0";
+            document.getElementById('o_advance').value = "0";
+            document.getElementById('u_advance').value = "0";
+            
+            if (document.getElementById('chkUseSheetCosting')) {
+                document.getElementById('chkUseSheetCosting').checked = false;
+            }
+            
+            hesaplaVeCiz();
+        }
+    }
+
+    // ==========================================
+    // ğŸªµ 2D GÄ°YOTÄ°N PLAKA KESÄ°M OPTÄ°MÄ°ZASYON KODLARI
+    // ==========================================
+
+
+// Customer Timeline & Tracking
+    function sorgulaSiparis() {
+        let query = document.getElementById('trackSearchInput').value.trim();
+        if (!query) { alert("LÃ¼tfen SipariÅŸ Kodu veya Telefon NumarasÄ± girin!"); return; }
+        
+        let isPhone = /^[0-9+\s()-]{7,15}$/.test(query);
+        let cleanQuery = query.replace(/[^0-9]/g, "");
+        
+        if (isPhone) {
+            let phoneQuery1 = cleanQuery;
+            let phoneQuery2 = cleanQuery.startsWith('0') ? cleanQuery.substring(1) : '0' + cleanQuery;
+            
+            db.collection("ortak_teklifler")
+                .where("telefon", "in", [phoneQuery1, phoneQuery2, query])
+                .get()
+                .then((snapshot) => {
+                    if (snapshot.empty) {
+                        alert("Bu telefon numarasÄ±na ait aktif sipariÅŸ bulunamadÄ±!");
+                    } else if (snapshot.size === 1) {
+                        let doc = snapshot.docs[0];
+                        loadOrderTracking(doc.id, doc.data());
+                    } else {
+                        showMultiSelectTracking(snapshot);
+                    }
+                })
+                .catch(err => {
+                    alert("Arama hatasÄ±: " + err.message);
+                });
+        } else {
+            let docId = query;
+            if (query.startsWith("dm_")) {
+                docId = query.substring(3);
+            }
+            db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
+                if (doc.exists) {
+                    loadOrderTracking(doc.id, doc.data());
+                } else {
+                    alert("GirdiÄŸiniz SipariÅŸ Kodu bulunamadÄ±! LÃ¼tfen kodu kontrol edin.");
+                }
+            }).catch(err => {
+                alert("Arama hatasÄ±: " + err.message);
+            });
+        }
+    }
+
+    function showMultiSelectTracking(snapshot) {
+        document.getElementById('trackingMultiSelect').style.display = 'block';
+        document.getElementById('trackingDetailsPanel').style.display = 'none';
+        
+        let listContainer = document.getElementById('trackingMultiList');
+        listContainer.innerHTML = '';
+        
+        let localTypeNames = {
+            gardÄ±rop: "GardÄ±rop",
+            mutfak: "Mutfak DolabÄ±",
+            vestiyer: "Vestiyer",
+            banyo: "Banyo DolabÄ±",
+            udolap: "U-Dolap",
+            ozel: "Ã–zel TasarÄ±m"
+        };
+        
+        snapshot.forEach((doc) => {
+            let data = doc.data();
+            let div = document.createElement('div');
+            div.style.padding = '12px';
+            div.style.border = '1px solid var(--border)';
+            div.style.borderRadius = '6px';
+            div.style.backgroundColor = 'var(--bg-dark)';
+            div.style.cursor = 'pointer';
+            div.style.display = 'flex';
+            div.style.justifyContent = 'space-between';
+            div.style.alignItems = 'center';
+            div.style.transition = 'border-color 0.2s';
+            
+            div.onmouseover = function() { this.style.borderColor = 'var(--primary)'; };
+            div.onmouseout = function() { this.style.borderColor = 'var(--border)'; };
+            
+            let mobType = localTypeNames[data.mobilyaTuru] || "Mobilya SipariÅŸi";
+            div.innerHTML = `
+                <div>
+                    <strong style="color:var(--text-light); font-size:13px;">${mobType} (${data.tarih})</strong>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:3px;">Tutar: ${data.toplam} | Kalan: ${data.kalan}</div>
+                </div>
+                <span class="badge badge-teklif" style="margin:0;">${data.durum}</span>
+            `;
+            
+            div.onclick = function() {
+                loadOrderTracking(doc.id, data);
+            };
+            listContainer.appendChild(div);
+        });
+        
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('customerTrackingScreen').style.display = 'block';
+    }
+
+    function loadOrderTracking(docId, data) {
+        currentTrackingData = data;
+        currentTrackingData.id = docId;
+        
+        document.getElementById('trackingMultiSelect').style.display = 'none';
+        document.getElementById('trackingDetailsPanel').style.display = 'block';
+        
+        document.getElementById('trackMusteriVal').innerText = data.musteri || "-";
+        document.getElementById('trackTarihVal').innerText = data.tarih || "-";
+        document.getElementById('trackPersonelVal').innerText = data.personel || "Mustafa DoÄŸanÃ§ay";
+        
+        let localTypeNames = {
+            gardÄ±rop: "GardÄ±rop",
+            mutfak: "Mutfak DolabÄ±",
+            vestiyer: "Vestiyer",
+            banyo: "Banyo DolabÄ±",
+            udolap: "U-Dolap",
+            ozel: "Ã–zel TasarÄ±m"
+        };
+        document.getElementById('trackTurVal').innerText = localTypeNames[data.mobilyaTuru] || "Ã–zel Proje";
+        
+        let specsText = data.detaylar || `${data.m2} mÂ² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
+        document.getElementById('trackSpecsVal').innerText = specsText;
+        
+        // Ã–demeler geÃ§miÅŸini topla
+        let odemeler = data.odemeler || [];
+        if (odemeler.length === 0 && (data.kaparoNum || 0) > 0) {
+            odemeler = [{
+                tutar: data.kaparoNum,
+                aciklama: "Ä°lk Kaparo",
+                tarih: data.tarih || new Date().toLocaleDateString('tr-TR')
+            }];
+        }
+        
+        let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
+        let totalNum = data.toplamNum || 0;
+        let kalan = totalNum - totalAlinan;
+        
+        document.getElementById('trackToplamVal').innerText = data.toplam || "0 â‚º";
+        document.getElementById('trackKaparoVal').innerText = totalAlinan.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('trackKalanVal').innerText = kalan.toLocaleString('tr-TR') + " â‚º";
+        
+        // MÃ¼ÅŸteri iÃ§in Ã¶deme geÃ§miÅŸi listesi Ã§iz
+        let trackHistoryCard = document.getElementById('trackPaymentHistoryCard');
+        let trackHistoryList = document.getElementById('trackPaymentHistoryList');
+        if (trackHistoryCard && trackHistoryList) {
+            if (odemeler.length > 0) {
+                trackHistoryList.innerHTML = '';
+                odemeler.forEach((pay) => {
+                    let item = document.createElement('div');
+                    item.className = 'payment-history-item';
+                    item.style.backgroundColor = 'var(--bg-dark)';
+                    item.innerHTML = `
+                        <div>
+                            <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} â‚º</span>
+                            <span style="color:var(--text-muted); margin-left:8px; font-size:11px;">(${pay.aciklama})</span>
+                        </div>
+                        <span style="color:var(--text-muted); font-size:11px;">${pay.tarih}</span>
+                    `;
+                    trackHistoryList.appendChild(item);
+                });
+                trackHistoryCard.style.display = 'block';
+            } else {
+                trackHistoryCard.style.display = 'none';
+            }
+        }
+        
+        setTrackingTimeline(data.durum);
+        
+        // --- Tahmini Teslimat Tarihi GÃ¶sterimi ---
+        let trackTeslimatVal = document.getElementById('trackTeslimatVal');
+        if (trackTeslimatVal) {
+            if (data.tahminiTeslimat) {
+                let parts = data.tahminiTeslimat.split('-');
+                if (parts.length === 3) {
+                    trackTeslimatVal.innerText = `${parts[2]}.${parts[1]}.${parts[0]}`;
+                } else {
+                    trackTeslimatVal.innerText = data.tahminiTeslimat;
+                }
+            } else {
+                trackTeslimatVal.innerText = "-";
+            }
+        }
+        
+        // --- Dinamik Teslimat Geri SayÄ±m SayacÄ± ---
+        let countdownBadge = document.getElementById('trackCountdownBadge');
+        if (countdownBadge) {
+            if (data.durum === "TamamlandÄ±" || !data.tahminiTeslimat) {
+                countdownBadge.style.display = 'none';
+            } else {
+                let deliveryDate = new Date(data.tahminiTeslimat);
+                deliveryDate.setHours(0, 0, 0, 0);
+                
+                let today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                let diffTime = deliveryDate.getTime() - today.getTime();
+                let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                countdownBadge.style.display = 'inline-block';
+                if (diffDays > 0) {
+                    countdownBadge.innerHTML = `ğŸšš Montaj ve Teslime Son <strong>${diffDays}</strong> GÃ¼n!`;
+                    countdownBadge.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15))';
+                    countdownBadge.style.color = 'var(--primary)';
+                    countdownBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+                } else if (diffDays === 0) {
+                    countdownBadge.innerHTML = `ğŸ‰ BugÃ¼n Montaj ve Teslimat GÃ¼nÃ¼!`;
+                    countdownBadge.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15))';
+                    countdownBadge.style.color = 'var(--success)';
+                    countdownBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                } else {
+                    countdownBadge.innerHTML = `ğŸ› ï¸ Montaj HazÄ±rlÄ±klarÄ± ve Son RÃ¶tuÅŸlar YapÄ±lÄ±yor`;
+                    countdownBadge.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(29, 78, 216, 0.15))';
+                    countdownBadge.style.color = 'var(--info)';
+                    countdownBadge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+                }
+            }
+        }
+
+        // --- Dinamik Mobilya KullanÄ±m & BakÄ±m Rehberi ---
+        let careGuideCard = document.getElementById('trackCareGuideCard');
+        let careGuideList = document.getElementById('trackCareGuideList');
+        if (careGuideCard && careGuideList) {
+            careGuideList.innerHTML = '';
+            let hasGuide = false;
+            
+            let kapakLower = (data.kapak || '').toLowerCase();
+            if (kapakLower.includes('lake')) {
+                hasGuide = true;
+                let box = document.createElement('div');
+                box.className = 'care-guide-box';
+                box.innerHTML = `
+                    <div class="care-guide-title">ğŸ¨ Lake Mobilya Temizlik & BakÄ±m Rehberi</div>
+                    <ul class="care-guide-list">
+                        <li><strong>YumuÅŸak Bez KullanÄ±n:</strong> Sadece nemlendirilmiÅŸ yumuÅŸak mikrofiber bezler tercih edin. AÅŸÄ±ndÄ±rÄ±cÄ± sÃ¼nger veya tel bez kullanmayÄ±n.</li>
+                        <li><strong>Kimyasallardan KaÃ§Ä±nÄ±n:</strong> Tiner, Ã§amaÅŸÄ±r suyu, aseton, alkol bazlÄ± temizleyiciler lake cilasÄ±na kalÄ±cÄ± zarar verir. Hafif sabunlu Ä±lÄ±k su yeterlidir.</li>
+                        <li><strong>Hemen KurulayÄ±n:</strong> Nemli bezle silindikten sonra yÃ¼zeyde su damlacÄ±ÄŸÄ± bÄ±rakÄ±lmamalÄ±, kuru bezle hafifÃ§e kurulanmalÄ±dÄ±r.</li>
+                        <li><strong>GÃ¼neÅŸ IÅŸÄ±ÄŸÄ±ndan Koruyun:</strong> DoÄŸrudan ve yoÄŸun gÃ¼neÅŸ Ä±ÅŸÄ±ÄŸÄ± lake renginin zamanla sararmasÄ±na yol aÃ§abilir.</li>
+                    </ul>
+                `;
+                careGuideList.appendChild(box);
+            } else if (kapakLower.includes('mdf') || kapakLower.includes('suntalam') || kapakLower.includes('gÃ¶vde')) {
+                hasGuide = true;
+                let box = document.createElement('div');
+                box.className = 'care-guide-box';
+                box.innerHTML = `
+                    <div class="care-guide-title">ğŸªµ MDF Lam & AhÅŸap YÃ¼zeyler BakÄ±m Rehberi</div>
+                    <ul class="care-guide-list">
+                        <li><strong>Neme KarÅŸÄ± Koruyun:</strong> YÃ¼zeyler neme dayanÄ±klÄ± olsa da birleÅŸim noktalarÄ±ndan su sÄ±zmasÄ± ÅŸiÅŸme yapabilir. DÃ¶kÃ¼len sÄ±vÄ±larÄ± hemen kurulayÄ±n.</li>
+                        <li><strong>Hafif Temizlik:</strong> Nemli sabunlu bezle silinip hemen kurulanmasÄ± yeterlidir. Ã‡ok Ä±slak temizlikten kaÃ§Ä±nÄ±n.</li>
+                        <li><strong>Ã‡izilmelere Dikkat:</strong> YÃ¼zey Ã¼zerinde sert veya keskin objeleri sÃ¼rÃ¼klemeyin, altlÄ±k kullanmaya Ã¶zen gÃ¶sterin.</li>
+                    </ul>
+                `;
+                careGuideList.appendChild(box);
+            } else if (kapakLower.includes('cam')) {
+                hasGuide = true;
+                let box = document.createElement('div');
+                box.className = 'care-guide-box';
+                box.innerHTML = `
+                    <div class="care-guide-title">âœ¨ Cam & Metal Aksesuar BakÄ±m Rehberi</div>
+                    <ul class="care-guide-list">
+                        <li><strong>Cam Temizleyici:</strong> Standart cam temizleyiciler ve mikrofiber bez kullanÄ±labilir.</li>
+                        <li><strong>Metal Ã‡erÃ§eveler:</strong> AlÃ¼minyum profilleri aÅŸÄ±ndÄ±rÄ±cÄ± asidik temizleyicilerle silmeyin.</li>
+                        <li><strong>MenteÅŸe BakÄ±mÄ±:</strong> KapaklarÄ± sertÃ§e Ã§arpmayÄ±n, fren mekanizmalarÄ±nÄ±n saÄŸlÄ±klÄ± Ã§alÄ±ÅŸmasÄ± iÃ§in menteÅŸeleri zorlamayÄ±n.</li>
+                    </ul>
+                `;
+                careGuideList.appendChild(box);
+            }
+            
+            if (data.mobilyaTuru === 'mutfak' && data.inputState) {
+                let countertop = data.inputState.k_countertop || 'yok';
+                if (countertop === 'ahsap') {
+                    hasGuide = true;
+                    let box = document.createElement('div');
+                    box.className = 'care-guide-box';
+                    box.innerHTML = `
+                        <div class="care-guide-title">ğŸŒ³ DoÄŸal Masif AhÅŸap Tezgah KullanÄ±m Rehberi</div>
+                        <ul class="care-guide-list">
+                            <li><strong>SÄ±cak ve IslaklÄ±k:</strong> Ãœzerinde doÄŸrudan sÄ±cak tencere bÄ±rakmayÄ±n. Su birikintilerini derhal kurulayÄ±n.</li>
+                            <li><strong>Periyodik YaÄŸlama:</strong> TezgahÄ±nÄ±zÄ±n Ã¶mrÃ¼nÃ¼ uzatmak iÃ§in yÄ±lda 1-2 kez koruyucu doÄŸal yaÄŸ (Ã¶rneÄŸin keten tohumu yaÄŸÄ±) uygulayÄ±nÄ±z.</li>
+                            <li><strong>Kesme TahtasÄ± KullanÄ±mÄ±:</strong> Tezgah Ã¼zerinde doÄŸrudan kesim yapmayÄ±n, bÄ±Ã§ak izleri ahÅŸabÄ± zedeleyebilir.</li>
+                        </ul>
+                    `;
+                    careGuideList.appendChild(box);
+                } else if (countertop === 'granit') {
+                    hasGuide = true;
+                    let box = document.createElement('div');
+                    box.className = 'care-guide-box';
+                    box.innerHTML = `
+                        <div class="care-guide-title">ğŸ’ DoÄŸal Granit Tezgah KullanÄ±m Rehberi</div>
+                        <ul class="care-guide-list">
+                            <li><strong>Kimyasal Koruma:</strong> Por Ã§Ã¶zÃ¼cÃ¼, tuz ruhu veya gÃ¼Ã§lÃ¼ asidik temizlik kimyasallarÄ± granitin cilasÄ±nÄ± matlaÅŸtÄ±rÄ±r. NÃ¶tr sabunlu su kullanÄ±n.</li>
+                            <li><strong>SÄ±caklÄ±k DayanÄ±mÄ±:</strong> Granit sÄ±caÄŸa oldukÃ§a dayanÄ±klÄ±dÄ±r ancak ani termal ÅŸoklarÄ± Ã¶nlemek iÃ§in sÄ±cak tencerelerin altÄ±na nihale koyulmasÄ± tavsiye edilir.</li>
+                        </ul>
+                    `;
+                    careGuideList.appendChild(box);
+                } else if (countertop === 'cimstone') {
+                    hasGuide = true;
+                    let box = document.createElement('div');
+                    box.className = 'care-guide-box';
+                    box.innerHTML = `
+                        <div class="care-guide-title">ğŸ’  Ã‡imstone & Kuvars Tezgah KullanÄ±m Rehberi</div>
+                        <ul class="care-guide-list">
+                            <li><strong>Leke Direnci:</strong> GÃ¶zeneksiz yapÄ±sÄ± sayesinde leke tutmaz. Ancak Ã§ay, kahve veya limon gibi asidik gÄ±dalar dÃ¶kÃ¼ldÃ¼ÄŸÃ¼nde kurumadan silinmelidir.</li>
+                            <li><strong>Kimyasal Hassasiyeti:</strong> Ã‡amaÅŸÄ±r suyu veya asidik temizleyiciler yerine pH nÃ¶tr genel temizleyiciler kullanÄ±n.</li>
+                        </ul>
+                    `;
+                    careGuideList.appendChild(box);
+                } else if (countertop === 'laminat') {
+                    hasGuide = true;
+                    let box = document.createElement('div');
+                    box.className = 'care-guide-box';
+                    box.innerHTML = `
+                        <div class="care-guide-title">ğŸ›ï¸ Laminat Tezgah KullanÄ±m Rehberi</div>
+                        <ul class="care-guide-list">
+                            <li><strong>IsÄ± ve Kesme:</strong> DoÄŸrudan sÄ±cak tencere koymayÄ±n, laminat yÃ¼zeyi eriyebilir veya kabarcÄ±k yapabilir. DoÄŸrudan Ã¼zerinde kesim yapmayÄ±n.</li>
+                            <li><strong>Su SÄ±zdÄ±rmazlÄ±ÄŸÄ±:</strong> Evye birleÅŸim yerlerinde ve kenar bantlarÄ±nda su birikmesini Ã¶nleyin, aksi takdirde MDF gÃ¶vde ÅŸiÅŸebilir.</li>
+                        </ul>
+                    `;
+                    careGuideList.appendChild(box);
+                }
+            }
+            
+            if (!hasGuide) {
+                let box = document.createElement('div');
+                box.className = 'care-guide-box';
+                box.innerHTML = `
+                    <div class="care-guide-title">ğŸ›‹ï¸ Genel Mobilya KullanÄ±m Rehberi</div>
+                    <ul class="care-guide-list">
+                        <li><strong>Temizlik:</strong> Nemli yumuÅŸak mikrofiber bezle silip hemen kurulayÄ±nÄ±z. AÅŸÄ±ndÄ±rÄ±cÄ± sÃ¼nger ve sert kimyasal kullanmayÄ±nÄ±z.</li>
+                        <li><strong>Nem ve IsÄ±:</strong> MobilyalarÄ± aÅŸÄ±rÄ± sÄ±cak, soÄŸuk veya nemli ortamlardan koruyunuz.</li>
+                        <li><strong>KullanÄ±m:</strong> Kapak ve Ã§ekmeceleri sert kapatmayÄ±nÄ±z, aÅŸÄ±rÄ± yÃ¼klemeden kaÃ§Ä±nÄ±nÄ±z.</li>
+                    </ul>
+                `;
+                careGuideList.appendChild(box);
+            }
+            
+            careGuideCard.style.display = 'block';
+        }
+        
+        if (data.inputState) {
+            renderTrackingDesign(data.inputState);
+        } else {
+            document.getElementById('customerCanvasWrapper').innerHTML = '<div style="color:var(--text-muted); font-size:12px;">Bu sipariÅŸ iÃ§in 2D tasarÄ±m modeli bulunmamaktadÄ±r.</div>';
+        }
+        
+        // --- SipariÅŸi DeÄŸerlendir Paneli (Yorum & Puanlama) ---
+        let trackReviewCard = document.getElementById('trackReviewCard');
+        if (trackReviewCard) {
+            if (data.durum === "TamamlandÄ±") {
+                trackReviewCard.style.display = 'block';
+                // Check if a review already exists in database
+                db.collection("reviews").doc(docId).get().then((reviewDoc) => {
+                    if (reviewDoc.exists) {
+                        let reviewData = reviewDoc.data();
+                        let starsHtml = '';
+                        for (let i = 1; i <= 5; i++) {
+                            starsHtml += `<span style="color: ${i <= reviewData.rating ? '#fbbf24' : 'var(--border)'}; font-size: 20px; margin-right: 2px;">â˜…</span>`;
+                        }
+                        document.getElementById('trackReviewFormContainer').style.display = 'none';
+                        let resultContainer = document.getElementById('trackReviewResultContainer');
+                        resultContainer.innerHTML = `
+                            <div style="background-color: var(--bg-dark); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
+                                <span style="font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-bottom: 5px;">âœ“ DeÄŸerlendirmeniz Kaydedildi</span>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                    <span style="font-size: 12px; font-weight: 700; color: var(--text-light);">PuanÄ±nÄ±z:</span>
+                                    <div>${starsHtml}</div>
+                                </div>
+                                ${reviewData.comment ? `
+                                <div style="font-size: 12px; color: var(--text-muted); font-style: italic; line-height: 1.4; border-top: 1px solid var(--border); padding-top: 6px; margin-top: 6px;">
+                                    "${reviewData.comment}"
+                                </div>` : ''}
+                            </div>
+                        `;
+                        resultContainer.style.display = 'block';
+                    } else {
+                        // Reset form
+                        document.getElementById('trackReviewFormContainer').style.display = 'block';
+                        document.getElementById('trackReviewResultContainer').style.display = 'none';
+                        resetInteractiveRating();
+                    }
+                }).catch(err => {
+                    console.error("Yorum kontrol hatasÄ±:", err);
+                    document.getElementById('trackReviewFormContainer').style.display = 'block';
+                    document.getElementById('trackReviewResultContainer').style.display = 'none';
+                    resetInteractiveRating();
+                });
+            } else {
+                trackReviewCard.style.display = 'none';
+            }
+        }
+        
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('customerTrackingScreen').style.display = 'block';
+    }
+
+    function setTrackingTimeline(status) {
+        let steps = ['step_teklif', 'step_imalat', 'step_montaj', 'step_tamam'];
+        steps.forEach(id => {
+            let el = document.getElementById(id);
+            if (el) el.className = 'timeline-step';
+        });
+        
+        let progressLine = document.getElementById('trackProgressLine');
+        let banner = document.getElementById('trackStatusBanner');
+        
+        let activeIndex = 0;
+        
+        if (status === "Teklif Verildi") {
+            activeIndex = 0;
+            banner.innerText = "ğŸŸ¡ Teklif HazÄ±rlandÄ± - Onay Bekliyor";
+            banner.style.backgroundColor = "rgba(217, 119, 6, 0.1)";
+            banner.style.color = "#d97706";
+        } else if (status === "OnaylandÄ± / Ä°malatta") {
+            activeIndex = 1;
+            banner.innerText = "ğŸ”µ SipariÅŸiniz AtÃ¶lyede Ä°malat AÅŸamasÄ±nda";
+            banner.style.backgroundColor = "rgba(59, 130, 246, 0.15)";
+            banner.style.color = "#3b82f6";
+        } else if (status === "Montaj AÅŸamasÄ±nda") {
+            activeIndex = 2;
+            banner.innerText = "ğŸŸ£ ÃœrÃ¼nleriniz Adrese Nakliye ve Montaj AÅŸamasÄ±nda";
+            banner.style.backgroundColor = "rgba(168, 85, 247, 0.15)";
+            banner.style.color = "#a855f7";
+        } else if (status === "TamamlandÄ±") {
+            activeIndex = 3;
+            banner.innerText = "ğŸŸ¢ SipariÅŸiniz TamamlandÄ± ve Teslim Edildi";
+            banner.style.backgroundColor = "rgba(34, 197, 94, 0.15)";
+            banner.style.color = "#22c55e";
+        }
+        
+        for(let i = 0; i <= activeIndex; i++) {
+            let stepId = steps[i];
+            let el = document.getElementById(stepId);
+            if (el) {
+                if (i === activeIndex) {
+                    el.className = 'timeline-step active';
+                } else {
+                    el.className = 'timeline-step completed';
+                }
+            }
+        }
+        
+        let percent = (activeIndex / (steps.length - 1)) * 100;
+        if (progressLine) progressLine.style.width = percent + "%";
+    }
+
+    // ==========================================
+    // â­ MÃœÅTERÄ° DEÄERLENDÄ°RME & YORUM FONKSÄ°YONLARI
+    // ==========================================
+    let currentInteractiveRating = 0;
+
+
+// Payments and Dialog Controllers
+    function renderTrackingDesign(inputState) {
+        let canvas = document.getElementById('dolapCanvas');
+        let trackWrapper = document.getElementById('customerCanvasWrapper');
+        if (canvas && trackWrapper) {
+            trackWrapper.innerHTML = '';
+            trackWrapper.appendChild(canvas);
+        }
+        
+        for (let key in inputState) {
+            let el = document.getElementById(key);
+            if (el) {
+                if (el.type === 'checkbox') {
+                    el.checked = !!inputState[key];
+                } else {
+                    el.value = inputState[key];
+                }
+            }
+        }
+        
+        let savedPreviewMode = 'lux';
+        setTrackPreviewMode(savedPreviewMode);
+    }
+
+    function setTrackPreviewMode(mode) {
+        let btnBlueprint = document.getElementById('btnTrackBlueprint');
+        let btnLux = document.getElementById('btnTrackLux');
+        
+        if (btnBlueprint && btnLux) {
+            if (mode === 'lux') {
+                btnBlueprint.classList.remove('active');
+                btnLux.classList.add('active');
+            } else {
+                btnBlueprint.classList.add('active');
+                btnLux.classList.remove('active');
+            }
+        }
+        setPreviewMode(mode);
+    }
+
+    function takipKapat() {
+        let canvas = document.getElementById('dolapCanvas');
+        let originalWrapper = document.querySelector('#appScreen .canvas-wrapper');
+        if (canvas && originalWrapper) {
+            originalWrapper.insertBefore(canvas, originalWrapper.firstChild);
+        }
+        
+        duzenlemeyiIptalEt(false);
+        
+        document.getElementById('customerTrackingScreen').style.display = 'none';
+        document.getElementById('selfDesignScreen').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'block';
+    }
+
+    // ==========================================
+    // ğŸ’³ KISMÄ° Ã–DEME (TAHSÄ°LAT) TAKÄ°P KODLARI
+    // ==========================================
+    let activePaymentDocId = null;
+    let activePaymentDocData = null;
+
+    function openPaymentModal(docId) {
+        activePaymentDocId = docId;
+        
+        db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
+            if (doc.exists) {
+                let data = doc.data();
+                activePaymentDocData = data;
+                
+                document.getElementById('payModalMusteri').innerText = data.musteri || "";
+                document.getElementById('payModalToplam').innerText = data.toplam || "0 â‚º";
+                
+                // Ã–deme geÃ§miÅŸi dizisini al veya mevcut kaparo bilgisini ilk Ã¶deme olarak yÃ¼kle
+                let odemeler = data.odemeler || [];
+                if (odemeler.length === 0 && (data.kaparoNum || 0) > 0) {
+                    odemeler = [{
+                        tutar: data.kaparoNum,
+                        aciklama: "Ä°lk Kaparo",
+                        tarih: data.tarih || new Date().toLocaleDateString('tr-TR')
+                    }];
+                }
+                
+                // Toplam tahsilatÄ± ve kalan bakiyeyi hesapla
+                let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
+                let totalNum = data.toplamNum || 0;
+                let kalan = totalNum - totalAlinan;
+                
+                document.getElementById('payModalAlinan').innerText = totalAlinan.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('payModalKalan').innerText = kalan.toLocaleString('tr-TR') + " â‚º";
+                
+                // Ã–deme listesini modal arayÃ¼zÃ¼ne Ã§iz
+                let historyContainer = document.getElementById('payModalHistoryList');
+                historyContainer.innerHTML = '';
+                
+                if (odemeler.length === 0) {
+                    historyContainer.innerHTML = '<div style="color:var(--text-muted); font-size:11px; text-align:center; padding:10px;">HenÃ¼z Ã¶deme kaydÄ± bulunmuyor.</div>';
+                } else {
+                    odemeler.forEach((pay, idx) => {
+                        let item = document.createElement('div');
+                        item.className = 'payment-history-item';
+                        item.innerHTML = `
+                            <div>
+                                <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} â‚º</span>
+                                <span style="color:var(--text-muted); margin-left:8px; font-size:11px;">(${pay.aciklama})</span>
+                            </div>
+                            <div style="color:var(--text-muted); font-size:11px; display:flex; gap:10px; align-items:center;">
+                                <span>${pay.tarih}</span>
+                                <button onclick="deletePayment(${idx})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px; padding:0 4px; line-height:1;" title="Ã–demeyi Sil">Ã—</button>
+                            </div>
+                        `;
+                        historyContainer.appendChild(item);
+                    });
+                }
+                
+                // GiriÅŸ alanlarÄ±nÄ± temizle ve bugÃ¼nÃ¼n tarihini at
+                document.getElementById('payModalAmountInput').value = '';
+                document.getElementById('payModalDescInput').value = '';
+                
+                let today = new Date();
+                let year = today.getFullYear();
+                let month = String(today.getMonth() + 1).padStart(2, '0');
+                let day = String(today.getDate()).padStart(2, '0');
+                document.getElementById('payModalDateInput').value = `${year}-${month}-${day}`;
+                
+                document.getElementById('paymentModalOverlay').style.display = 'flex';
+            } else {
+                alert("SipariÅŸ bulunamadÄ±!");
+            }
+        }).catch(err => {
+            alert("Ã–deme geÃ§miÅŸi yÃ¼klenirken hata oluÅŸtu: " + err.message);
+        });
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentModalOverlay').style.display = 'none';
+        activePaymentDocId = null;
+        activePaymentDocData = null;
+    }
+
+    function handleOverlayClick(e) {
+        if (e.target.id === 'paymentModalOverlay') {
+            closePaymentModal();
+        }
+    }
+
+    function saveNewPayment() {
+        let amount = parseFloat(document.getElementById('payModalAmountInput').value) || 0;
+        let desc = document.getElementById('payModalDescInput').value.trim() || "Ara Ã–deme";
+        let dateVal = document.getElementById('payModalDateInput').value;
+        
+        if (amount <= 0) {
+            alert("LÃ¼tfen geÃ§erli bir Ã¶deme tutarÄ± girin!");
+            return;
+        }
+        
+        let formattedDate = new Date().toLocaleDateString('tr-TR');
+        if (dateVal) {
+            let parts = dateVal.split('-');
+            if (parts.length === 3) {
+                formattedDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
+            }
+        }
+        
+        let odemeler = activePaymentDocData.odemeler || [];
+        if (odemeler.length === 0 && (activePaymentDocData.kaparoNum || 0) > 0) {
+            odemeler = [{
+                tutar: activePaymentDocData.kaparoNum,
+                aciklama: "Ä°lk Kaparo",
+                tarih: activePaymentDocData.tarih || new Date().toLocaleDateString('tr-TR')
+            }];
+        }
+        
+        // Yeni Ã¶deme kaydÄ±nÄ± ekle
+        odemeler.push({
+            tutar: amount,
+            aciklama: desc,
+            tarih: formattedDate
+        });
+        
+        let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
+        let totalNum = activePaymentDocData.toplamNum || 0;
+        let kalan = totalNum - totalAlinan;
+        
+        db.collection("ortak_teklifler").doc(activePaymentDocId).update({
+            odemeler: odemeler,
+            kaparoNum: totalAlinan,
+            kalanNum: kalan,
+            kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
+            kalan: kalan.toLocaleString('tr-TR') + " â‚º"
+        }).then(() => {
+            alert("Ã–deme kaydÄ± baÅŸarÄ±yla eklendi!");
+            openPaymentModal(activePaymentDocId);
+        }).catch(err => {
+            alert("Ã–deme kaydedilirken hata oluÅŸtu: " + err.message);
+        });
+    }
+
+    function deletePayment(idx) {
+        if (!confirm("SeÃ§tiÄŸiniz Ã¶deme kaydÄ±nÄ± silmek istediÄŸinize emin misiniz?")) return;
+        
+        let odemeler = activePaymentDocData.odemeler || [];
+        if (odemeler.length === 0 && (activePaymentDocData.kaparoNum || 0) > 0) {
+            odemeler = [{
+                tutar: activePaymentDocData.kaparoNum,
+                aciklama: "Ä°lk Kaparo",
+                tarih: activePaymentDocData.tarih || new Date().toLocaleDateString('tr-TR')
+            }];
+        }
+        
+        odemeler.splice(idx, 1);
+        
+        let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
+        let totalNum = activePaymentDocData.toplamNum || 0;
+        let kalan = totalNum - totalAlinan;
+        
+        db.collection("ortak_teklifler").doc(activePaymentDocId).update({
+            odemeler: odemeler,
+            kaparoNum: totalAlinan,
+            kalanNum: kalan,
+            kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
+            kalan: kalan.toLocaleString('tr-TR') + " â‚º"
+        }).then(() => {
+            alert("Ã–deme kaydÄ± silindi!");
+            openPaymentModal(activePaymentDocId);
+        }).catch(err => {
+            alert("Ã–deme silinirken hata oluÅŸtu: " + err.message);
+        });
+    }
+
+    // =========================================================================
+    // ğŸ¨ ETKÄ°LEÅÄ°MLÄ° MÃœÅTERÄ° DOLAP TASARIM SÄ°HÄ°RBAZI (KENDÄ°N TASARLA) MANTIÄI
+    // =========================================================================
+    
+    // =========================================================================
+    // ğŸ¨ ETKÄ°LEÅÄ°MLÄ° MÃœÅTERÄ° DOLAP TASARIM SÄ°HÄ°RBAZI (KENDÄ°N TASARLA) MANTIÄI
+    // =========================================================================
+    
+    let designerCabinet = {
+        width: 200,
+        height: 220,
+        material: 'lake',
+        handle: 'black',
+        hasDoors: 'yes',
+        led: 'yok',
+        modules: ['shelf', 'rod', 'drawer'],
+        activeModuleIdx: 0,
+        doorsOpen: false
+    };
+    
+    let designerActiveTab = 'dolap';
+    let showDesignerRulers = true;
+    let showDesignerSilhouette = true;
+
+
+// Setup global listener integrations on load
+document.addEventListener('DOMContentLoaded', () => {
+    checkAutoLogin();
+});
