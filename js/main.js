@@ -71,7 +71,7 @@
         }
     }
 
-    // ğŸ’¾ AUTO SESSION LOGIN ON LOAD
+    // 💾 AUTO SESSION LOGIN ON LOAD
     window.onload = function() {
         // Listen for changes in Material Prices from Firestore globally
         db.collection("ayarlar").doc("malzeme_fiyatlari").onSnapshot((doc) => {
@@ -95,12 +95,12 @@
                 if (doc.exists) {
                     loadOrderTracking(doc.id, doc.data());
                 } else {
-                    alert("GirdiÄŸiniz Takip Linki geÃ§ersiz veya sipariÅŸ bulunamadÄ±!");
+                    alert("Girdiğiniz Takip Linki geçersiz veya sipariş bulunamadı!");
                     window.history.replaceState({}, document.title, window.location.pathname);
                     checkAutoLogin();
                 }
             }).catch(err => {
-                console.error("Takip hatasÄ±:", err);
+                console.error("Takip hatası:", err);
                 checkAutoLogin();
             });
         } else {
@@ -139,10 +139,10 @@
             
             // Set User Profiles Visuals
             document.getElementById('avatarName').innerText = user.charAt(0).toUpperCase();
-            document.getElementById('profileName').innerText = user === "patron" ? "Patron (YÃ¶netim)" : "Ortak GiriÅŸi";
-            document.getElementById('profileRole').innerText = "DoÄŸanÃ§ay Mobilya Yetkilisi";
+            document.getElementById('profileName').innerText = user === "patron" ? "Patron (Yönetim)" : "Ortak Girişi";
+            document.getElementById('profileRole').innerText = "Doğançay Mobilya Yetkilisi";
             let mProfile = document.getElementById('mobileProfileName');
-            if (mProfile) mProfile.innerText = user === "patron" ? "Patron (YÃ¶netim)" : "Ortak GiriÅŸi";
+            if (mProfile) mProfile.innerText = user === "patron" ? "Patron (Yönetim)" : "Ortak Girişi";
 
             if(user === "patron") {
                 isPatron = true;
@@ -161,12 +161,12 @@
             canliGezgin();
             initErpReviewsListener();
         } else {
-            if(isAuto === false) { alert("HatalÄ± kullanÄ±cÄ± adÄ± veya ÅŸifre!"); }
+            if(isAuto === false) { alert("Hatalı kullanıcı adı veya şifre!"); }
         }
     }
 
     function cikisYap() {
-        if(confirm("Sistem oturumunu kapatmak istediÄŸinize emin misiniz?")) {
+        if(confirm("Sistem oturumunu kapatmak istediğinize emin misiniz?")) {
             localStorage.removeItem('dogancay_user');
             localStorage.removeItem('dogancay_pass');
             location.reload();
@@ -219,8 +219,8 @@
         // Toggle input segments
         document.querySelectorAll('.furniture-form-group').forEach(fg => fg.style.display = 'none');
         
-        if (type === 'gardÄ±rop') {
-            document.getElementById('formGardÄ±rop').style.display = 'block';
+        if (type === 'gardırop') {
+            document.getElementById('formGardırop').style.display = 'block';
         } else if (type === 'mutfak') {
             document.getElementById('formMutfak').style.display = 'block';
         } else if (type === 'vestiyer') {
@@ -241,9 +241,9 @@
         let method = document.getElementById('o_method').value;
         let lbl = document.getElementById('lblOzelQty');
         if(method === 'm2') {
-            lbl.innerText = "Ã–lÃ§Ã¼ AlanÄ± (mÂ²)";
+            lbl.innerText = "Ölçü Alanı (m²)";
         } else if(method === 'mt') {
-            lbl.innerText = "Uzunluk (MetretÃ¼l)";
+            lbl.innerText = "Uzunluk (Metretül)";
         } else {
             lbl.innerText = "Miktar / Adet";
         }
@@ -263,11 +263,11 @@
             document.getElementById('p_r_tandem').value = dynamicPrices.r_tandem;
             document.getElementById('p_r_blum').value = dynamicPrices.r_blum;
             
-            // MenteÅŸe
+            // Menteşe
             document.getElementById('p_samet').value = dynamicPrices.samet;
             document.getElementById('p_blum').value = dynamicPrices.blum;
             
-            // Mutfak TezgahÄ±
+            // Mutfak Tezgahı
             document.getElementById('p_t_laminat').value = dynamicPrices.tezgah_laminat || 1500;
             document.getElementById('p_t_ahsap').value = dynamicPrices.tezgah_ahsap || 3000;
             document.getElementById('p_t_granit').value = dynamicPrices.tezgah_granit || 5000;
@@ -277,11 +277,11 @@
             document.getElementById('p_vestiyer').value = dynamicPrices.vestiyer_m2 || 3600;
             document.getElementById('p_banyo').value = dynamicPrices.banyo_m2 || 4000;
             
-            // AtÃ¶lye
+            // Atölye
             document.getElementById('p_kesim_m2').value = dynamicPrices.kesim_m2 || 350;
             document.getElementById('p_montaj').value = dynamicPrices.montaj || 3500;
         } catch(e) {
-            console.error("Fiyat doldurma hatasÄ±: ", e);
+            console.error("Fiyat doldurma hatası: ", e);
         }
     }
 
@@ -312,22 +312,22 @@
                 kesim_m2: parseFloat(document.getElementById('p_kesim_m2').value),
                 montaj: parseFloat(document.getElementById('p_montaj').value)
             }).then(() => {
-                alert("Yeni fiyat listesi baÅŸarÄ±yla buluta kilitlendi!");
+                alert("Yeni fiyat listesi başarıyla buluta kilitlendi!");
                 switchTab('teklifView');
             }).catch(err => {
-                alert("Kaydetme baÅŸarÄ±sÄ±z (Firebase HatasÄ±): " + err.message);
+                alert("Kaydetme başarısız (Firebase Hatası): " + err.message);
             });
         } catch(e) {
-            alert("Sistem HatasÄ± (JS Exception): " + e.message);
+            alert("Sistem Hatası (JS Exception): " + e.message);
         }
     }
 
-    // ğŸ¨ DÄ°NAMÄ°K DETAY METNÄ° DERLEYÄ°CÄ°
+    // 🎨 DİNAMİK DETAY METNİ DERLEYİCİ
     function getSpecificationText() {
         let type = document.getElementById('mobilyaTuru').value;
         let origText = "";
 
-        if(type === 'gardÄ±rop') {
+        if(type === 'gardırop') {
             let w = parseFloat(document.getElementById('g_width').value) || 0;
             let h = parseFloat(document.getElementById('g_height').value) || 0;
             let d = parseInt(document.getElementById('g_doors').value) || 0;
@@ -335,7 +335,7 @@
             let mat = document.getElementById('g_material').value.toUpperCase();
             let ray = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
             let bck = document.getElementById('g_back').options[document.getElementById('g_back').selectedIndex].text;
-            origText = `GardÄ±rop (${w.toFixed(2)}x${h.toFixed(2)}m) - ${d} Kapak (${mat}) - ${dr} Ã‡ekmece (${ray}) - ArkalÄ±k: ${bck}`;
+            origText = `Gardırop (${w.toFixed(2)}x${h.toFixed(2)}m) - ${d} Kapak (${mat}) - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
         } 
         else if(type === 'mutfak') {
             let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
@@ -344,7 +344,7 @@
             let dr = parseInt(document.getElementById('k_drawers').value) || 0;
             let ray = document.getElementById('k_ray').options[document.getElementById('k_ray').selectedIndex].text;
             let count = document.getElementById('k_countertop').options[document.getElementById('k_countertop').selectedIndex].text;
-            origText = `Mutfak DolabÄ± (Alt: ${ll.toFixed(2)}m / Ãœst: ${ul.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece (${ray}) - Tezgah: ${count}`;
+            origText = `Mutfak Dolabı (Alt: ${ll.toFixed(2)}m / Üst: ${ul.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Tezgah: ${count}`;
         }
         else if(type === 'vestiyer') {
             let w = parseFloat(document.getElementById('v_width').value) || 0;
@@ -353,7 +353,7 @@
             let dr = parseInt(document.getElementById('v_drawers').value) || 0;
             let hooks = parseInt(document.getElementById('v_hooks').value) || 0;
             let mirror = document.getElementById('v_mirror').options[document.getElementById('v_mirror').selectedIndex].text;
-            origText = `Vestiyer (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece - AskÄ± KancasÄ±: ${hooks} Adet - Ayna SÄ±nÄ±fÄ±: ${mirror}`;
+            origText = `Vestiyer (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Askı Kancası: ${hooks} Adet - Ayna Sınıfı: ${mirror}`;
         }
         else if(type === 'banyo') {
             let w = parseFloat(document.getElementById('b_width').value) || 0;
@@ -361,13 +361,13 @@
             let mat = document.getElementById('b_material').value.toUpperCase();
             let dr = parseInt(document.getElementById('b_drawers').value) || 0;
             let ext = document.getElementById('b_extras').options[document.getElementById('b_extras').selectedIndex].text;
-            origText = `Banyo DolabÄ± (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece - Ekstra ModÃ¼l: ${ext}`;
+            origText = `Banyo Dolabı (${w.toFixed(2)}x${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece - Ekstra Modül: ${ext}`;
         }
         else if(type === 'ozel') {
-            let desc = document.getElementById('o_desc').value.trim() || "Ã–zel Mobilya Projesi";
+            let desc = document.getElementById('o_desc').value.trim() || "Özel Mobilya Projesi";
             let method = document.getElementById('o_method').options[document.getElementById('o_method').selectedIndex].text;
             let qty = parseFloat(document.getElementById('o_qty').value) || 0;
-            origText = `Ã–zel TasarÄ±m: ${desc} (Hesap: ${qty} x ${method})`;
+            origText = `Özel Tasarım: ${desc} (Hesap: ${qty} x ${method})`;
         }
         else if(type === 'udolap') {
             let left = parseFloat(document.getElementById('u_left').value) || 0;
@@ -378,7 +378,7 @@
             let mat = document.getElementById('u_material').options[document.getElementById('u_material').selectedIndex].text;
             let ray = document.getElementById('u_ray').options[document.getElementById('u_ray').selectedIndex].text;
             let bck = document.getElementById('u_back_panel').options[document.getElementById('u_back_panel').selectedIndex].text;
-            origText = `U Dolap (Sol: ${left.toFixed(2)}m, Arka: ${back.toFixed(2)}m, SaÄŸ: ${right.toFixed(2)}m, Boy: ${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Ã‡ekmece (${ray}) - ArkalÄ±k: ${bck}`;
+            origText = `U Dolap (Sol: ${left.toFixed(2)}m, Arka: ${back.toFixed(2)}m, Sağ: ${right.toFixed(2)}m, Boy: ${h.toFixed(2)}m) - Kapak: ${mat} - ${dr} Çekmece (${ray}) - Arkalık: ${bck}`;
         }
 
         let useSheetCosting = document.getElementById('chkUseSheetCosting') && document.getElementById('chkUseSheetCosting').checked;
@@ -397,7 +397,7 @@
             let sheetArea = (w * h) / 1000000;
             
             let calcM2 = 0;
-            if (type === 'gardÄ±rop') {
+            if (type === 'gardırop') {
                 let gw = parseFloat(document.getElementById('g_width').value) || 0;
                 let gh = parseFloat(document.getElementById('g_height').value) || 0;
                 calcM2 = gw * gh;
@@ -417,14 +417,14 @@
             }
             
             let aSheets = Math.ceil(calcM2 / sheetArea);
-            origText += ` [Plaka BazlÄ±: ${gSheets} Plaka GÃ¶vde + ${aSheets} Plaka ArkalÄ±k (${w}x${h}mm)]`;
+            origText += ` [Plaka Bazlı: ${gSheets} Plaka Gövde + ${aSheets} Plaka Arkalık (${w}x${h}mm)]`;
         }
 
         return origText;
     }
 
     // ==========================================
-    // ğŸ¨ LÃœKS 2D Ã‡Ä°ZÄ°M VE HESAPLAMA YARDIMCILARI
+    // 🎨 LÜKS 2D ÇİZİM VE HESAPLAMA YARDIMCILARI
     // ==========================================
 
 
@@ -441,20 +441,20 @@
             let day = String(targetDate.getDate()).padStart(2, '0');
             deliveryDateVal = `${year}-${month}-${day}`;
         }
-        if(!name) { alert("LÃ¼tfen mÃ¼ÅŸteri adÄ±nÄ± girin!"); return; }
+        if(!name) { alert("Lütfen müşteri adını girin!"); return; }
         
         let v = hesaplaVeCiz(); 
         let staff = document.getElementById('staffName').value;
         
         let selectRay = "Ray Yok";
-        if(v.type === 'gardÄ±rop') selectRay = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
+        if(v.type === 'gardırop') selectRay = document.getElementById('g_ray').options[document.getElementById('g_ray').selectedIndex].text;
         if(v.type === 'mutfak') selectRay = document.getElementById('k_ray').options[document.getElementById('k_ray').selectedIndex].text;
         if(v.type === 'vestiyer') selectRay = document.getElementById('v_ray').options[document.getElementById('v_ray').selectedIndex].text;
         if(v.type === 'banyo') selectRay = document.getElementById('b_ray').options[document.getElementById('b_ray').selectedIndex].text;
         if(v.type === 'udolap') selectRay = document.getElementById('u_ray').options[document.getElementById('u_ray').selectedIndex].text;
 
         let matName = "Malzeme Belirtilmedi";
-        if(v.type === 'gardÄ±rop') matName = document.getElementById('g_material').options[document.getElementById('g_material').selectedIndex].text;
+        if(v.type === 'gardırop') matName = document.getElementById('g_material').options[document.getElementById('g_material').selectedIndex].text;
         if(v.type === 'mutfak') matName = document.getElementById('k_material').options[document.getElementById('k_material').selectedIndex].text;
         if(v.type === 'vestiyer') matName = document.getElementById('v_material').options[document.getElementById('v_material').selectedIndex].text;
         if(v.type === 'banyo') matName = document.getElementById('b_material').options[document.getElementById('b_material').selectedIndex].text;
@@ -462,7 +462,7 @@
 
         // Compile inputState for edit restoration
         let inputState = {};
-        if(v.type === 'gardÄ±rop') {
+        if(v.type === 'gardırop') {
             inputState = {
                 g_width: parseFloat(document.getElementById('g_width').value) || 0,
                 g_height: parseFloat(document.getElementById('g_height').value) || 0,
@@ -560,12 +560,12 @@
                         if (v.kaparo > 0) {
                             odemeler = [{
                                 tutar: v.kaparo,
-                                aciklama: "Ä°lk Kaparo",
+                                aciklama: "İlk Kaparo",
                                 tarih: docData.tarih || new Date().toLocaleDateString('tr-TR')
                             }];
                         }
                     } else {
-                        // Ä°lk Ã¶deme kaydÄ±nÄ± formda dÃ¼zenlenen yeni kaparo deÄŸerine gÃ¶re gÃ¼ncelle
+                        // İlk ödeme kaydını formda düzenlenen yeni kaparo değerine göre güncelle
                         odemeler[0].tutar = v.kaparo;
                     }
                     
@@ -584,16 +584,16 @@
                         toplamNum: v.toplam,
                         kaparoNum: totalAlinan,
                         kalanNum: kalanVal,
-                        toplam: v.toplam.toLocaleString('tr-TR') + " â‚º",
-                        kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
-                        kalan: kalanVal.toLocaleString('tr-TR') + " â‚º",
+                        toplam: v.toplam.toLocaleString('tr-TR') + " ₺",
+                        kaparo: totalAlinan.toLocaleString('tr-TR') + " ₺",
+                        kalan: kalanVal.toLocaleString('tr-TR') + " ₺",
                         mobilyaTuru: v.type,
                         detaylar: v.detailsText,
                         inputState: inputState,
                         odemeler: odemeler
                     });
                 } else {
-                    throw new Error("SipariÅŸ bulunamadÄ±!");
+                    throw new Error("Sipariş bulunamadı!");
                 }
             });
         } else {
@@ -601,7 +601,7 @@
             if(v.kaparo > 0) {
                 odemeler = [{
                     tutar: v.kaparo,
-                    aciklama: "Ä°lk Kaparo",
+                    aciklama: "İlk Kaparo",
                     tarih: new Date().toLocaleDateString('tr-TR')
                 }];
             }
@@ -621,9 +621,9 @@
                 toplamNum: v.toplam,
                 kaparoNum: v.kaparo,
                 kalanNum: v.kalan,
-                toplam: v.toplam.toLocaleString('tr-TR') + " â‚º",
-                kaparo: v.kaparo.toLocaleString('tr-TR') + " â‚º",
-                kalan: v.kalan.toLocaleString('tr-TR') + " â‚º",
+                toplam: v.toplam.toLocaleString('tr-TR') + " ₺",
+                kaparo: v.kaparo.toLocaleString('tr-TR') + " ₺",
+                kalan: v.kalan.toLocaleString('tr-TR') + " ₺",
                 mobilyaTuru: v.type,
                 detaylar: v.detailsText,
                 inputState: inputState,
@@ -632,21 +632,21 @@
         }
 
         savePromise.then(() => {
-            alert(editingDocId ? "SipariÅŸ baÅŸarÄ±yla gÃ¼ncellendi!" : "Teklif baÅŸarÄ±yla bulut havuzuna kaydedildi!");
+            alert(editingDocId ? "Sipariş başarıyla güncellendi!" : "Teklif başarıyla bulut havuzuna kaydedildi!");
             duzenlemeyiIptalEt(true);
             switchTab('takipView');
         }).catch(err => {
-            alert("KayÄ±t hatasÄ±: " + err.message);
+            alert("Kayıt hatası: " + err.message);
         });
     }
 
-    // ğŸ’¸ YENÄ° GÄ°DER KAYDETME
+    // 💸 YENİ GİDER KAYDETME
     function giderKaydet() {
         let tur = document.getElementById('expType').value;
         let tutar = parseFloat(document.getElementById('expAmount').value) || 0;
         let desc = document.getElementById('expDesc').value.trim();
         
-        if(tutar <= 0) { alert("LÃ¼tfen geÃ§erli bir tutar girin!"); return; }
+        if(tutar <= 0) { alert("Lütfen geçerli bir tutar girin!"); return; }
 
         db.collection("giderler").add({
             tur: tur,
@@ -655,15 +655,15 @@
             tarih: new Date().toLocaleDateString('tr-TR'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
-            alert("Gider baÅŸarÄ±yla kasaya iÅŸlendi!");
+            alert("Gider başarıyla kasaya işlendi!");
             document.getElementById('expAmount').value = "";
             document.getElementById('expDesc').value = "";
         }).catch(err => {
-            alert("Gider kaydÄ± hatasÄ±: " + err.message);
+            alert("Gider kaydı hatası: " + err.message);
         });
     }
 
-    // ğŸ“Š MUHASEBE RAPOR HESAPLAYICISI
+    // 📊 MUHASEBE RAPOR HESAPLAYICISI
     function muhasebeHesapla() {
         db.collection("ortak_teklifler").onSnapshot((snapshot) => {
             let totalCiro = 0; 
@@ -693,7 +693,7 @@
                             <span class="expense-item-desc">${g.aciklama || g.tur}</span>
                             <span class="expense-item-cat">${g.tur} (${g.tarih})</span>
                         </div>
-                        <div class="expense-item-cost">-${g.tutar.toLocaleString('tr-TR')} â‚º</div>
+                        <div class="expense-item-cost">-${g.tutar.toLocaleString('tr-TR')} ₺</div>
                         ${isPatron ? `<button class="btn-delete-item" title="Sil" onclick="giderSil('${gDoc.id}')">
                             <svg style="width:16px; height:16px; fill:currentColor;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                         </button>` : ''}
@@ -702,16 +702,16 @@
                 });
 
                 if(gSnapshot.empty) {
-                    giderDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px 0;">Gider kaydÄ± bulunmuyor.</div>';
+                    giderDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px 0;">Gider kaydı bulunmuyor.</div>';
                 }
 
                 let netKar = totalCiro - totalGider;
                 
                 // Write numbers in UI
-                document.getElementById('m_ciro').innerText = totalCiro.toLocaleString('tr-TR') + " â‚º";
-                document.getElementById('m_gider').innerText = totalGider.toLocaleString('tr-TR') + " â‚º";
-                document.getElementById('m_kar').innerText = netKar.toLocaleString('tr-TR') + " â‚º";
-                document.getElementById('m_alacak').innerText = totalAlacak.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('m_ciro').innerText = totalCiro.toLocaleString('tr-TR') + " ₺";
+                document.getElementById('m_gider').innerText = totalGider.toLocaleString('tr-TR') + " ₺";
+                document.getElementById('m_kar').innerText = netKar.toLocaleString('tr-TR') + " ₺";
+                document.getElementById('m_alacak').innerText = totalAlacak.toLocaleString('tr-TR') + " ₺";
 
                 // Visual Bars and Percentages
                 let totalPool = totalCiro > 0 ? totalCiro : (totalGider > 0 ? totalGider : 1);
@@ -731,7 +731,7 @@
         });
     }
 
-    // ğŸŒŸ MÃœÅTERÄ° YORUMLARI ERP LÄ°STENER'I
+    // 🌟 MÜŞTERİ YORUMLARI ERP LİSTENER'I
 
 // General Actions, Print and WhatsApp
     function canliGezgin() {
@@ -756,12 +756,12 @@
                 let cssClass = "status-teklif";
                 let badgeClass = "badge-teklif";
                 
-                if(k.durum === "OnaylandÄ± / Ä°malatta") { cssClass = "status-imalat"; badgeClass = "badge-imalat"; }
-                else if(k.durum === "Montaj AÅŸamasÄ±nda") { cssClass = "status-montaj"; badgeClass = "badge-montaj"; }
-                else if(k.durum === "TamamlandÄ±") { cssClass = "status-tamam"; badgeClass = "badge-tamam"; }
+                if(k.durum === "Onaylandı / İmalatta") { cssClass = "status-imalat"; badgeClass = "badge-imalat"; }
+                else if(k.durum === "Montaj Aşamasında") { cssClass = "status-montaj"; badgeClass = "badge-montaj"; }
+                else if(k.durum === "Tamamlandı") { cssClass = "status-tamam"; badgeClass = "badge-tamam"; }
 
                 // Fallback for old database rows missing detailed descriptions
-                let specsText = k.detaylar || `${k.m2} mÂ² / ${k.kapakAdet} Kapak (${k.kapak || 'Lake'}) - Ray: ${k.ray || 'Klasik'}`;
+                let specsText = k.detaylar || `${k.m2} m² / ${k.kapakAdet} Kapak (${k.kapak || 'Lake'}) - Ray: ${k.ray || 'Klasik'}`;
                 
                 // Clean short variables for WhatsApp sharing from list
                 let waMusteri = k.musteri;
@@ -770,47 +770,47 @@
                 let waKaparo = k.kaparo;
                 let waKalan = k.kalan;
                 let trackingLink = window.location.origin + window.location.pathname + "?takip=" + doc.id;
-                let shareMsg = `*DOÄANÃ‡AY MOBÄ°LYA*\n-----------------------------\n*MÃ¼ÅŸteri:* ${waMusteri}\n*SipariÅŸ DetayÄ±:* ${waSpec}\n\n*Ã–deme Ã–zeti:*\nğŸ’µ *Toplam:* ${waToplam}\nğŸ’° *Kaparo:* ${waKaparo}\nâ³ *Kalan Bakiye:* *${waKalan}*\n\n*CanlÄ± SipariÅŸ Takip Linki:*\n${trackingLink}\n\nSipariÅŸ durumunu sistemimizden canlÄ± takip edebilirsiniz. HayÄ±rlÄ± gÃ¼nler dileriz.`;
+                let shareMsg = `*DOĞANÇAY MOBİLYA*\n-----------------------------\n*Müşteri:* ${waMusteri}\n*Sipariş Detayı:* ${waSpec}\n\n*Ödeme Özeti:*\n💵 *Toplam:* ${waToplam}\n💰 *Kaparo:* ${waKaparo}\n⏳ *Kalan Bakiye:* *${waKalan}*\n\n*Canlı Sipariş Takip Linki:*\n${trackingLink}\n\nSipariş durumunu sistemimizden canlı takip edebilirsiniz. Hayırlı günler dileriz.`;
 
                 item.className = `archive-card ${cssClass}`;
                 item.innerHTML = `
                     <div class="archive-top">
-                        <span class="archive-client">ğŸ‘¤ ${k.musteri}</span>
-                        <span class="archive-date">ğŸ“… ${k.tarih}</span>
+                        <span class="archive-client">👤 ${k.musteri}</span>
+                        <span class="archive-date">📅 ${k.tarih}</span>
                     </div>
                     <div class="archive-details">
-                        âœï¸ <b>TasarÄ±mcÄ±:</b> ${k.personel}<br>
-                        ğŸ“ <b>Ã–zellikler:</b> ${specsText}<br>
-                        ğŸ’µ <b>Hesap:</b> Toplam: <b style="color:var(--primary); font-size:14px;">${k.toplam}</b> | AlÄ±nan: <span style="color:var(--success); font-weight:600;">${k.kaparo}</span> | Kalan Alacak: <b style="color:#38bdf8;">${k.kalan}</b>
+                        ✍️ <b>Tasarımcı:</b> ${k.personel}<br>
+                        📐 <b>Özellikler:</b> ${specsText}<br>
+                        💵 <b>Hesap:</b> Toplam: <b style="color:var(--primary); font-size:14px;">${k.toplam}</b> | Alınan: <span style="color:var(--success); font-weight:600;">${k.kaparo}</span> | Kalan Alacak: <b style="color:#38bdf8;">${k.kalan}</b>
                     </div>
                     <div class="archive-actions">
                         <div>
                             <span class="badge ${badgeClass}">${k.durum}</span>
                             <select onchange="durumGuncelle('${doc.id}', this.value)" style="margin-left:8px; display:inline-block; vertical-align:middle; border-radius:4px; padding:3px 5px;">
-                                <option value="">âš™ï¸ Durumu DeÄŸiÅŸtir</option>
-                                <option value="Teklif Verildi">ğŸŸ¡ Teklif AÅŸamasÄ±</option>
-                                <option value="OnaylandÄ± / Ä°malatta">ğŸ”µ Ä°malat AÅŸamasÄ±</option>
-                                <option value="Montaj AÅŸamasÄ±nda">ğŸŸ£ Montaj AÅŸamasÄ±</option>
-                                <option value="TamamlandÄ±">ğŸŸ¢ TamamlandÄ± (Teslim)</option>
+                                <option value="">⚙️ Durumu Değiştir</option>
+                                <option value="Teklif Verildi">🟡 Teklif Aşaması</option>
+                                <option value="Onaylandı / İmalatta">🔵 İmalat Aşaması</option>
+                                <option value="Montaj Aşamasında">🟣 Montaj Aşaması</option>
+                                <option value="Tamamlandı">🟢 Tamamlandı (Teslim)</option>
                             </select>
                         </div>
                         <div style="display:flex; gap: 8px; align-items:center;">
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: var(--primary); color: #000; font-weight: bold; border: none;" onclick="teklifDuzenle('${doc.id}')">
-                                DÃ¼zenle
+                                Düzenle
                             </button>
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #22c55e; color: #000; font-weight: bold; border: none;" onclick="openPaymentModal('${doc.id}')">
-                                ğŸ’³ Ã–demeler
+                                💳 Ödemeler
                             </button>
-                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #0f172a; color: #fff; border: 1px solid #475569;" onclick="kopyalaTakipLinki('${doc.id}')" title="MÃ¼ÅŸteri SipariÅŸ Takip Linki Kopyala">
-                                ğŸ”— Takip Linki
+                            <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px; background-color: #0f172a; color: #fff; border: 1px solid #475569;" onclick="kopyalaTakipLinki('${doc.id}')" title="Müşteri Sipariş Takip Linki Kopyala">
+                                🔗 Takip Linki
                             </button>
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px;" onclick="whatsappPaylas('${encodeURIComponent(shareMsg)}')">
                                 WhatsApp
                             </button>
                             <button class="btn btn-secondary" style="padding:6px 10px; font-size:11px;" onclick="yazdirListeden('${doc.id}')">
-                                YazdÄ±r (PDF)
+                                Yazdır (PDF)
                             </button>
-                            ${isPatron ? `<button class="btn-delete-item" title="KayÄ±t Sil" onclick="sistemdenSil('${doc.id}')">
+                            ${isPatron ? `<button class="btn-delete-item" title="Kayıt Sil" onclick="sistemdenSil('${doc.id}')">
                                 <svg style="width:18px; height:18px; fill:currentColor;" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
                             </button>` : ''}
                         </div>
@@ -820,7 +820,7 @@
             });
 
             if(counter === 0) {
-                listeDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">Arama kriterlerine uygun sipariÅŸ bulunamadÄ±.</div>';
+                listeDiv.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 40px 0;">Arama kriterlerine uygun sipariş bulunamadı.</div>';
             }
         });
     }
@@ -830,7 +830,7 @@
             db.collection("ortak_teklifler").doc(docId).update({ 
                 durum: yeniDurum 
             }).then(() => {
-                alert("SipariÅŸ durumu gÃ¼ncellendi!");
+                alert("Sipariş durumu güncellendi!");
             }).catch(err => {
                 alert("Hata: " + err.message);
             });
@@ -838,39 +838,39 @@
     }
     
     function sistemdenSil(docId) { 
-        if(confirm("Bu kaydÄ± bulut veri tabanÄ±ndan tamamen silmek istediÄŸinize emin misiniz? (Bu iÅŸlem geri alÄ±namaz!)")) {
+        if(confirm("Bu kaydı bulut veri tabanından tamamen silmek istediğinize emin misiniz? (Bu işlem geri alınamaz!)")) {
             db.collection("ortak_teklifler").doc(docId).delete().then(() => {
-                alert("KayÄ±t silindi!");
+                alert("Kayıt silindi!");
             }); 
         }
     }
 
     function giderSil(docId) {
-        if(confirm("Bu gider kaydÄ±nÄ± kasadan silmek istediÄŸinize emin misiniz?")) {
+        if(confirm("Bu gider kaydını kasadan silmek istediğinize emin misiniz?")) {
             db.collection("giderler").doc(docId).delete().then(() => {
                 alert("Gider silindi!");
             });
         }
     }
 
-    // ğŸ’¬ WHATSAPP MESAJ GÃ–NDERÄ°MÄ° (AKTÄ°F TASARIM EKRANINDAN)
+    // 💬 WHATSAPP MESAJ GÖNDERİMİ (AKTİF TASARIM EKRANINDAN)
     function whatsappSistem() {
-        let musteri = document.getElementById('customerName').value.trim() || "DeÄŸerli MÃ¼ÅŸterimiz";
+        let musteri = document.getElementById('customerName').value.trim() || "Değerli Müşterimiz";
         let spec = getSpecificationText();
         let v = hesaplaVeCiz();
         
-        let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m Mobilya", udolap: "U Dolap" };
+        let typeNames = { gardırop: "Gardırop", mutfak: "Mutfak Dolabı", vestiyer: "Vestiyer", banyo: "Banyo Dolabı", ozel: "Özel Tasarım Mobilya", udolap: "U Dolap" };
         
-        let mesaj = `*DOÄANÃ‡AY MOBÄ°LYA*\n`;
+        let mesaj = `*DOĞANÇAY MOBİLYA*\n`;
         mesaj += `-----------------------------\n`;
-        mesaj += `*MÃ¼ÅŸteri:* ${musteri}\n`;
-        mesaj += `*ÃœrÃ¼n Grubu:* ${typeNames[v.type]}\n`;
-        mesaj += `*TasarÄ±m DetayÄ±:* ${spec}\n\n`;
-        mesaj += `*Ã–DEME PLANI Ã–ZETÄ°:*\n`;
-        mesaj += `ğŸ’µ *Toplam Tutar:* *${v.toplam.toLocaleString('tr-TR')} â‚º*\n`;
-        mesaj += `ğŸ’° *AlÄ±nan Kaparo:* ${v.kaparo.toLocaleString('tr-TR')} â‚º\n`;
-        mesaj += `â³ *Montaj Sonu Kalan:* *${v.kalan.toLocaleString('tr-TR')} â‚º*\n\n`;
-        mesaj += `SipariÅŸ detaylarÄ±nÄ±z atÃ¶lye imalat havuzumuza kaydedilmiÅŸtir. Bizi tercih ettiÄŸiniz iÃ§in teÅŸekkÃ¼r ederiz.`;
+        mesaj += `*Müşteri:* ${musteri}\n`;
+        mesaj += `*Ürün Grubu:* ${typeNames[v.type]}\n`;
+        mesaj += `*Tasarım Detayı:* ${spec}\n\n`;
+        mesaj += `*ÖDEME PLANI ÖZETİ:*\n`;
+        mesaj += `💵 *Toplam Tutar:* *${v.toplam.toLocaleString('tr-TR')} ₺*\n`;
+        mesaj += `💰 *Alınan Kaparo:* ${v.kaparo.toLocaleString('tr-TR')} ₺\n`;
+        mesaj += `⏳ *Montaj Sonu Kalan:* *${v.kalan.toLocaleString('tr-TR')} ₺*\n\n`;
+        mesaj += `Sipariş detaylarınız atölye imalat havuzumuza kaydedilmiştir. Bizi tercih ettiğiniz için teşekkür ederiz.`;
         
         window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(mesaj), '_blank');
     }
@@ -882,38 +882,38 @@
     function kopyalaTakipLinki(docId) {
         let link = window.location.origin + window.location.pathname + "?takip=" + docId;
         navigator.clipboard.writeText(link).then(() => {
-            alert("MÃ¼ÅŸteri sipariÅŸ takip linki panoya kopyalandÄ±:\n" + link);
+            alert("Müşteri sipariş takip linki panoya kopyalandı:\n" + link);
         }).catch(err => {
-            alert("Link kopyalanamadÄ±: " + err);
+            alert("Link kopyalanamadı: " + err);
         });
     }
 
-    // ğŸ–¨ï¸ PDF YAZDIRICI (AKTÄ°F TASARIM EKRANINDAN)
+    // 🖨️ PDF YAZDIRICI (AKTİF TASARIM EKRANINDAN)
     function yazdirTeklif() {
         let canvas = document.getElementById('dolapCanvas');
         let printImg = document.getElementById('printCanvasImg');
         printImg.src = canvas.toDataURL("image/png");
         
-        document.getElementById('printCustomer').innerText = document.getElementById('customerName').value.trim() || "MÃ¼ÅŸteri Belirtilmedi";
+        document.getElementById('printCustomer').innerText = document.getElementById('customerName').value.trim() || "Müşteri Belirtilmedi";
         document.getElementById('printStaff').innerText = document.getElementById('staffName').value;
         document.getElementById('printDate').innerText = new Date().toLocaleDateString('tr-TR');
         
         let type = document.getElementById('mobilyaTuru').value;
-        let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m", udolap: "U Dolap" };
+        let typeNames = { gardırop: "Gardırop", mutfak: "Mutfak Dolabı", vestiyer: "Vestiyer", banyo: "Banyo Dolabı", ozel: "Özel Tasarım", udolap: "U Dolap" };
         document.getElementById('printType').innerText = typeNames[type];
         document.getElementById('printSpecs').innerText = getSpecificationText();
         
         let v = hesaplaVeCiz();
-        document.getElementById('printTotal').innerText = v.toplam.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('printAdvance').innerText = v.kaparo.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('printBalance').innerText = v.kalan.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('printTotal').innerText = v.toplam.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('printAdvance').innerText = v.kaparo.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('printBalance').innerText = v.kalan.toLocaleString('tr-TR') + " ₺";
         
         document.body.classList.add('print-mode-teklif');
         window.print();
         document.body.classList.remove('print-mode-teklif');
     }
 
-    // ğŸ–¨ï¸ LÄ°STEDEN YAZDIRMA (KAYITLI ESKÄ°/YENÄ° SÄ°PARÄ°ÅÄ° PDF YAPMA)
+    // 🖨️ LİSTEDEN YAZDIRMA (KAYITLI ESKİ/YENİ SİPARİŞİ PDF YAPMA)
     function yazdirListeden(docId) {
         db.collection("ortak_teklifler").doc(docId).get().then((doc) => {
             if(doc.exists) {
@@ -923,9 +923,9 @@
                 document.getElementById('printStaff').innerText = data.personel;
                 document.getElementById('printDate').innerText = data.tarih || new Date().toLocaleDateString('tr-TR');
                 
-                let typeNames = { gardÄ±rop: "GardÄ±rop", mutfak: "Mutfak DolabÄ±", vestiyer: "Vestiyer", banyo: "Banyo DolabÄ±", ozel: "Ã–zel TasarÄ±m", udolap: "U Dolap" };
-                document.getElementById('printType').innerText = typeNames[data.mobilyaTuru] || "GardÄ±rop";
-                document.getElementById('printSpecs').innerText = data.detaylar || `${data.m2} mÂ² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
+                let typeNames = { gardırop: "Gardırop", mutfak: "Mutfak Dolabı", vestiyer: "Vestiyer", banyo: "Banyo Dolabı", ozel: "Özel Tasarım", udolap: "U Dolap" };
+                document.getElementById('printType').innerText = typeNames[data.mobilyaTuru] || "Gardırop";
+                document.getElementById('printSpecs').innerText = data.detaylar || `${data.m2} m² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
                 
                 document.getElementById('printTotal').innerText = data.toplam;
                 document.getElementById('printAdvance').innerText = data.kaparo;
@@ -959,13 +959,13 @@
                 document.getElementById('editModeBanner').style.display = 'flex';
                 document.getElementById('btnKaydet').innerHTML = `
                     <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
-                    DeÄŸiÅŸiklikleri Kaydet (SipariÅŸi GÃ¼ncelle)
+                    Değişiklikleri Kaydet (Siparişi Güncelle)
                 `;
                 
                 document.getElementById('customerName').value = data.musteri || "";
-                document.getElementById('staffName').value = data.personel || "Mustafa DoÄŸanÃ§ay";
+                document.getElementById('staffName').value = data.personel || "Mustafa Doğançay";
                 
-                let type = data.mobilyaTuru || "gardÄ±rop";
+                let type = data.mobilyaTuru || "gardırop";
                 selectFurnitureType(type);
                 
                 if(data.inputState) {
@@ -1003,7 +1003,7 @@
                 switchTab('teklifView');
                 hesaplaVeCiz();
             } else {
-                alert("SipariÅŸ bulunamadÄ±!");
+                alert("Sipariş bulunamadı!");
             }
         }).catch(err => {
             alert("Hata: " + err.message);
@@ -1018,7 +1018,7 @@
         document.getElementById('editModeBanner').style.display = 'none';
         document.getElementById('btnKaydet').innerHTML = `
             <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
-            SipariÅŸi Ortak Bulut Havuzuna Kaydet
+            Siparişi Ortak Bulut Havuzuna Kaydet
         `;
 
         if (!onlyClearState) {
@@ -1047,14 +1047,14 @@
     }
 
     // ==========================================
-    // ğŸªµ 2D GÄ°YOTÄ°N PLAKA KESÄ°M OPTÄ°MÄ°ZASYON KODLARI
+    // 🪵 2D GİYOTİN PLAKA KESİM OPTİMİZASYON KODLARI
     // ==========================================
 
 
 // Customer Timeline & Tracking
     function sorgulaSiparis() {
         let query = document.getElementById('trackSearchInput').value.trim();
-        if (!query) { alert("LÃ¼tfen SipariÅŸ Kodu veya Telefon NumarasÄ± girin!"); return; }
+        if (!query) { alert("Lütfen Sipariş Kodu veya Telefon Numarası girin!"); return; }
         
         let isPhone = /^[0-9+\s()-]{7,15}$/.test(query);
         let cleanQuery = query.replace(/[^0-9]/g, "");
@@ -1068,7 +1068,7 @@
                 .get()
                 .then((snapshot) => {
                     if (snapshot.empty) {
-                        alert("Bu telefon numarasÄ±na ait aktif sipariÅŸ bulunamadÄ±!");
+                        alert("Bu telefon numarasına ait aktif sipariş bulunamadı!");
                     } else if (snapshot.size === 1) {
                         let doc = snapshot.docs[0];
                         loadOrderTracking(doc.id, doc.data());
@@ -1077,7 +1077,7 @@
                     }
                 })
                 .catch(err => {
-                    alert("Arama hatasÄ±: " + err.message);
+                    alert("Arama hatası: " + err.message);
                 });
         } else {
             let docId = query;
@@ -1088,10 +1088,10 @@
                 if (doc.exists) {
                     loadOrderTracking(doc.id, doc.data());
                 } else {
-                    alert("GirdiÄŸiniz SipariÅŸ Kodu bulunamadÄ±! LÃ¼tfen kodu kontrol edin.");
+                    alert("Girdiğiniz Sipariş Kodu bulunamadı! Lütfen kodu kontrol edin.");
                 }
             }).catch(err => {
-                alert("Arama hatasÄ±: " + err.message);
+                alert("Arama hatası: " + err.message);
             });
         }
     }
@@ -1104,12 +1104,12 @@
         listContainer.innerHTML = '';
         
         let localTypeNames = {
-            gardÄ±rop: "GardÄ±rop",
-            mutfak: "Mutfak DolabÄ±",
+            gardırop: "Gardırop",
+            mutfak: "Mutfak Dolabı",
             vestiyer: "Vestiyer",
-            banyo: "Banyo DolabÄ±",
+            banyo: "Banyo Dolabı",
             udolap: "U-Dolap",
-            ozel: "Ã–zel TasarÄ±m"
+            ozel: "Özel Tasarım"
         };
         
         snapshot.forEach((doc) => {
@@ -1128,7 +1128,7 @@
             div.onmouseover = function() { this.style.borderColor = 'var(--primary)'; };
             div.onmouseout = function() { this.style.borderColor = 'var(--border)'; };
             
-            let mobType = localTypeNames[data.mobilyaTuru] || "Mobilya SipariÅŸi";
+            let mobType = localTypeNames[data.mobilyaTuru] || "Mobilya Siparişi";
             div.innerHTML = `
                 <div>
                     <strong style="color:var(--text-light); font-size:13px;">${mobType} (${data.tarih})</strong>
@@ -1156,27 +1156,27 @@
         
         document.getElementById('trackMusteriVal').innerText = data.musteri || "-";
         document.getElementById('trackTarihVal').innerText = data.tarih || "-";
-        document.getElementById('trackPersonelVal').innerText = data.personel || "Mustafa DoÄŸanÃ§ay";
+        document.getElementById('trackPersonelVal').innerText = data.personel || "Mustafa Doğançay";
         
         let localTypeNames = {
-            gardÄ±rop: "GardÄ±rop",
-            mutfak: "Mutfak DolabÄ±",
+            gardırop: "Gardırop",
+            mutfak: "Mutfak Dolabı",
             vestiyer: "Vestiyer",
-            banyo: "Banyo DolabÄ±",
+            banyo: "Banyo Dolabı",
             udolap: "U-Dolap",
-            ozel: "Ã–zel TasarÄ±m"
+            ozel: "Özel Tasarım"
         };
-        document.getElementById('trackTurVal').innerText = localTypeNames[data.mobilyaTuru] || "Ã–zel Proje";
+        document.getElementById('trackTurVal').innerText = localTypeNames[data.mobilyaTuru] || "Özel Proje";
         
-        let specsText = data.detaylar || `${data.m2} mÂ² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
+        let specsText = data.detaylar || `${data.m2} m² / ${data.kapakAdet} Kapak (${data.kapak}) - Ray: ${data.ray}`;
         document.getElementById('trackSpecsVal').innerText = specsText;
         
-        // Ã–demeler geÃ§miÅŸini topla
+        // Ödemeler geçmişini topla
         let odemeler = data.odemeler || [];
         if (odemeler.length === 0 && (data.kaparoNum || 0) > 0) {
             odemeler = [{
                 tutar: data.kaparoNum,
-                aciklama: "Ä°lk Kaparo",
+                aciklama: "İlk Kaparo",
                 tarih: data.tarih || new Date().toLocaleDateString('tr-TR')
             }];
         }
@@ -1185,11 +1185,11 @@
         let totalNum = data.toplamNum || 0;
         let kalan = totalNum - totalAlinan;
         
-        document.getElementById('trackToplamVal').innerText = data.toplam || "0 â‚º";
-        document.getElementById('trackKaparoVal').innerText = totalAlinan.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('trackKalanVal').innerText = kalan.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('trackToplamVal').innerText = data.toplam || "0 ₺";
+        document.getElementById('trackKaparoVal').innerText = totalAlinan.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('trackKalanVal').innerText = kalan.toLocaleString('tr-TR') + " ₺";
         
-        // MÃ¼ÅŸteri iÃ§in Ã¶deme geÃ§miÅŸi listesi Ã§iz
+        // Müşteri için ödeme geçmişi listesi çiz
         let trackHistoryCard = document.getElementById('trackPaymentHistoryCard');
         let trackHistoryList = document.getElementById('trackPaymentHistoryList');
         if (trackHistoryCard && trackHistoryList) {
@@ -1201,7 +1201,7 @@
                     item.style.backgroundColor = 'var(--bg-dark)';
                     item.innerHTML = `
                         <div>
-                            <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} â‚º</span>
+                            <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} ₺</span>
                             <span style="color:var(--text-muted); margin-left:8px; font-size:11px;">(${pay.aciklama})</span>
                         </div>
                         <span style="color:var(--text-muted); font-size:11px;">${pay.tarih}</span>
@@ -1216,7 +1216,7 @@
         
         setTrackingTimeline(data.durum);
         
-        // --- Tahmini Teslimat Tarihi GÃ¶sterimi ---
+        // --- Tahmini Teslimat Tarihi Gösterimi ---
         let trackTeslimatVal = document.getElementById('trackTeslimatVal');
         if (trackTeslimatVal) {
             if (data.tahminiTeslimat) {
@@ -1231,10 +1231,10 @@
             }
         }
         
-        // --- Dinamik Teslimat Geri SayÄ±m SayacÄ± ---
+        // --- Dinamik Teslimat Geri Sayım Sayacı ---
         let countdownBadge = document.getElementById('trackCountdownBadge');
         if (countdownBadge) {
-            if (data.durum === "TamamlandÄ±" || !data.tahminiTeslimat) {
+            if (data.durum === "Tamamlandı" || !data.tahminiTeslimat) {
                 countdownBadge.style.display = 'none';
             } else {
                 let deliveryDate = new Date(data.tahminiTeslimat);
@@ -1248,17 +1248,17 @@
                 
                 countdownBadge.style.display = 'inline-block';
                 if (diffDays > 0) {
-                    countdownBadge.innerHTML = `ğŸšš Montaj ve Teslime Son <strong>${diffDays}</strong> GÃ¼n!`;
+                    countdownBadge.innerHTML = `🚚 Montaj ve Teslime Son <strong>${diffDays}</strong> Gün!`;
                     countdownBadge.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(217, 119, 6, 0.15))';
                     countdownBadge.style.color = 'var(--primary)';
                     countdownBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
                 } else if (diffDays === 0) {
-                    countdownBadge.innerHTML = `ğŸ‰ BugÃ¼n Montaj ve Teslimat GÃ¼nÃ¼!`;
+                    countdownBadge.innerHTML = `🎉 Bugün Montaj ve Teslimat Günü!`;
                     countdownBadge.style.background = 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.15))';
                     countdownBadge.style.color = 'var(--success)';
                     countdownBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
                 } else {
-                    countdownBadge.innerHTML = `ğŸ› ï¸ Montaj HazÄ±rlÄ±klarÄ± ve Son RÃ¶tuÅŸlar YapÄ±lÄ±yor`;
+                    countdownBadge.innerHTML = `🛠️ Montaj Hazırlıkları ve Son Rötuşlar Yapılıyor`;
                     countdownBadge.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(29, 78, 216, 0.15))';
                     countdownBadge.style.color = 'var(--info)';
                     countdownBadge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
@@ -1266,7 +1266,7 @@
             }
         }
 
-        // --- Dinamik Mobilya KullanÄ±m & BakÄ±m Rehberi ---
+        // --- Dinamik Mobilya Kullanım & Bakım Rehberi ---
         let careGuideCard = document.getElementById('trackCareGuideCard');
         let careGuideList = document.getElementById('trackCareGuideList');
         if (careGuideCard && careGuideList) {
@@ -1279,25 +1279,25 @@
                 let box = document.createElement('div');
                 box.className = 'care-guide-box';
                 box.innerHTML = `
-                    <div class="care-guide-title">ğŸ¨ Lake Mobilya Temizlik & BakÄ±m Rehberi</div>
+                    <div class="care-guide-title">🎨 Lake Mobilya Temizlik & Bakım Rehberi</div>
                     <ul class="care-guide-list">
-                        <li><strong>YumuÅŸak Bez KullanÄ±n:</strong> Sadece nemlendirilmiÅŸ yumuÅŸak mikrofiber bezler tercih edin. AÅŸÄ±ndÄ±rÄ±cÄ± sÃ¼nger veya tel bez kullanmayÄ±n.</li>
-                        <li><strong>Kimyasallardan KaÃ§Ä±nÄ±n:</strong> Tiner, Ã§amaÅŸÄ±r suyu, aseton, alkol bazlÄ± temizleyiciler lake cilasÄ±na kalÄ±cÄ± zarar verir. Hafif sabunlu Ä±lÄ±k su yeterlidir.</li>
-                        <li><strong>Hemen KurulayÄ±n:</strong> Nemli bezle silindikten sonra yÃ¼zeyde su damlacÄ±ÄŸÄ± bÄ±rakÄ±lmamalÄ±, kuru bezle hafifÃ§e kurulanmalÄ±dÄ±r.</li>
-                        <li><strong>GÃ¼neÅŸ IÅŸÄ±ÄŸÄ±ndan Koruyun:</strong> DoÄŸrudan ve yoÄŸun gÃ¼neÅŸ Ä±ÅŸÄ±ÄŸÄ± lake renginin zamanla sararmasÄ±na yol aÃ§abilir.</li>
+                        <li><strong>Yumuşak Bez Kullanın:</strong> Sadece nemlendirilmiş yumuşak mikrofiber bezler tercih edin. Aşındırıcı sünger veya tel bez kullanmayın.</li>
+                        <li><strong>Kimyasallardan Kaçının:</strong> Tiner, çamaşır suyu, aseton, alkol bazlı temizleyiciler lake cilasına kalıcı zarar verir. Hafif sabunlu ılık su yeterlidir.</li>
+                        <li><strong>Hemen Kurulayın:</strong> Nemli bezle silindikten sonra yüzeyde su damlacığı bırakılmamalı, kuru bezle hafifçe kurulanmalıdır.</li>
+                        <li><strong>Güneş Işığından Koruyun:</strong> Doğrudan ve yoğun güneş ışığı lake renginin zamanla sararmasına yol açabilir.</li>
                     </ul>
                 `;
                 careGuideList.appendChild(box);
-            } else if (kapakLower.includes('mdf') || kapakLower.includes('suntalam') || kapakLower.includes('gÃ¶vde')) {
+            } else if (kapakLower.includes('mdf') || kapakLower.includes('suntalam') || kapakLower.includes('gövde')) {
                 hasGuide = true;
                 let box = document.createElement('div');
                 box.className = 'care-guide-box';
                 box.innerHTML = `
-                    <div class="care-guide-title">ğŸªµ MDF Lam & AhÅŸap YÃ¼zeyler BakÄ±m Rehberi</div>
+                    <div class="care-guide-title">🪵 MDF Lam & Ahşap Yüzeyler Bakım Rehberi</div>
                     <ul class="care-guide-list">
-                        <li><strong>Neme KarÅŸÄ± Koruyun:</strong> YÃ¼zeyler neme dayanÄ±klÄ± olsa da birleÅŸim noktalarÄ±ndan su sÄ±zmasÄ± ÅŸiÅŸme yapabilir. DÃ¶kÃ¼len sÄ±vÄ±larÄ± hemen kurulayÄ±n.</li>
-                        <li><strong>Hafif Temizlik:</strong> Nemli sabunlu bezle silinip hemen kurulanmasÄ± yeterlidir. Ã‡ok Ä±slak temizlikten kaÃ§Ä±nÄ±n.</li>
-                        <li><strong>Ã‡izilmelere Dikkat:</strong> YÃ¼zey Ã¼zerinde sert veya keskin objeleri sÃ¼rÃ¼klemeyin, altlÄ±k kullanmaya Ã¶zen gÃ¶sterin.</li>
+                        <li><strong>Neme Karşı Koruyun:</strong> Yüzeyler neme dayanıklı olsa da birleşim noktalarından su sızması şişme yapabilir. Dökülen sıvıları hemen kurulayın.</li>
+                        <li><strong>Hafif Temizlik:</strong> Nemli sabunlu bezle silinip hemen kurulanması yeterlidir. Çok ıslak temizlikten kaçının.</li>
+                        <li><strong>Çizilmelere Dikkat:</strong> Yüzey üzerinde sert veya keskin objeleri sürüklemeyin, altlık kullanmaya özen gösterin.</li>
                     </ul>
                 `;
                 careGuideList.appendChild(box);
@@ -1306,11 +1306,11 @@
                 let box = document.createElement('div');
                 box.className = 'care-guide-box';
                 box.innerHTML = `
-                    <div class="care-guide-title">âœ¨ Cam & Metal Aksesuar BakÄ±m Rehberi</div>
+                    <div class="care-guide-title">✨ Cam & Metal Aksesuar Bakım Rehberi</div>
                     <ul class="care-guide-list">
-                        <li><strong>Cam Temizleyici:</strong> Standart cam temizleyiciler ve mikrofiber bez kullanÄ±labilir.</li>
-                        <li><strong>Metal Ã‡erÃ§eveler:</strong> AlÃ¼minyum profilleri aÅŸÄ±ndÄ±rÄ±cÄ± asidik temizleyicilerle silmeyin.</li>
-                        <li><strong>MenteÅŸe BakÄ±mÄ±:</strong> KapaklarÄ± sertÃ§e Ã§arpmayÄ±n, fren mekanizmalarÄ±nÄ±n saÄŸlÄ±klÄ± Ã§alÄ±ÅŸmasÄ± iÃ§in menteÅŸeleri zorlamayÄ±n.</li>
+                        <li><strong>Cam Temizleyici:</strong> Standart cam temizleyiciler ve mikrofiber bez kullanılabilir.</li>
+                        <li><strong>Metal Çerçeveler:</strong> Alüminyum profilleri aşındırıcı asidik temizleyicilerle silmeyin.</li>
+                        <li><strong>Menteşe Bakımı:</strong> Kapakları sertçe çarpmayın, fren mekanizmalarının sağlıklı çalışması için menteşeleri zorlamayın.</li>
                     </ul>
                 `;
                 careGuideList.appendChild(box);
@@ -1323,11 +1323,11 @@
                     let box = document.createElement('div');
                     box.className = 'care-guide-box';
                     box.innerHTML = `
-                        <div class="care-guide-title">ğŸŒ³ DoÄŸal Masif AhÅŸap Tezgah KullanÄ±m Rehberi</div>
+                        <div class="care-guide-title">🌳 Doğal Masif Ahşap Tezgah Kullanım Rehberi</div>
                         <ul class="care-guide-list">
-                            <li><strong>SÄ±cak ve IslaklÄ±k:</strong> Ãœzerinde doÄŸrudan sÄ±cak tencere bÄ±rakmayÄ±n. Su birikintilerini derhal kurulayÄ±n.</li>
-                            <li><strong>Periyodik YaÄŸlama:</strong> TezgahÄ±nÄ±zÄ±n Ã¶mrÃ¼nÃ¼ uzatmak iÃ§in yÄ±lda 1-2 kez koruyucu doÄŸal yaÄŸ (Ã¶rneÄŸin keten tohumu yaÄŸÄ±) uygulayÄ±nÄ±z.</li>
-                            <li><strong>Kesme TahtasÄ± KullanÄ±mÄ±:</strong> Tezgah Ã¼zerinde doÄŸrudan kesim yapmayÄ±n, bÄ±Ã§ak izleri ahÅŸabÄ± zedeleyebilir.</li>
+                            <li><strong>Sıcak ve Islaklık:</strong> Üzerinde doğrudan sıcak tencere bırakmayın. Su birikintilerini derhal kurulayın.</li>
+                            <li><strong>Periyodik Yağlama:</strong> Tezgahınızın ömrünü uzatmak için yılda 1-2 kez koruyucu doğal yağ (örneğin keten tohumu yağı) uygulayınız.</li>
+                            <li><strong>Kesme Tahtası Kullanımı:</strong> Tezgah üzerinde doğrudan kesim yapmayın, bıçak izleri ahşabı zedeleyebilir.</li>
                         </ul>
                     `;
                     careGuideList.appendChild(box);
@@ -1336,10 +1336,10 @@
                     let box = document.createElement('div');
                     box.className = 'care-guide-box';
                     box.innerHTML = `
-                        <div class="care-guide-title">ğŸ’ DoÄŸal Granit Tezgah KullanÄ±m Rehberi</div>
+                        <div class="care-guide-title">💎 Doğal Granit Tezgah Kullanım Rehberi</div>
                         <ul class="care-guide-list">
-                            <li><strong>Kimyasal Koruma:</strong> Por Ã§Ã¶zÃ¼cÃ¼, tuz ruhu veya gÃ¼Ã§lÃ¼ asidik temizlik kimyasallarÄ± granitin cilasÄ±nÄ± matlaÅŸtÄ±rÄ±r. NÃ¶tr sabunlu su kullanÄ±n.</li>
-                            <li><strong>SÄ±caklÄ±k DayanÄ±mÄ±:</strong> Granit sÄ±caÄŸa oldukÃ§a dayanÄ±klÄ±dÄ±r ancak ani termal ÅŸoklarÄ± Ã¶nlemek iÃ§in sÄ±cak tencerelerin altÄ±na nihale koyulmasÄ± tavsiye edilir.</li>
+                            <li><strong>Kimyasal Koruma:</strong> Por çözücü, tuz ruhu veya güçlü asidik temizlik kimyasalları granitin cilasını matlaştırır. Nötr sabunlu su kullanın.</li>
+                            <li><strong>Sıcaklık Dayanımı:</strong> Granit sıcağa oldukça dayanıklıdır ancak ani termal şokları önlemek için sıcak tencerelerin altına nihale koyulması tavsiye edilir.</li>
                         </ul>
                     `;
                     careGuideList.appendChild(box);
@@ -1348,10 +1348,10 @@
                     let box = document.createElement('div');
                     box.className = 'care-guide-box';
                     box.innerHTML = `
-                        <div class="care-guide-title">ğŸ’  Ã‡imstone & Kuvars Tezgah KullanÄ±m Rehberi</div>
+                        <div class="care-guide-title">💠 Çimstone & Kuvars Tezgah Kullanım Rehberi</div>
                         <ul class="care-guide-list">
-                            <li><strong>Leke Direnci:</strong> GÃ¶zeneksiz yapÄ±sÄ± sayesinde leke tutmaz. Ancak Ã§ay, kahve veya limon gibi asidik gÄ±dalar dÃ¶kÃ¼ldÃ¼ÄŸÃ¼nde kurumadan silinmelidir.</li>
-                            <li><strong>Kimyasal Hassasiyeti:</strong> Ã‡amaÅŸÄ±r suyu veya asidik temizleyiciler yerine pH nÃ¶tr genel temizleyiciler kullanÄ±n.</li>
+                            <li><strong>Leke Direnci:</strong> Gözeneksiz yapısı sayesinde leke tutmaz. Ancak çay, kahve veya limon gibi asidik gıdalar döküldüğünde kurumadan silinmelidir.</li>
+                            <li><strong>Kimyasal Hassasiyeti:</strong> Çamaşır suyu veya asidik temizleyiciler yerine pH nötr genel temizleyiciler kullanın.</li>
                         </ul>
                     `;
                     careGuideList.appendChild(box);
@@ -1360,10 +1360,10 @@
                     let box = document.createElement('div');
                     box.className = 'care-guide-box';
                     box.innerHTML = `
-                        <div class="care-guide-title">ğŸ›ï¸ Laminat Tezgah KullanÄ±m Rehberi</div>
+                        <div class="care-guide-title">🎛️ Laminat Tezgah Kullanım Rehberi</div>
                         <ul class="care-guide-list">
-                            <li><strong>IsÄ± ve Kesme:</strong> DoÄŸrudan sÄ±cak tencere koymayÄ±n, laminat yÃ¼zeyi eriyebilir veya kabarcÄ±k yapabilir. DoÄŸrudan Ã¼zerinde kesim yapmayÄ±n.</li>
-                            <li><strong>Su SÄ±zdÄ±rmazlÄ±ÄŸÄ±:</strong> Evye birleÅŸim yerlerinde ve kenar bantlarÄ±nda su birikmesini Ã¶nleyin, aksi takdirde MDF gÃ¶vde ÅŸiÅŸebilir.</li>
+                            <li><strong>Isı ve Kesme:</strong> Doğrudan sıcak tencere koymayın, laminat yüzeyi eriyebilir veya kabarcık yapabilir. Doğrudan üzerinde kesim yapmayın.</li>
+                            <li><strong>Su Sızdırmazlığı:</strong> Evye birleşim yerlerinde ve kenar bantlarında su birikmesini önleyin, aksi takdirde MDF gövde şişebilir.</li>
                         </ul>
                     `;
                     careGuideList.appendChild(box);
@@ -1374,11 +1374,11 @@
                 let box = document.createElement('div');
                 box.className = 'care-guide-box';
                 box.innerHTML = `
-                    <div class="care-guide-title">ğŸ›‹ï¸ Genel Mobilya KullanÄ±m Rehberi</div>
+                    <div class="care-guide-title">🛋️ Genel Mobilya Kullanım Rehberi</div>
                     <ul class="care-guide-list">
-                        <li><strong>Temizlik:</strong> Nemli yumuÅŸak mikrofiber bezle silip hemen kurulayÄ±nÄ±z. AÅŸÄ±ndÄ±rÄ±cÄ± sÃ¼nger ve sert kimyasal kullanmayÄ±nÄ±z.</li>
-                        <li><strong>Nem ve IsÄ±:</strong> MobilyalarÄ± aÅŸÄ±rÄ± sÄ±cak, soÄŸuk veya nemli ortamlardan koruyunuz.</li>
-                        <li><strong>KullanÄ±m:</strong> Kapak ve Ã§ekmeceleri sert kapatmayÄ±nÄ±z, aÅŸÄ±rÄ± yÃ¼klemeden kaÃ§Ä±nÄ±nÄ±z.</li>
+                        <li><strong>Temizlik:</strong> Nemli yumuşak mikrofiber bezle silip hemen kurulayınız. Aşındırıcı sünger ve sert kimyasal kullanmayınız.</li>
+                        <li><strong>Nem ve Isı:</strong> Mobilyaları aşırı sıcak, soğuk veya nemli ortamlardan koruyunuz.</li>
+                        <li><strong>Kullanım:</strong> Kapak ve çekmeceleri sert kapatmayınız, aşırı yüklemeden kaçınınız.</li>
                     </ul>
                 `;
                 careGuideList.appendChild(box);
@@ -1390,13 +1390,13 @@
         if (data.inputState) {
             renderTrackingDesign(data.inputState);
         } else {
-            document.getElementById('customerCanvasWrapper').innerHTML = '<div style="color:var(--text-muted); font-size:12px;">Bu sipariÅŸ iÃ§in 2D tasarÄ±m modeli bulunmamaktadÄ±r.</div>';
+            document.getElementById('customerCanvasWrapper').innerHTML = '<div style="color:var(--text-muted); font-size:12px;">Bu sipariş için 2D tasarım modeli bulunmamaktadır.</div>';
         }
         
-        // --- SipariÅŸi DeÄŸerlendir Paneli (Yorum & Puanlama) ---
+        // --- Siparişi Değerlendir Paneli (Yorum & Puanlama) ---
         let trackReviewCard = document.getElementById('trackReviewCard');
         if (trackReviewCard) {
-            if (data.durum === "TamamlandÄ±") {
+            if (data.durum === "Tamamlandı") {
                 trackReviewCard.style.display = 'block';
                 // Check if a review already exists in database
                 db.collection("reviews").doc(docId).get().then((reviewDoc) => {
@@ -1404,15 +1404,15 @@
                         let reviewData = reviewDoc.data();
                         let starsHtml = '';
                         for (let i = 1; i <= 5; i++) {
-                            starsHtml += `<span style="color: ${i <= reviewData.rating ? '#fbbf24' : 'var(--border)'}; font-size: 20px; margin-right: 2px;">â˜…</span>`;
+                            starsHtml += `<span style="color: ${i <= reviewData.rating ? '#fbbf24' : 'var(--border)'}; font-size: 20px; margin-right: 2px;">★</span>`;
                         }
                         document.getElementById('trackReviewFormContainer').style.display = 'none';
                         let resultContainer = document.getElementById('trackReviewResultContainer');
                         resultContainer.innerHTML = `
                             <div style="background-color: var(--bg-dark); padding: 12px; border-radius: 8px; border: 1px solid var(--border);">
-                                <span style="font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-bottom: 5px;">âœ“ DeÄŸerlendirmeniz Kaydedildi</span>
+                                <span style="font-size: 11px; color: var(--success); font-weight: 600; display: block; margin-bottom: 5px;">✓ Değerlendirmeniz Kaydedildi</span>
                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-                                    <span style="font-size: 12px; font-weight: 700; color: var(--text-light);">PuanÄ±nÄ±z:</span>
+                                    <span style="font-size: 12px; font-weight: 700; color: var(--text-light);">Puanınız:</span>
                                     <div>${starsHtml}</div>
                                 </div>
                                 ${reviewData.comment ? `
@@ -1429,7 +1429,7 @@
                         resetInteractiveRating();
                     }
                 }).catch(err => {
-                    console.error("Yorum kontrol hatasÄ±:", err);
+                    console.error("Yorum kontrol hatası:", err);
                     document.getElementById('trackReviewFormContainer').style.display = 'block';
                     document.getElementById('trackReviewResultContainer').style.display = 'none';
                     resetInteractiveRating();
@@ -1457,22 +1457,22 @@
         
         if (status === "Teklif Verildi") {
             activeIndex = 0;
-            banner.innerText = "ğŸŸ¡ Teklif HazÄ±rlandÄ± - Onay Bekliyor";
+            banner.innerText = "🟡 Teklif Hazırlandı - Onay Bekliyor";
             banner.style.backgroundColor = "rgba(217, 119, 6, 0.1)";
             banner.style.color = "#d97706";
-        } else if (status === "OnaylandÄ± / Ä°malatta") {
+        } else if (status === "Onaylandı / İmalatta") {
             activeIndex = 1;
-            banner.innerText = "ğŸ”µ SipariÅŸiniz AtÃ¶lyede Ä°malat AÅŸamasÄ±nda";
+            banner.innerText = "🔵 Siparişiniz Atölyede İmalat Aşamasında";
             banner.style.backgroundColor = "rgba(59, 130, 246, 0.15)";
             banner.style.color = "#3b82f6";
-        } else if (status === "Montaj AÅŸamasÄ±nda") {
+        } else if (status === "Montaj Aşamasında") {
             activeIndex = 2;
-            banner.innerText = "ğŸŸ£ ÃœrÃ¼nleriniz Adrese Nakliye ve Montaj AÅŸamasÄ±nda";
+            banner.innerText = "🟣 Ürünleriniz Adrese Nakliye ve Montaj Aşamasında";
             banner.style.backgroundColor = "rgba(168, 85, 247, 0.15)";
             banner.style.color = "#a855f7";
-        } else if (status === "TamamlandÄ±") {
+        } else if (status === "Tamamlandı") {
             activeIndex = 3;
-            banner.innerText = "ğŸŸ¢ SipariÅŸiniz TamamlandÄ± ve Teslim Edildi";
+            banner.innerText = "🟢 Siparişiniz Tamamlandı ve Teslim Edildi";
             banner.style.backgroundColor = "rgba(34, 197, 94, 0.15)";
             banner.style.color = "#22c55e";
         }
@@ -1494,7 +1494,7 @@
     }
 
     // ==========================================
-    // â­ MÃœÅTERÄ° DEÄERLENDÄ°RME & YORUM FONKSÄ°YONLARI
+    // ⭐ MÜŞTERİ DEĞERLENDİRME & YORUM FONKSİYONLARI
     // ==========================================
     let currentInteractiveRating = 0;
 
@@ -1554,7 +1554,7 @@
     }
 
     // ==========================================
-    // ğŸ’³ KISMÄ° Ã–DEME (TAHSÄ°LAT) TAKÄ°P KODLARI
+    // 💳 KISMİ ÖDEME (TAHSİLAT) TAKİP KODLARI
     // ==========================================
     let activePaymentDocId = null;
     let activePaymentDocData = null;
@@ -1568,51 +1568,51 @@
                 activePaymentDocData = data;
                 
                 document.getElementById('payModalMusteri').innerText = data.musteri || "";
-                document.getElementById('payModalToplam').innerText = data.toplam || "0 â‚º";
+                document.getElementById('payModalToplam').innerText = data.toplam || "0 ₺";
                 
-                // Ã–deme geÃ§miÅŸi dizisini al veya mevcut kaparo bilgisini ilk Ã¶deme olarak yÃ¼kle
+                // Ödeme geçmişi dizisini al veya mevcut kaparo bilgisini ilk ödeme olarak yükle
                 let odemeler = data.odemeler || [];
                 if (odemeler.length === 0 && (data.kaparoNum || 0) > 0) {
                     odemeler = [{
                         tutar: data.kaparoNum,
-                        aciklama: "Ä°lk Kaparo",
+                        aciklama: "İlk Kaparo",
                         tarih: data.tarih || new Date().toLocaleDateString('tr-TR')
                     }];
                 }
                 
-                // Toplam tahsilatÄ± ve kalan bakiyeyi hesapla
+                // Toplam tahsilatı ve kalan bakiyeyi hesapla
                 let totalAlinan = odemeler.reduce((sum, item) => sum + parseFloat(item.tutar || 0), 0);
                 let totalNum = data.toplamNum || 0;
                 let kalan = totalNum - totalAlinan;
                 
-                document.getElementById('payModalAlinan').innerText = totalAlinan.toLocaleString('tr-TR') + " â‚º";
-                document.getElementById('payModalKalan').innerText = kalan.toLocaleString('tr-TR') + " â‚º";
+                document.getElementById('payModalAlinan').innerText = totalAlinan.toLocaleString('tr-TR') + " ₺";
+                document.getElementById('payModalKalan').innerText = kalan.toLocaleString('tr-TR') + " ₺";
                 
-                // Ã–deme listesini modal arayÃ¼zÃ¼ne Ã§iz
+                // Ödeme listesini modal arayüzüne çiz
                 let historyContainer = document.getElementById('payModalHistoryList');
                 historyContainer.innerHTML = '';
                 
                 if (odemeler.length === 0) {
-                    historyContainer.innerHTML = '<div style="color:var(--text-muted); font-size:11px; text-align:center; padding:10px;">HenÃ¼z Ã¶deme kaydÄ± bulunmuyor.</div>';
+                    historyContainer.innerHTML = '<div style="color:var(--text-muted); font-size:11px; text-align:center; padding:10px;">Henüz ödeme kaydı bulunmuyor.</div>';
                 } else {
                     odemeler.forEach((pay, idx) => {
                         let item = document.createElement('div');
                         item.className = 'payment-history-item';
                         item.innerHTML = `
                             <div>
-                                <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} â‚º</span>
+                                <span style="font-weight:600; color:var(--text-light);">${pay.tutar.toLocaleString('tr-TR')} ₺</span>
                                 <span style="color:var(--text-muted); margin-left:8px; font-size:11px;">(${pay.aciklama})</span>
                             </div>
                             <div style="color:var(--text-muted); font-size:11px; display:flex; gap:10px; align-items:center;">
                                 <span>${pay.tarih}</span>
-                                <button onclick="deletePayment(${idx})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px; padding:0 4px; line-height:1;" title="Ã–demeyi Sil">Ã—</button>
+                                <button onclick="deletePayment(${idx})" style="background:transparent; border:none; color:var(--danger); cursor:pointer; font-size:16px; padding:0 4px; line-height:1;" title="Ödemeyi Sil">×</button>
                             </div>
                         `;
                         historyContainer.appendChild(item);
                     });
                 }
                 
-                // GiriÅŸ alanlarÄ±nÄ± temizle ve bugÃ¼nÃ¼n tarihini at
+                // Giriş alanlarını temizle ve bugünün tarihini at
                 document.getElementById('payModalAmountInput').value = '';
                 document.getElementById('payModalDescInput').value = '';
                 
@@ -1624,10 +1624,10 @@
                 
                 document.getElementById('paymentModalOverlay').style.display = 'flex';
             } else {
-                alert("SipariÅŸ bulunamadÄ±!");
+                alert("Sipariş bulunamadı!");
             }
         }).catch(err => {
-            alert("Ã–deme geÃ§miÅŸi yÃ¼klenirken hata oluÅŸtu: " + err.message);
+            alert("Ödeme geçmişi yüklenirken hata oluştu: " + err.message);
         });
     }
 
@@ -1645,11 +1645,11 @@
 
     function saveNewPayment() {
         let amount = parseFloat(document.getElementById('payModalAmountInput').value) || 0;
-        let desc = document.getElementById('payModalDescInput').value.trim() || "Ara Ã–deme";
+        let desc = document.getElementById('payModalDescInput').value.trim() || "Ara Ödeme";
         let dateVal = document.getElementById('payModalDateInput').value;
         
         if (amount <= 0) {
-            alert("LÃ¼tfen geÃ§erli bir Ã¶deme tutarÄ± girin!");
+            alert("Lütfen geçerli bir ödeme tutarı girin!");
             return;
         }
         
@@ -1665,12 +1665,12 @@
         if (odemeler.length === 0 && (activePaymentDocData.kaparoNum || 0) > 0) {
             odemeler = [{
                 tutar: activePaymentDocData.kaparoNum,
-                aciklama: "Ä°lk Kaparo",
+                aciklama: "İlk Kaparo",
                 tarih: activePaymentDocData.tarih || new Date().toLocaleDateString('tr-TR')
             }];
         }
         
-        // Yeni Ã¶deme kaydÄ±nÄ± ekle
+        // Yeni ödeme kaydını ekle
         odemeler.push({
             tutar: amount,
             aciklama: desc,
@@ -1685,24 +1685,24 @@
             odemeler: odemeler,
             kaparoNum: totalAlinan,
             kalanNum: kalan,
-            kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
-            kalan: kalan.toLocaleString('tr-TR') + " â‚º"
+            kaparo: totalAlinan.toLocaleString('tr-TR') + " ₺",
+            kalan: kalan.toLocaleString('tr-TR') + " ₺"
         }).then(() => {
-            alert("Ã–deme kaydÄ± baÅŸarÄ±yla eklendi!");
+            alert("Ödeme kaydı başarıyla eklendi!");
             openPaymentModal(activePaymentDocId);
         }).catch(err => {
-            alert("Ã–deme kaydedilirken hata oluÅŸtu: " + err.message);
+            alert("Ödeme kaydedilirken hata oluştu: " + err.message);
         });
     }
 
     function deletePayment(idx) {
-        if (!confirm("SeÃ§tiÄŸiniz Ã¶deme kaydÄ±nÄ± silmek istediÄŸinize emin misiniz?")) return;
+        if (!confirm("Seçtiğiniz ödeme kaydını silmek istediğinize emin misiniz?")) return;
         
         let odemeler = activePaymentDocData.odemeler || [];
         if (odemeler.length === 0 && (activePaymentDocData.kaparoNum || 0) > 0) {
             odemeler = [{
                 tutar: activePaymentDocData.kaparoNum,
-                aciklama: "Ä°lk Kaparo",
+                aciklama: "İlk Kaparo",
                 tarih: activePaymentDocData.tarih || new Date().toLocaleDateString('tr-TR')
             }];
         }
@@ -1717,22 +1717,22 @@
             odemeler: odemeler,
             kaparoNum: totalAlinan,
             kalanNum: kalan,
-            kaparo: totalAlinan.toLocaleString('tr-TR') + " â‚º",
-            kalan: kalan.toLocaleString('tr-TR') + " â‚º"
+            kaparo: totalAlinan.toLocaleString('tr-TR') + " ₺",
+            kalan: kalan.toLocaleString('tr-TR') + " ₺"
         }).then(() => {
-            alert("Ã–deme kaydÄ± silindi!");
+            alert("Ödeme kaydı silindi!");
             openPaymentModal(activePaymentDocId);
         }).catch(err => {
-            alert("Ã–deme silinirken hata oluÅŸtu: " + err.message);
+            alert("Ödeme silinirken hata oluştu: " + err.message);
         });
     }
 
     // =========================================================================
-    // ğŸ¨ ETKÄ°LEÅÄ°MLÄ° MÃœÅTERÄ° DOLAP TASARIM SÄ°HÄ°RBAZI (KENDÄ°N TASARLA) MANTIÄI
+    // 🎨 ETKİLEŞİMLİ MÜŞTERİ DOLAP TASARIM SİHİRBAZI (KENDİN TASARLA) MANTIĞI
     // =========================================================================
     
     // =========================================================================
-    // ğŸ¨ ETKÄ°LEÅÄ°MLÄ° MÃœÅTERÄ° DOLAP TASARIM SÄ°HÄ°RBAZI (KENDÄ°N TASARLA) MANTIÄI
+    // 🎨 ETKİLEŞİMLİ MÜŞTERİ DOLAP TASARIM SİHİRBAZI (KENDİN TASARLA) MANTIĞI
     // =========================================================================
     
     let designerCabinet = {

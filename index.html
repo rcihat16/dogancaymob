@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DoÄŸanÃ§ay Mobilya - Profesyonel ERP & HÄ±zlÄ± Teklif v8</title>
+    <title>Doğançay Mobilya - Profesyonel ERP & Hızlı Teklif v8</title>
     
     <!-- Google Fonts Connection -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,7 +34,7 @@
             --info: #3B82F6;
         }
 
-        /* â­ CUSTOMER REVIEWS & TESTIMONIALS STYLES */
+        /* ⭐ CUSTOMER REVIEWS & TESTIMONIALS STYLES */
         .testimonials-container {
             display: flex;
             gap: 12px;
@@ -1588,7 +1588,7 @@
             z-index: 0;
         }
 
-        /* ğŸŒŸ MÃ¼ÅŸteri YorumlarÄ± & DeÄŸerlendirme Sistemi CSS */
+        /* 🌟 Müşteri Yorumları & Değerlendirme Sistemi CSS */
         .testimonials-section {
             width: 100%;
             max-width: 440px;
@@ -1639,65 +1639,65 @@
 </head>
 <body>
 
-<!-- ğŸ”‘ GÄ°RÄ°Å EKRANI -->
+<!-- 🔑 GİRİŞ EKRANI -->
 <div id="loginScreen" style="position: relative; overflow: hidden;">
     <div class="watermark-bg" style="width: 700px; height: 700px; opacity: 0.045;"></div>
     <div class="login-card" style="position: relative; z-index: 1;">
         <div>
             <div class="login-logo"></div>
-            <h2>DoÄŸanÃ§ay Mobilya</h2>
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">HÄ±zlÄ± Teklif & SipariÅŸ Otomasyonu v8</p>
+            <h2>Doğançay Mobilya</h2>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">Hızlı Teklif & Sipariş Otomasyonu v8</p>
         </div>
         
         <div class="login-tabs" style="display:flex; justify-content:center; gap:8px; margin-top: 15px; margin-bottom: 10px; background-color: var(--bg-dark); padding: 4px; border-radius: 6px; border: 1px solid var(--border);">
-            <button id="tabStaffLogin" type="button" class="btn-toggle active" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('staff')">Yetkili GiriÅŸi</button>
-            <button id="tabCustomerTrack" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('customer')">SipariÅŸ Takibi</button>
+            <button id="tabStaffLogin" type="button" class="btn-toggle active" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('staff')">Yetkili Girişi</button>
+            <button id="tabCustomerTrack" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('customer')">Sipariş Takibi</button>
             <button id="tabSelfDesign" type="button" class="btn-toggle" style="flex:1; padding:6px 8px;" onclick="switchLoginTab('design')">Kendin Tasarla</button>
         </div>
         
-        <!-- YETKÄ°LÄ° GÄ°RÄ°ÅÄ° GRUBU -->
+        <!-- YETKİLİ GİRİŞİ GRUBU -->
         <div id="staffLoginGroup" style="display: flex; flex-direction: column; gap: 12px;">
             <div style="text-align: left; display: flex; flex-direction: column; gap: 12px; margin-top: 5px;">
                 <div class="form-group" style="margin: 0;">
-                    <label>GiriÅŸ Yetkisi</label>
-                    <input type="text" id="loginUser" placeholder="KullanÄ±cÄ± adÄ± (patron veya ortak)" autocomplete="username">
+                    <label>Giriş Yetkisi</label>
+                    <input type="text" id="loginUser" placeholder="Kullanıcı adı (patron veya ortak)" autocomplete="username">
                 </div>
                 <div class="form-group" style="margin: 0;">
-                    <label>Åifre</label>
-                    <input type="password" id="loginPass" placeholder="â€¢â€¢â€¢â€¢" autocomplete="current-password">
+                    <label>Şifre</label>
+                    <input type="password" id="loginPass" placeholder="••••" autocomplete="current-password">
                 </div>
             </div>
-            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="girisYap(false)">Sisteme GÃ¼venli GiriÅŸ Yap</button>
+            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="girisYap(false)">Sisteme Güvenli Giriş Yap</button>
         </div>
         
-        <!-- MÃœÅTERÄ° TAKÄ°P GRUBU -->
+        <!-- MÜŞTERİ TAKİP GRUBU -->
         <div id="customerSearchGroup" style="display: none; flex-direction: column; gap: 12px; text-align: left;">
             <div class="form-group" style="margin: 0; margin-top: 5px;">
-                <label>Telefon NumarasÄ± veya SipariÅŸ Kodu</label>
-                <input type="text" id="trackSearchInput" placeholder="Ã–rn: 05551234567 veya dm_8J9aPbc">
-                <small style="color: var(--text-muted); font-size: 11px; margin-top: 4px; display: block; line-height: 1.3;">SipariÅŸ verdiÄŸiniz telefon numarasÄ±nÄ± veya usta tarafÄ±ndan iletilen sipariÅŸ kodunu giriniz.</small>
+                <label>Telefon Numarası veya Sipariş Kodu</label>
+                <input type="text" id="trackSearchInput" placeholder="Örn: 05551234567 veya dm_8J9aPbc">
+                <small style="color: var(--text-muted); font-size: 11px; margin-top: 4px; display: block; line-height: 1.3;">Sipariş verdiğiniz telefon numarasını veya usta tarafından iletilen sipariş kodunu giriniz.</small>
             </div>
-            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="sorgulaSiparis()">SipariÅŸi Bul ve Takip Et</button>
+            <button class="btn btn-primary btn-block" style="margin-top: 10px;" onclick="sorgulaSiparis()">Siparişi Bul ve Takip Et</button>
         </div>
     </div>
 
-    <!-- ğŸŒŸ MÃ¼ÅŸteri YorumlarÄ± (Testimonials) BÃ¶lÃ¼mÃ¼ -->
+    <!-- 🌟 Müşteri Yorumları (Testimonials) Bölümü -->
     <div class="testimonials-section" style="position: relative; z-index: 1;">
-        <h4 style="margin: 0; font-size: 12px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px;">MÃ¼ÅŸteri YorumlarÄ±</h4>
+        <h4 style="margin: 0; font-size: 12px; color: var(--primary); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 5px;">Müşteri Yorumları</h4>
         <div id="loginTestimonialsContainer" style="display: flex; flex-direction: column; gap: 12px; width: 100%;">
-            <!-- Default Mockup Yorumlar (VeritabanÄ±ndan dinamik de Ã§ekilecektir) -->
+            <!-- Default Mockup Yorumlar (Veritabanından dinamik de çekilecektir) -->
             <div class="testimonial-card">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px;">AA</div>
                         <div>
                             <h5 style="margin: 0; font-size: 11px; font-weight: 700; color: var(--text-main);">Ahmet A.</h5>
-                            <span style="font-size: 9px; color: var(--success); font-weight: 600;">âœ“ OnaylÄ± MÃ¼ÅŸteri</span>
+                            <span style="font-size: 9px; color: var(--success); font-weight: 600;">✓ Onaylı Müşteri</span>
                         </div>
                     </div>
-                    <div style="color: #fbbf24; font-size: 10px;">â˜…â˜…â˜…â˜…â˜…</div>
+                    <div style="color: #fbbf24; font-size: 10px;">★★★★★</div>
                 </div>
-                <p style="margin: 0; font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic;">"Mustafa Usta gardÄ±robu tam istediÄŸimiz Ã¶lÃ§Ã¼de ve sÄ±fÄ±r hata ile teslim etti. Ä°ÅŸÃ§ilik ve ilgi gerÃ§ekten harikaydÄ±, herkese tavsiye ederim."</p>
+                <p style="margin: 0; font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic;">"Mustafa Usta gardırobu tam istediğimiz ölçüde ve sıfır hata ile teslim etti. İşçilik ve ilgi gerçekten harikaydı, herkese tavsiye ederim."</p>
             </div>
             
             <div class="testimonial-card">
@@ -1706,70 +1706,70 @@
                         <div style="width: 28px; height: 28px; border-radius: 50%; background-color: #fef3c7; color: #d97706; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px;">ME</div>
                         <div>
                             <h5 style="margin: 0; font-size: 11px; font-weight: 700; color: var(--text-main);">Merve E.</h5>
-                            <span style="font-size: 9px; color: var(--success); font-weight: 600;">âœ“ OnaylÄ± MÃ¼ÅŸteri</span>
+                            <span style="font-size: 9px; color: var(--success); font-weight: 600;">✓ Onaylı Müşteri</span>
                         </div>
                     </div>
-                    <div style="color: #fbbf24; font-size: 10px;">â˜…â˜…â˜…â˜…â˜…</div>
+                    <div style="color: #fbbf24; font-size: 10px;">★★★★★</div>
                 </div>
-                <p style="margin: 0; font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic;">"Mutfak dolaplarÄ±mÄ±zÄ± yeniledik. SÃ¶z verdikleri tarihte gelip montajÄ±nÄ± yaptÄ±lar. Temiz ve titiz Ã§alÄ±ÅŸtÄ±lar, DoÄŸanÃ§ay Mobilya ekibine teÅŸekkÃ¼r ederiz."</p>
+                <p style="margin: 0; font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic;">"Mutfak dolaplarımızı yeniledik. Söz verdikleri tarihte gelip montajını yaptılar. Temiz ve titiz çalıştılar, Doğançay Mobilya ekibine teşekkür ederiz."</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ğŸ“Š MÃœÅTERÄ° TAKÄ°P EKRANI -->
+<!-- 📊 MÜŞTERİ TAKİP EKRANI -->
 <div id="customerTrackingScreen" style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; min-height: 100vh; position: relative; overflow: hidden;">
     <div class="watermark-bg" style="width: 600px; height: 600px; opacity: 0.025;"></div>
-    <!-- Ãœst MenÃ¼ -->
+    <!-- Üst Menü -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
         <div style="display: flex; align-items: center; gap: 14px;">
             <div class="login-logo" style="margin: 0; width: 100px; height: 100px; border-radius: 18px;"></div>
             <div>
-                <h2 style="font-size: 18px; margin: 0;">DoÄŸanÃ§ay Mobilya</h2>
-                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">CanlÄ± SipariÅŸ Takip PortalÄ±</p>
+                <h2 style="font-size: 18px; margin: 0;">Doğançay Mobilya</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Canlı Sipariş Takip Portalı</p>
             </div>
         </div>
         <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="takipKapat()">
-            â† GiriÅŸ EkranÄ±na DÃ¶n
+            ← Giriş Ekranına Dön
         </button>
     </div>
 
-    <!-- Ã‡oklu SipariÅŸ SeÃ§im Listesi (AynÄ± telefona birden fazla sipariÅŸ varsa burasÄ± gÃ¶rÃ¼nÃ¼r) -->
+    <!-- Çoklu Sipariş Seçim Listesi (Aynı telefona birden fazla sipariş varsa burası görünür) -->
     <div id="trackingMultiSelect" class="card" style="display: none; margin-bottom: 20px;">
-        <h3 style="margin-top: 0; font-size: 15px; margin-bottom: 10px;">Telefon NumarasÄ±na Ait SipariÅŸleriniz</h3>
-        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Takip etmek istediÄŸiniz sipariÅŸi seÃ§iniz:</p>
+        <h3 style="margin-top: 0; font-size: 15px; margin-bottom: 10px;">Telefon Numarasına Ait Siparişleriniz</h3>
+        <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Takip etmek istediğiniz siparişi seçiniz:</p>
         <div id="trackingMultiList" style="display: flex; flex-direction: column; gap: 10px;"></div>
     </div>
 
-    <!-- SipariÅŸ Detay Paneli -->
+    <!-- Sipariş Detay Paneli -->
     <div id="trackingDetailsPanel" style="display: none;">
         
-        <!-- ğŸ† Ä°lerleme Durumu (Timeline) -->
+        <!-- 🏆 İlerleme Durumu (Timeline) -->
         <div class="card" style="margin-bottom: 20px; text-align: center;">
-            <h3 style="margin-top: 0; font-size: 15px; text-align: left; margin-bottom: 20px;">SipariÅŸinizin Durumu</h3>
+            <h3 style="margin-top: 0; font-size: 15px; text-align: left; margin-bottom: 20px;">Siparişinizin Durumu</h3>
             
             <div class="tracking-timeline-wrapper" style="margin: 20px 0;">
                 <div class="tracking-timeline">
                     <div class="timeline-progress" id="trackProgressLine" style="width: 0%;"></div>
                     
                     <div class="timeline-step" id="step_teklif">
-                        <div class="step-icon">ğŸ“„</div>
-                        <div class="step-label">Teklif AÅŸamasÄ±</div>
-                        <div class="step-desc">Teklif HazÄ±rlandÄ±</div>
+                        <div class="step-icon">📄</div>
+                        <div class="step-label">Teklif Aşaması</div>
+                        <div class="step-desc">Teklif Hazırlandı</div>
                     </div>
                     <div class="timeline-step" id="step_imalat">
-                        <div class="step-icon">ğŸ”¨</div>
-                        <div class="step-label">Ä°malat AÅŸamasÄ±</div>
-                        <div class="step-desc">AtÃ¶lyede Ä°malatta</div>
+                        <div class="step-icon">🔨</div>
+                        <div class="step-label">İmalat Aşaması</div>
+                        <div class="step-desc">Atölyede İmalatta</div>
                     </div>
                     <div class="timeline-step" id="step_montaj">
-                        <div class="step-icon">ğŸšš</div>
-                        <div class="step-label">Montaj AÅŸamasÄ±</div>
+                        <div class="step-icon">🚚</div>
+                        <div class="step-label">Montaj Aşaması</div>
                         <div class="step-desc">Adrese Sevkiyat/Montaj</div>
                     </div>
                     <div class="timeline-step" id="step_tamam">
-                        <div class="step-icon">âœ…</div>
-                        <div class="step-label">TamamlandÄ±</div>
+                        <div class="step-icon">✅</div>
+                        <div class="step-label">Tamamlandı</div>
                         <div class="step-desc">Teslim Edildi</div>
                     </div>
                 </div>
@@ -1781,43 +1781,43 @@
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;" class="tracking-grid">
             
-            <!-- ğŸ¨ CanlÄ± Ã‡izim & TasarÄ±m -->
+            <!-- 🎨 Canlı Çizim & Tasarım -->
             <div class="card" style="display: flex; flex-direction: column; align-items: center; min-height: 400px; justify-content: space-between;">
                 <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-                    <h3 style="margin: 0; font-size: 14px;">CanlÄ± 2D TasarÄ±m Modeli</h3>
+                    <h3 style="margin: 0; font-size: 14px;">Canlı 2D Tasarım Modeli</h3>
                     <div style="display: flex; background-color: var(--bg-dark); padding: 3px; border-radius: 6px; border: 1px solid var(--border);">
-                        <button type="button" id="btnTrackBlueprint" onclick="setTrackPreviewMode('blueprint')" class="btn-toggle active" style="font-size: 10px; padding: 4px 8px;">Åematik</button>
-                        <button type="button" id="btnTrackLux" onclick="setTrackPreviewMode('lux')" class="btn-toggle" style="font-size: 10px; padding: 4px 8px;">LÃ¼ks 2D</button>
+                        <button type="button" id="btnTrackBlueprint" onclick="setTrackPreviewMode('blueprint')" class="btn-toggle active" style="font-size: 10px; padding: 4px 8px;">Şematik</button>
+                        <button type="button" id="btnTrackLux" onclick="setTrackPreviewMode('lux')" class="btn-toggle" style="font-size: 10px; padding: 4px 8px;">Lüks 2D</button>
                     </div>
                 </div>
                 
-                <!-- Buraya canvas programatik olarak taÅŸÄ±nacaktÄ±r -->
+                <!-- Buraya canvas programatik olarak taşınacaktır -->
                 <div id="customerCanvasWrapper" style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 10px;"></div>
                 
                 <p style="color: var(--text-muted); font-size: 11px; text-align: center; margin-top: 15px; line-height: 1.3;">
-                    *Bu Ã§izim sipariÅŸ detaylarÄ±nÄ±za gÃ¶re bilgisayarÄ±mÄ±z tarafÄ±ndan anlÄ±k olarak Ã§izilmektedir.
+                    *Bu çizim sipariş detaylarınıza göre bilgisayarımız tarafından anlık olarak çizilmektedir.
                 </p>
             </div>
 
-            <!-- ğŸ“ SipariÅŸ DetaylarÄ± & Ã–deme -->
+            <!-- 📝 Sipariş Detayları & Ödeme -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
                 
                 <!-- Genel Detaylar -->
                 <div class="card">
-                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">SipariÅŸ Bilgileri</h3>
+                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Sipariş Bilgileri</h3>
                     <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">MÃ¼ÅŸteri AdÄ±:</td><td id="trackMusteriVal" style="text-align: right; font-weight: bold;">-</td></tr>
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Müşteri Adı:</td><td id="trackMusteriVal" style="text-align: right; font-weight: bold;">-</td></tr>
                         <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Tarih:</td><td id="trackTarihVal" style="text-align: right;">-</td></tr>
                         <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Tahmini Teslimat:</td><td id="trackTeslimatVal" style="text-align: right; font-weight: bold; color: var(--primary);">-</td></tr>
                         <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Sorumlu Usta:</td><td id="trackPersonelVal" style="text-align: right;">-</td></tr>
-                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Mobilya TÃ¼rÃ¼:</td><td id="trackTurVal" style="text-align: right;">-</td></tr>
-                        <tr><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted); vertical-align: top;">Teknik Ã–zellikler:</td><td id="trackSpecsVal" style="text-align: right; line-height: 1.4; color: var(--primary); font-weight: 500;">-</td></tr>
+                        <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted);">Mobilya Türü:</td><td id="trackTurVal" style="text-align: right;">-</td></tr>
+                        <tr><td style="padding: 8px 0; font-weight: bold; color: var(--text-muted); vertical-align: top;">Teknik Özellikler:</td><td id="trackSpecsVal" style="text-align: right; line-height: 1.4; color: var(--primary); font-weight: 500;">-</td></tr>
                     </table>
                 </div>
 
-                <!-- Ã–deme Durumu -->
+                <!-- Ödeme Durumu -->
                 <div class="card">
-                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Ã–deme PlanÄ± Ã–zeti</h3>
+                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Ödeme Planı Özeti</h3>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center;">
                         <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
@@ -1825,7 +1825,7 @@
                             <b id="trackToplamVal" style="color: var(--text-light); font-size: 14px;">-</b>
                         </div>
                         <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
-                            <span style="font-size: 10px; color: var(--success); display: block; margin-bottom: 5px;">Ã–denen (Kaparo)</span>
+                            <span style="font-size: 10px; color: var(--success); display: block; margin-bottom: 5px;">Ödenen (Kaparo)</span>
                             <b id="trackKaparoVal" style="color: var(--success); font-size: 14px;">-</b>
                         </div>
                         <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; border: 1px solid var(--border);">
@@ -1835,53 +1835,53 @@
                     </div>
                 </div>
 
-                <!-- Ã–deme GeÃ§miÅŸi (MÃ¼ÅŸteri iÃ§in) -->
+                <!-- Ödeme Geçmişi (Müşteri için) -->
                 <div class="card" id="trackPaymentHistoryCard" style="display: none;">
-                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Ã–deme GeÃ§miÅŸi (Tahsilat DetaylarÄ±)</h3>
+                    <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px;">Ödeme Geçmişi (Tahsilat Detayları)</h3>
                     <div id="trackPaymentHistoryList" style="display: flex; flex-direction: column; gap: 8px;">
-                        <!-- MÃ¼ÅŸteri Ã¶demeleri listesi -->
+                        <!-- Müşteri ödemeleri listesi -->
                     </div>
                 </div>
 
-                <!-- ğŸ§¼ Mobilya KullanÄ±m & BakÄ±m Rehberi -->
+                <!-- 🧼 Mobilya Kullanım & Bakım Rehberi -->
                 <div class="card" id="trackCareGuideCard" style="display: none;">
                     <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <span>ğŸ§¼</span> Mobilya KullanÄ±m & BakÄ±m Rehberi
+                        <span>🧼</span> Mobilya Kullanım & Bakım Rehberi
                     </h3>
                     <div id="trackCareGuideList" style="display: flex; flex-direction: column; gap: 12px;">
-                        <!-- Dinamik bakÄ±m Ã¶nerileri buraya yÃ¼klenecek -->
+                        <!-- Dinamik bakım önerileri buraya yüklenecek -->
                     </div>
                 </div>
 
-                <!-- â­ SipariÅŸi DeÄŸerlendir (Yorum & Puanlama) -->
+                <!-- ⭐ Siparişi Değerlendir (Yorum & Puanlama) -->
                 <div class="card" id="trackReviewCard" style="display: none; border: 1px solid rgba(2, 132, 199, 0.3); background-color: var(--card-bg);">
                     <h3 style="margin-top: 0; font-size: 15px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
-                        <span>â­</span> SipariÅŸi DeÄŸerlendir
+                        <span>⭐</span> Siparişi Değerlendir
                     </h3>
                     <div id="trackReviewFormContainer">
                         <p style="color: var(--text-muted); font-size: 12.5px; margin-bottom: 12px; line-height: 1.4;">
-                            SipariÅŸiniz baÅŸarÄ±yla tamamlandÄ±! Memnuniyetinizi belirtmek ve hizmet kalitemizi artÄ±rmamÄ±za yardÄ±mcÄ± olmak iÃ§in lÃ¼tfen deÄŸerlendiriniz.
+                            Siparişiniz başarıyla tamamlandı! Memnuniyetinizi belirtmek ve hizmet kalitemizi artırmamıza yardımcı olmak için lütfen değerlendiriniz.
                         </p>
                         
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="font-weight: bold; font-size: 13px; color: var(--text-light);">PuanÄ±nÄ±z:</span>
+                                <span style="font-weight: bold; font-size: 13px; color: var(--text-light);">Puanınız:</span>
                                 <div class="rating-stars-interactive" style="display: flex; gap: 6px; font-size: 24px; cursor: pointer; color: var(--border);">
-                                    <span class="interactive-star" data-value="1" onclick="setInteractiveRating(1)" style="font-size: 26px;">â˜…</span>
-                                    <span class="interactive-star" data-value="2" onclick="setInteractiveRating(2)" style="font-size: 26px;">â˜…</span>
-                                    <span class="interactive-star" data-value="3" onclick="setInteractiveRating(3)" style="font-size: 26px;">â˜…</span>
-                                    <span class="interactive-star" data-value="4" onclick="setInteractiveRating(4)" style="font-size: 26px;">â˜…</span>
-                                    <span class="interactive-star" data-value="5" onclick="setInteractiveRating(5)" style="font-size: 26px;">â˜…</span>
+                                    <span class="interactive-star" data-value="1" onclick="setInteractiveRating(1)" style="font-size: 26px;">★</span>
+                                    <span class="interactive-star" data-value="2" onclick="setInteractiveRating(2)" style="font-size: 26px;">★</span>
+                                    <span class="interactive-star" data-value="3" onclick="setInteractiveRating(3)" style="font-size: 26px;">★</span>
+                                    <span class="interactive-star" data-value="4" onclick="setInteractiveRating(4)" style="font-size: 26px;">★</span>
+                                    <span class="interactive-star" data-value="5" onclick="setInteractiveRating(5)" style="font-size: 26px;">★</span>
                                 </div>
                                 <span id="interactiveRatingLabel" style="font-weight: 600; color: #fbbf24; font-size: 13px; margin-left: 5px;">-</span>
                             </div>
                             
                             <div class="form-group" style="margin: 0;">
-                                <label style="font-weight: 600; font-size: 12px; color: var(--text-light); margin-bottom: 4px; display: block;">GÃ¶rÃ¼ÅŸ ve YorumlarÄ±nÄ±z</label>
-                                <textarea id="trackReviewComment" rows="3" placeholder="MobilyalarÄ±nÄ±zÄ±n kalitesi, usta ekibimizin titizliÄŸi ve montaj sÃ¼reci hakkÄ±nda yorumunuzu yazÄ±n..." style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--bg-dark); color: var(--text-light); font-family: inherit; font-size: 12.5px; resize: vertical; outline: none;"></textarea>
+                                <label style="font-weight: 600; font-size: 12px; color: var(--text-light); margin-bottom: 4px; display: block;">Görüş ve Yorumlarınız</label>
+                                <textarea id="trackReviewComment" rows="3" placeholder="Mobilyalarınızın kalitesi, usta ekibimizin titizliği ve montaj süreci hakkında yorumunuzu yazın..." style="width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--bg-dark); color: var(--text-light); font-family: inherit; font-size: 12.5px; resize: vertical; outline: none;"></textarea>
                             </div>
                             
-                            <button class="btn btn-primary" id="btnSubmitReview" onclick="gonderMusteriYorumu()" style="align-self: flex-start; padding: 6px 16px; font-size: 12px; border-radius: 6px;">DeÄŸerlendirmeyi GÃ¶nder</button>
+                            <button class="btn btn-primary" id="btnSubmitReview" onclick="gonderMusteriYorumu()" style="align-self: flex-start; padding: 6px 16px; font-size: 12px; border-radius: 6px;">Değerlendirmeyi Gönder</button>
                         </div>
                     </div>
                     <div id="trackReviewResultContainer" style="display: none; text-align: left; padding: 5px 0;">
@@ -1896,78 +1896,78 @@
     </div>
 </div>
 
-<!-- ğŸ¨ KENDÄ°N TASARLA EKRANI (DESIGN PLANNER) -->
+<!-- 🎨 KENDİN TASARLA EKRANI (DESIGN PLANNER) -->
 <div id="selfDesignScreen" style="display: none; padding: 20px; max-width: 1200px; margin: 0 auto; min-height: 100vh; position: relative; overflow: hidden;">
     <div class="watermark-bg" style="width: 700px; height: 700px; opacity: 0.025;"></div>
-    <!-- Ãœst MenÃ¼ -->
+    <!-- Üst Menü -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
         <div style="display: flex; align-items: center; gap: 14px;">
             <div class="login-logo" style="margin: 0; width: 100px; height: 100px; border-radius: 18px;"></div>
             <div>
-                <h2 style="font-size: 18px; margin: 0;">DoÄŸanÃ§ay Mobilya</h2>
-                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">EtkileÅŸimli Dolap TasarÄ±m SihirbazÄ±</p>
+                <h2 style="font-size: 18px; margin: 0;">Doğançay Mobilya</h2>
+                <p style="color: var(--text-muted); font-size: 11px; margin: 0;">Etkileşimli Dolap Tasarım Sihirbazı</p>
             </div>
         </div>
         <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 12px;" onclick="takipKapat()">
-            â† GiriÅŸ EkranÄ±na DÃ¶n
+            ← Giriş Ekranına Dön
         </button>
     </div>
 
-    <!-- TasarÄ±m AlanÄ± Grid -->
+    <!-- Tasarım Alanı Grid -->
     <div class="design-layout-grid">
         
-        <!-- Sol Kolon: GÃ¶rsel Canvas & Ã‡izim YardÄ±mcÄ±larÄ± -->
+        <!-- Sol Kolon: Görsel Canvas & Çizim Yardımcıları -->
         <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 550px; padding: 20px;">
             <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">
                 <h3 style="margin: 0; font-size: 14px; display: flex; align-items: center; gap: 6px;">
-                    <span>ğŸ“</span> CanlÄ± 2D CAD TasarÄ±m Modeli
+                    <span>📐</span> Canlı 2D CAD Tasarım Modeli
                 </h3>
             </div>
             
-            <!-- Canvas ve YÃ¼zen Butonlar -->
+            <!-- Canvas ve Yüzen Butonlar -->
             <div class="canvas-container-relative">
                 <canvas id="designCanvas" width="600" height="420" style="background:#f3f4f6; border:none; box-shadow:none;"></canvas>
                 
-                <!-- YÃ¼zen Kontrol ButonlarÄ± (Inzo tarzÄ±) -->
+                <!-- Yüzen Kontrol Butonları (Inzo tarzı) -->
                 <div class="canvas-float-btn-group">
-                    <button type="button" id="btnFloatDoors" onclick="toggleDesignerDoors()" class="canvas-float-btn" title="KapaklarÄ± AÃ§/Kapat">ğŸšª</button>
-                    <button type="button" id="btnFloatRulers" onclick="toggleDesignerRulers()" class="canvas-float-btn active" title="Ã–lÃ§Ã¼leri GÃ¶ster/Gizle">ğŸ“</button>
-                    <button type="button" id="btnFloatSilhouette" onclick="toggleDesignerSilhouette()" class="canvas-float-btn active" title="Referans Ä°nsan SilÃ¼eti">ğŸ§</button>
+                    <button type="button" id="btnFloatDoors" onclick="toggleDesignerDoors()" class="canvas-float-btn" title="Kapakları Aç/Kapat">🚪</button>
+                    <button type="button" id="btnFloatRulers" onclick="toggleDesignerRulers()" class="canvas-float-btn active" title="Ölçüleri Göster/Gizle">📐</button>
+                    <button type="button" id="btnFloatSilhouette" onclick="toggleDesignerSilhouette()" class="canvas-float-btn active" title="Referans İnsan Silüeti">🧍</button>
                 </div>
             </div>
             
             <p style="color: var(--text-muted); font-size: 11px; text-align: center; margin-top: 15px; line-height: 1.4;">
-                *Kanvas Ã¼zerindeki yÃ¼zen kontrolleri kullanarak tasarÄ±mÄ± Ã¶zelleÅŸtirebilirsiniz. Ã–lÃ§eklendirme milimetriktir.
+                *Kanvas üzerindeki yüzen kontrolleri kullanarak tasarımı özelleştirebilirsiniz. Ölçeklendirme milimetriktir.
             </p>
         </div>
 
-        <!-- SaÄŸ Kolon: Kontroller & SeÃ§enekler (White Rounded Card) -->
+        <!-- Sağ Kolon: Kontroller & Seçenekler (White Rounded Card) -->
         <div class="card" style="display: flex; flex-direction: column; gap: 15px; padding: 24px;">
             
-            <!-- Ãœst BÃ¶lÃ¼m: Fiyat Display -->
+            <!-- Üst Bölüm: Fiyat Display -->
             <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <span style="font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; display: block; font-weight: 600;">Hesaplanan Tutar</span>
                     <span style="font-size: 11.5px; color: #22c55e; font-weight: 600;">*KDV ve Montaj Dahil</span>
                 </div>
                 <div style="text-align: right;">
-                    <b id="designTotalPrice">0 â‚º</b>
+                    <b id="designTotalPrice">0 ₺</b>
                 </div>
             </div>
             
-            <!-- Ana Sekme DeÄŸiÅŸtirici (Dolap vs ModÃ¼l) -->
+            <!-- Ana Sekme Değiştirici (Dolap vs Modül) -->
             <div class="segmented-control">
                 <button type="button" id="tabDesignDolap" class="active" onclick="switchDesignerTab('dolap')">Dolap</button>
-                <button type="button" id="tabDesignModul" onclick="switchDesignerTab('modul')">ModÃ¼l</button>
+                <button type="button" id="tabDesignModul" onclick="switchDesignerTab('modul')">Modül</button>
             </div>
             
-            <!-- ================= DOLAP SEKME Ä°Ã‡ERÄ°ÄÄ° ================= -->
+            <!-- ================= DOLAP SEKME İÇERİĞİ ================= -->
             <div id="designerTabContentDolap" style="display: flex; flex-direction: column; gap: 15px;">
                 
-                <!-- Ã–lÃ§Ã¼ler -->
+                <!-- Ölçüler -->
                 <div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-                        <span style="color: #475569; font-weight: 600;">Dolap GeniÅŸliÄŸi</span>
+                        <span style="color: #475569; font-weight: 600;">Dolap Genişliği</span>
                         <span id="lblDesignWidth" style="color: #0284c7; font-weight: bold; font-family:'Outfit';">200 cm</span>
                     </div>
                     <input type="range" id="designWidth" min="100" max="300" step="10" value="200" style="width:100%; accent-color:#0284c7;" oninput="updateDesignerCabinet()">
@@ -1975,7 +1975,7 @@
                 
                 <div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px;">
-                        <span style="color: #475569; font-weight: 600;">Dolap YÃ¼ksekliÄŸi</span>
+                        <span style="color: #475569; font-weight: 600;">Dolap Yüksekliği</span>
                         <span id="lblDesignHeight" style="color: #0284c7; font-weight: bold; font-family:'Outfit';">220 cm</span>
                     </div>
                     <input type="range" id="designHeight" min="180" max="260" step="10" value="220" style="width:100%; accent-color:#0284c7;" oninput="updateDesignerCabinet()">
@@ -1983,61 +1983,61 @@
                 
                 <!-- Kapak Durumu -->
                 <div class="option-group-wrapper">
-                    <span class="option-group-label">Dolap KapaÄŸÄ±</span>
+                    <span class="option-group-label">Dolap Kapağı</span>
                     <div class="segmented-control" id="ctrlHasDoors">
-                        <button type="button" id="optDoors_yes" class="active" onclick="selectSegmentedOption('hasDoors', 'yes')">KapaklÄ±</button>
-                        <button type="button" id="optDoors_no" onclick="selectSegmentedOption('hasDoors', 'no')">KapaksÄ±z (AÃ§Ä±k)</button>
+                        <button type="button" id="optDoors_yes" class="active" onclick="selectSegmentedOption('hasDoors', 'yes')">Kapaklı</button>
+                        <button type="button" id="optDoors_no" onclick="selectSegmentedOption('hasDoors', 'no')">Kapaksız (Açık)</button>
                     </div>
                 </div>
                 
-                <!-- Kapak Malzemesi (KapaklÄ± ise) -->
+                <!-- Kapak Malzemesi (Kapaklı ise) -->
                 <div class="option-group-wrapper" id="groupMaterial">
                     <span class="option-group-label">Kapak Malzemesi</span>
                     <div class="segmented-control" id="ctrlMaterial">
                         <button type="button" id="optMat_lake" class="active" onclick="selectSegmentedOption('material', 'lake')">Lake</button>
                         <button type="button" id="optMat_mdf" onclick="selectSegmentedOption('material', 'mdf')">MDF Lam</button>
-                        <button type="button" id="optMat_cam" onclick="selectSegmentedOption('material', 'cam')">AlÃ¼minyum Cam</button>
+                        <button type="button" id="optMat_cam" onclick="selectSegmentedOption('material', 'cam')">Alüminyum Cam</button>
                     </div>
                 </div>
                 
-                <!-- Kulp TasarÄ±mÄ± (KapaklÄ± ise) -->
+                <!-- Kulp Tasarımı (Kapaklı ise) -->
                 <div class="option-group-wrapper" id="groupHandle">
-                    <span class="option-group-label">Kulp TasarÄ±mÄ±</span>
+                    <span class="option-group-label">Kulp Tasarımı</span>
                     <div class="segmented-control" id="ctrlHandle">
                         <button type="button" id="optHandle_black" class="active" onclick="selectSegmentedOption('handle', 'black')">Siyah</button>
                         <button type="button" id="optHandle_chrome" onclick="selectSegmentedOption('handle', 'chrome')">Krom</button>
-                        <button type="button" id="optHandle_gizli" onclick="selectSegmentedOption('handle', 'gizli')">Gizli Bas-AÃ§</button>
+                        <button type="button" id="optHandle_gizli" onclick="selectSegmentedOption('handle', 'gizli')">Gizli Bas-Aç</button>
                     </div>
                 </div>
                 
-                <!-- LED AydÄ±nlatma -->
+                <!-- LED Aydınlatma -->
                 <div class="option-group-wrapper">
-                    <span class="option-group-label">SensÃ¶rlÃ¼ LED AydÄ±nlatma</span>
+                    <span class="option-group-label">Sensörlü LED Aydınlatma</span>
                     <div class="segmented-control" id="ctrlLed">
                         <button type="button" id="optLed_yok" class="active" onclick="selectSegmentedOption('led', 'yok')">Yok</button>
-                        <button type="button" id="optLed_var" onclick="selectSegmentedOption('led', 'var')">SensÃ¶rlÃ¼ LED (+2500 â‚º)</button>
+                        <button type="button" id="optLed_var" onclick="selectSegmentedOption('led', 'var')">Sensörlü LED (+2500 ₺)</button>
                     </div>
                 </div>
 
             </div>
             
-            <!-- ================= MODÃœL SEKME Ä°Ã‡ERÄ°ÄÄ° ================= -->
+            <!-- ================= MODÜL SEKME İÇERİĞİ ================= -->
             <div id="designerTabContentModul" style="display: none; flex-direction: column; gap: 12px;">
                 
-                <!-- BÃ¶lme SeÃ§imi -->
+                <!-- Bölme Seçimi -->
                 <div class="option-group-wrapper">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 6px;">
-                        <span class="option-group-label" style="margin:0;">Ä°Ã§ BÃ¶lme SeÃ§imi</span>
-                        <span id="lblTotalSections" style="font-size: 11px; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight:bold;">3 BÃ¶lme</span>
+                        <span class="option-group-label" style="margin:0;">İç Bölme Seçimi</span>
+                        <span id="lblTotalSections" style="font-size: 11px; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 4px; font-weight:bold;">3 Bölme</span>
                     </div>
                     <div id="designerSectionTabs" style="display: flex; gap: 4px; padding: 3px; background-color: #f1f5f9; border-radius: 9999px; border: 1px solid #e2e8f0;">
-                        <!-- Butonlar dinamik yÃ¼klenecek -->
+                        <!-- Butonlar dinamik yüklenecek -->
                     </div>
                 </div>
                 
-                <!-- Åablon SeÃ§imi Grid -->
+                <!-- Şablon Seçimi Grid -->
                 <div class="option-group-wrapper">
-                    <span class="option-group-label">BÃ¶lme Ä°Ã§ Åablonu</span>
+                    <span class="option-group-label">Bölme İç Şablonu</span>
                     <div class="template-selector-grid">
                         <button type="button" class="template-card active" id="tmpl_shelf" onclick="selectSectionTemplate('shelf')">
                             <div class="mini-sketch" style="display:flex; flex-direction:column; justify-content:space-around; align-items:stretch; padding:4px 0;">
@@ -2046,17 +2046,17 @@
                                 <div class="mini-sketch-shelf-line"></div>
                                 <div class="mini-sketch-shelf-line"></div>
                             </div>
-                            <strong style="display:block; font-size:12px; margin-top: 2px;">RaflÄ± DÃ¼zen</strong>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Raflı Düzen</strong>
                             <span style="font-size:10.5px; color:#64748b;">5 Adet Raf</span>
                         </button>
                         <button type="button" class="template-card" id="tmpl_rod" onclick="selectSectionTemplate('rod')">
                             <div class="mini-sketch">
                                 <div class="mini-sketch-shelf-line" style="top:25%;"></div>
                                 <div class="mini-sketch-rod-line" style="top:42%;"></div>
-                                <div style="position:absolute; top:44%; left:35%; font-size:12px; line-height:1; user-select:none;">ğŸ§¥</div>
+                                <div style="position:absolute; top:44%; left:35%; font-size:12px; line-height:1; user-select:none;">🧥</div>
                             </div>
-                            <strong style="display:block; font-size:12px; margin-top: 2px;">AskÄ±lÄ± DÃ¼zen</strong>
-                            <span style="font-size:10.5px; color:#64748b;">1 Raf + AskÄ±</span>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Askılı Düzen</strong>
+                            <span style="font-size:10.5px; color:#64748b;">1 Raf + Askı</span>
                         </button>
                         <button type="button" class="template-card" id="tmpl_drawer" onclick="selectSectionTemplate('drawer')">
                             <div class="mini-sketch">
@@ -2065,17 +2065,17 @@
                                 <div class="mini-sketch-drawer-box" style="bottom:12px;"></div>
                                 <div class="mini-sketch-drawer-box" style="bottom:2px;"></div>
                             </div>
-                            <strong style="display:block; font-size:12px; margin-top: 2px;">Ã‡ekmeceli DÃ¼zen</strong>
-                            <span style="font-size:10.5px; color:#64748b;">2 Ã‡ekmece + AskÄ±</span>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Çekmeceli Düzen</strong>
+                            <span style="font-size:10.5px; color:#64748b;">2 Çekmece + Askı</span>
                         </button>
                         <button type="button" class="template-card" id="tmpl_longrod" onclick="selectSectionTemplate('longrod')">
                             <div class="mini-sketch">
                                 <div class="mini-sketch-rod-line" style="top:20%;"></div>
-                                <div style="position:absolute; top:22%; left:20%; font-size:12px; line-height:1; user-select:none;">ğŸ§¥</div>
-                                <div style="position:absolute; top:22%; left:50%; font-size:12px; line-height:1; user-select:none;">ğŸ§¥</div>
+                                <div style="position:absolute; top:22%; left:20%; font-size:12px; line-height:1; user-select:none;">🧥</div>
+                                <div style="position:absolute; top:22%; left:50%; font-size:12px; line-height:1; user-select:none;">🧥</div>
                             </div>
-                            <strong style="display:block; font-size:12px; margin-top: 2px;">Boy AskÄ±</strong>
-                            <span style="font-size:10.5px; color:#64748b;">Sadece AskÄ±</span>
+                            <strong style="display:block; font-size:12px; margin-top: 2px;">Boy Askı</strong>
+                            <span style="font-size:10.5px; color:#64748b;">Sadece Askı</span>
                         </button>
                     </div>
                 </div>
@@ -2084,7 +2084,7 @@
             
             <!-- Alt Buton: Teklif Al -->
             <button type="button" class="btn btn-primary btn-block" style="font-size: 14.5px; padding: 14px; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px;" onclick="openDesignQuoteModal()">
-                <span>ğŸ›’</span> TasarÄ±mÄ± Tamamla & Teklif Al
+                <span>🛒</span> Tasarımı Tamamla & Teklif Al
             </button>
             
         </div>
@@ -2092,49 +2092,49 @@
     </div>
 </div>
 
-<!-- ğŸ“‹ MÃœÅTERÄ° TEKLÄ°F Ä°STEME MODALI -->
+<!-- 📋 MÜŞTERİ TEKLİF İSTEME MODALI -->
 <div id="designQuoteModal" class="modal-overlay" style="display: none;" onclick="handleDesignOverlayClick(event)">
     <div class="modal-content" style="max-width: 440px;">
-        <button class="modal-close" onclick="closeDesignQuoteModal()">Ã—</button>
+        <button class="modal-close" onclick="closeDesignQuoteModal()">×</button>
         <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-            <span>ğŸ“‹</span> TasarÄ±m Teklifini Ustaya Ä°let
+            <span>📋</span> Tasarım Teklifini Ustaya İlet
         </h3>
         
         <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
             <div class="form-group" style="margin: 0;">
-                <label>AdÄ±nÄ±z SoyadÄ±nÄ±z</label>
-                <input type="text" id="quoteClientName" placeholder="Ã–rn: Ahmet Demir">
+                <label>Adınız Soyadınız</label>
+                <input type="text" id="quoteClientName" placeholder="Örn: Ahmet Demir">
             </div>
             <div class="form-group" style="margin: 0;">
-                <label>Telefon NumaranÄ±z</label>
-                <input type="tel" id="quoteClientPhone" placeholder="Ã–rn: 05551234567">
+                <label>Telefon Numaranız</label>
+                <input type="tel" id="quoteClientPhone" placeholder="Örn: 05551234567">
             </div>
             <div class="form-group" style="margin: 0;">
                 <label>Teslimat Adresi ve Notlar</label>
-                <textarea id="quoteClientAddress" placeholder="Ã–rn: Adres bilgisi veya Ã§ekmece sayÄ±larÄ±/Ã¶zel istekleriniz..." style="width: 100%; height: 80px; background-color: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-main); padding: 8px 10px; font-size: 13px; font-family: inherit; resize: none;"></textarea>
+                <textarea id="quoteClientAddress" placeholder="Örn: Adres bilgisi veya çekmece sayıları/özel istekleriniz..." style="width: 100%; height: 80px; background-color: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-main); padding: 8px 10px; font-size: 13px; font-family: inherit; resize: none;"></textarea>
             </div>
             
             <div style="background-color: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.2); padding: 10px; border-radius: 6px; font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-top: 5px;">
-                âš ï¸ TasarÄ±mÄ±nÄ±z ve detaylarÄ± Mustafa Usta'ya doÄŸrudan iletilecektir. TasarÄ±m onaylandÄ±ktan sonra usta sizinle iletiÅŸime geÃ§ecektir.
+                ⚠️ Tasarımınız ve detayları Mustafa Usta'ya doğrudan iletilecektir. Tasarım onaylandıktan sonra usta sizinle iletişime geçecektir.
             </div>
 
-            <button class="btn btn-primary btn-block" style="margin-top: 10px; padding: 10px;" onclick="submitDesignQuote()">TasarÄ±mÄ± Ustaya GÃ¶nder ve Kaydet</button>
+            <button class="btn btn-primary btn-block" style="margin-top: 10px; padding: 10px;" onclick="submitDesignQuote()">Tasarımı Ustaya Gönder ve Kaydet</button>
         </div>
     </div>
 </div>
 
-<!-- ğŸ’³ Ã–DEME GEÃ‡MÄ°ÅÄ° VE TAHSÄ°LAT EKLEME MODALI -->
+<!-- 💳 ÖDEME GEÇMİŞİ VE TAHSİLAT EKLEME MODALI -->
 <div id="paymentModalOverlay" class="modal-overlay" style="display: none;" onclick="handleOverlayClick(event)">
     <div class="modal-content">
-        <button class="modal-close" onclick="closePaymentModal()">Ã—</button>
+        <button class="modal-close" onclick="closePaymentModal()">×</button>
         <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-            <span>ğŸ’³ Ã–deme GeÃ§miÅŸi & Tahsilat Ekle</span>
+            <span>💳 Ödeme Geçmişi & Tahsilat Ekle</span>
         </h3>
         
-        <!-- SipariÅŸ & Kalan Bilgisi -->
+        <!-- Sipariş & Kalan Bilgisi -->
         <div style="background-color: var(--bg-dark); padding: 12px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 15px; font-size: 13px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="color: var(--text-muted);">MÃ¼ÅŸteri:</span>
+                <span style="color: var(--text-muted);">Müşteri:</span>
                 <span id="payModalMusteri" style="font-weight: bold; color: var(--text-light);">-</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
@@ -2142,7 +2142,7 @@
                 <span id="payModalToplam" style="font-weight: bold; color: var(--text-light);">-</span>
             </div>
             <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                <span style="color: var(--text-muted);">Toplam AlÄ±nan:</span>
+                <span style="color: var(--text-muted);">Toplam Alınan:</span>
                 <span id="payModalAlinan" style="font-weight: bold; color: var(--success);">-</span>
             </div>
             <div style="display: flex; justify-content: space-between; border-top: 1px dashed var(--border); padding-top: 6px; margin-top: 6px;">
@@ -2151,19 +2151,19 @@
             </div>
         </div>
 
-        <!-- AlÄ±nan Ã–demeler Listesi -->
-        <h4 style="font-size: 12px; margin-bottom: 8px; color: var(--text-light); margin-top: 0;">Tahsilat GeÃ§miÅŸi</h4>
+        <!-- Alınan Ödemeler Listesi -->
+        <h4 style="font-size: 12px; margin-bottom: 8px; color: var(--text-light); margin-top: 0;">Tahsilat Geçmişi</h4>
         <div id="payModalHistoryList" style="max-height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; padding-right: 5px;">
-            <!-- Ã–demeler buraya listelenecek -->
+            <!-- Ödemeler buraya listelenecek -->
         </div>
 
-        <!-- Yeni Ã–deme Ekleme Formu -->
-        <h4 style="font-size: 12px; margin-bottom: 8px; border-top: 1px solid var(--border); padding-top: 12px; color: var(--text-light); margin-top: 0;">Yeni Ã–deme GiriÅŸi</h4>
+        <!-- Yeni Ödeme Ekleme Formu -->
+        <h4 style="font-size: 12px; margin-bottom: 8px; border-top: 1px solid var(--border); padding-top: 12px; color: var(--text-light); margin-top: 0;">Yeni Ödeme Girişi</h4>
         <div style="display: flex; flex-direction: column; gap: 10px;">
             <div style="display: flex; gap: 10px;">
                 <div class="form-group" style="margin: 0; flex: 1;">
-                    <label style="font-size: 11px; margin-bottom: 4px;">Tutar (â‚º)</label>
-                    <input type="number" id="payModalAmountInput" placeholder="Ã–rn: 5000" style="padding: 6px 10px; font-size: 12px;">
+                    <label style="font-size: 11px; margin-bottom: 4px;">Tutar (₺)</label>
+                    <input type="number" id="payModalAmountInput" placeholder="Örn: 5000" style="padding: 6px 10px; font-size: 12px;">
                 </div>
                 <div class="form-group" style="margin: 0; flex: 1;">
                     <label style="font-size: 11px; margin-bottom: 4px;">Tarih</label>
@@ -2171,26 +2171,26 @@
                 </div>
             </div>
             <div class="form-group" style="margin: 0;">
-                <label style="font-size: 11px; margin-bottom: 4px;">Ã–deme AÃ§Ä±klamasÄ± / TÃ¼rÃ¼</label>
-                <input type="text" id="payModalDescInput" placeholder="Ã–rn: Ara Ã–deme (Havale), Nakit vb." style="padding: 6px 10px; font-size: 12px;">
+                <label style="font-size: 11px; margin-bottom: 4px;">Ödeme Açıklaması / Türü</label>
+                <input type="text" id="payModalDescInput" placeholder="Örn: Ara Ödeme (Havale), Nakit vb." style="padding: 6px 10px; font-size: 12px;">
             </div>
-            <button class="btn btn-primary btn-block" style="margin-top: 5px; font-size: 12px; padding: 8px;" onclick="saveNewPayment()">Ã–demeyi Kaydet</button>
+            <button class="btn btn-primary btn-block" style="margin-top: 5px; font-size: 12px; padding: 8px;" onclick="saveNewPayment()">Ödemeyi Kaydet</button>
         </div>
     </div>
 </div>
 
-<!-- ğŸ› ï¸ ANA UYGULAMA PANELÄ° -->
+<!-- 🛠️ ANA UYGULAMA PANELİ -->
 <div id="appScreen">
     <!-- MOBILE HEADER BAR (Only visible on Mobile) -->
     <header class="mobile-header">
         <div style="display: flex; align-items: center; gap: 10px;">
             <div style="width: 32px; height: 32px; border-radius: 8px; background-color: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 14px;">D</div>
             <div>
-                <h3 style="font-size: 13px; margin: 0; font-weight: 700; color: var(--text-main); font-family: 'Outfit', sans-serif;">DoÄŸanÃ§ay Mobilya</h3>
-                <span style="font-size: 10px; color: var(--text-muted); display: block;" id="mobileProfileName">Ortak GiriÅŸi</span>
+                <h3 style="font-size: 13px; margin: 0; font-weight: 700; color: var(--text-main); font-family: 'Outfit', sans-serif;">Doğançay Mobilya</h3>
+                <span style="font-size: 10px; color: var(--text-muted); display: block;" id="mobileProfileName">Ortak Girişi</span>
             </div>
         </div>
-        <button class="btn-delete-item" title="GÃ¼venli Ã‡Ä±kÄ±ÅŸ" onclick="cikisYap()" style="padding: 6px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--card-bg); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+        <button class="btn-delete-item" title="Güvenli Çıkış" onclick="cikisYap()" style="padding: 6px; border-radius: 6px; border: 1px solid var(--border); background-color: var(--card-bg); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
             <svg style="width: 18px; height: 18px; fill: var(--danger);" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
         </button>
     </header>
@@ -2202,19 +2202,19 @@
             <div class="brand">
                 <div class="brand-logo"></div>
                 <div>
-                    <h3 class="brand-title">DoÄŸanÃ§ay MOB</h3>
-                    <span class="brand-subtitle">AtÃ¶lye ERP & Teklif</span>
+                    <h3 class="brand-title">Doğançay MOB</h3>
+                    <span class="brand-subtitle">Atölye ERP & Teklif</span>
                 </div>
             </div>
             
             <nav class="nav-menu">
                 <button class="nav-item active" onclick="switchTab('teklifView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2zm0 8H7v-2h10v2z"/></svg>
-                    Teklif HazÄ±rla
+                    Teklif Hazırla
                 </button>
                 <button class="nav-item" onclick="switchTab('takipView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H8v-2h6v2zm4-4H8v-2h10v2z"/></svg>
-                    SipariÅŸ Takip Havuzu
+                    Sipariş Takip Havuzu
                 </button>
                 <button class="nav-item" onclick="switchTab('kesimView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 15.58V21H3V3h14v5.42c1.72-.73 3.47-1.42 5.23-2.1L23 8l-6 6 6 6-.77 1.68c-1.76-.68-3.51-1.37-5.23-2.1zM5 19h10v-3H5v3zm0-5h10v-3H5v3zm0-5h10V5H5v4z"/></svg>
@@ -2222,7 +2222,7 @@
                 </button>
                 <button class="nav-item" onclick="switchTab('reviewsView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                    MÃ¼ÅŸteri YorumlarÄ±
+                    Müşteri Yorumları
                 </button>
                 <button class="nav-item" id="navMuhasebe" style="display: none;" onclick="switchTab('muhasebeView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
@@ -2230,17 +2230,17 @@
                 </button>
                 <button class="nav-item" id="navAyarlar" style="display: none;" onclick="switchTab('ayarlarView', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-                    Malzeme Fiyat AyarlarÄ±
+                    Malzeme Fiyat Ayarları
                 </button>
             </nav>
 
             <div class="user-profile">
                 <div class="user-avatar" id="avatarName">U</div>
                 <div class="user-info">
-                    <div class="user-name" id="profileName">Ortak GiriÅŸi</div>
-                    <div class="user-role" id="profileRole">DoÄŸanÃ§ay Mobilya</div>
+                    <div class="user-name" id="profileName">Ortak Girişi</div>
+                    <div class="user-role" id="profileRole">Doğançay Mobilya</div>
                 </div>
-                <button class="btn-delete-item" title="GÃ¼venli Ã‡Ä±kÄ±ÅŸ" onclick="cikisYap()">
+                <button class="btn-delete-item" title="Güvenli Çıkış" onclick="cikisYap()">
                     <svg style="width: 20px; height: 20px; fill: var(--danger);" viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
                 </button>
             </div>
@@ -2278,39 +2278,39 @@
         <main class="main-content" style="position: relative; overflow: hidden;">
             <div class="watermark-bg" style="width: 650px; height: 650px; opacity: 0.025;"></div>
             
-            <!-- SECTION 1: TEKLÄ°F OLUÅTURUCU -->
+            <!-- SECTION 1: TEKLİF OLUŞTURUCU -->
             <section id="teklifView" class="view-section active">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">ğŸ“ Yeni Mobilya Teklifi HesabÄ±</h2>
+                        <h2 class="card-title">📐 Yeni Mobilya Teklifi Hesabı</h2>
                     </div>
 
-                    <!-- DÃ¼zenleme Modu BannerÄ± -->
+                    <!-- Düzenleme Modu Bannerı -->
                     <div id="editModeBanner" style="display: none; background: rgba(2, 132, 199, 0.08); border: 1px solid #0284c7; padding: 12px; border-radius: 8px; margin: 15px; color: #0284c7; font-size: 13px; align-items: center; justify-content: space-between; gap: 10px; box-sizing: border-box;">
                         <span style="display: flex; align-items: center; gap: 6px;">
-                            <span>âš ï¸</span> 
-                            <span>Åu anda <b><span id="editClientName">MÃ¼ÅŸteri</span></b> adlÄ± mÃ¼ÅŸterinin sipariÅŸini dÃ¼zenliyorsunuz.</span>
+                            <span>⚠️</span> 
+                            <span>Şu anda <b><span id="editClientName">Müşteri</span></b> adlı müşterinin siparişini düzenliyorsunuz.</span>
                         </span>
-                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; margin: 0; white-space: nowrap; height: fit-content; align-self: center;" onclick="duzenlemeyiIptalEt()">VazgeÃ§</button>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 11px; margin: 0; white-space: nowrap; height: fit-content; align-self: center;" onclick="duzenlemeyiIptalEt()">Vazgeç</button>
                     </div>
                     
-                    <!-- 1. AdÄ±m: Genel Bilgiler -->
+                    <!-- 1. Adım: Genel Bilgiler -->
                     <div class="form-row">
                         <div class="form-group">
                             <label>Teklif Veren Usta</label>
                              <select id="staffName">
-                                 <option value="Mustafa DoÄŸanÃ§ay">Mustafa DoÄŸanÃ§ay</option>
-                                 <option value="RaÅŸid Cihat DoÄŸanÃ§ay">RaÅŸid Cihat DoÄŸanÃ§ay</option>
-                                 <option value="Berat Aziz DoÄŸanÃ§ay">Berat Aziz DoÄŸanÃ§ay</option>
+                                 <option value="Mustafa Doğançay">Mustafa Doğançay</option>
+                                 <option value="Raşid Cihat Doğançay">Raşid Cihat Doğançay</option>
+                                 <option value="Berat Aziz Doğançay">Berat Aziz Doğançay</option>
                              </select>
                         </div>
                         <div class="form-group">
-                            <label>MÃ¼ÅŸteri AdÄ± SoyadÄ±</label>
-                            <input type="text" id="customerName" placeholder="Ã–rn: Mustafa YÄ±lmaz">
+                            <label>Müşteri Adı Soyadı</label>
+                            <input type="text" id="customerName" placeholder="Örn: Mustafa Yılmaz">
                         </div>
                         <div class="form-group">
-                            <label>MÃ¼ÅŸteri Telefon No</label>
-                            <input type="tel" id="customerPhone" placeholder="Ã–rn: 05551234567">
+                            <label>Müşteri Telefon No</label>
+                            <input type="tel" id="customerPhone" placeholder="Örn: 05551234567">
                         </div>
                         <div class="form-group">
                             <label>Tahmini Teslimat</label>
@@ -2318,19 +2318,19 @@
                         </div>
                     </div>
 
-                    <!-- 2. AdÄ±m: Mobilya TÃ¼rÃ¼ SeÃ§imi -->
+                    <!-- 2. Adım: Mobilya Türü Seçimi -->
                     <div class="form-group">
-                        <label>Hesaplanacak Mobilya TÃ¼rÃ¼</label>
+                        <label>Hesaplanacak Mobilya Türü</label>
                         <div class="type-grid">
-                            <button class="type-card active" onclick="selectFurnitureType('gardÄ±rop', this)">
+                            <button class="type-card active" onclick="selectFurnitureType('gardırop', this)">
                                 <!-- Wardrobe Icon -->
                                 <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 16H6V5h12v14zm-4-10.5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5.67 1.5 1.5 1.5 1.5-.67 1.5-1.5z"/></svg>
-                                <span>GardÄ±rop</span>
+                                <span>Gardırop</span>
                             </button>
                             <button class="type-card" onclick="selectFurnitureType('mutfak', this)">
                                 <!-- Kitchen Cabinets Icon -->
                                 <svg viewBox="0 0 24 24"><path d="M4 19h16v-2H4v2zm16-6H4v2h16v-2zM4 9h16V7H4v2zm16-4H4v2h16V5z"/></svg>
-                                <span>Mutfak DolabÄ±</span>
+                                <span>Mutfak Dolabı</span>
                             </button>
                             <button class="type-card" onclick="selectFurnitureType('vestiyer', this)">
                                 <!-- Vestry Icon -->
@@ -2340,12 +2340,12 @@
                             <button class="type-card" onclick="selectFurnitureType('banyo', this)">
                                 <!-- Bath Vanity Icon -->
                                 <svg viewBox="0 0 24 24"><path d="M7 14c-1.66 0-3 1.34-3 3 0 1.31-1.16 2-2 2 .92 1.22 2.49 2 4 2 2.76 0 5-2.24 5-5 0-1.66-1.34-3-3-3zm11.5-6C18.5 4.69 16 2 16 2s-2.5 2.69-2.5 6c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5zM6 8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.21-1.79 4-4 4s-4-1.79-4-4z"/></svg>
-                                <span>Banyo DolabÄ±</span>
+                                <span>Banyo Dolabı</span>
                             </button>
                             <button class="type-card" onclick="selectFurnitureType('ozel', this)">
                                 <!-- Custom Project Icon -->
                                 <svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
-                                <span>Ã–zel TasarÄ±m</span>
+                                <span>Özel Tasarım</span>
                             </button>
                             <button class="type-card" onclick="selectFurnitureType('udolap', this)">
                                 <!-- U-shape wardrobe icon -->
@@ -2354,14 +2354,14 @@
                             </button>
                         </div>
                         <!-- Hidden variable input holding the active type -->
-                        <input type="hidden" id="mobilyaTuru" value="gardÄ±rop">
+                        <input type="hidden" id="mobilyaTuru" value="gardırop">
                     </div>
 
-                    <!-- 3. AdÄ±m: Dinamik Ã–lÃ§Ã¼ FormlarÄ± -->
+                    <!-- 3. Adım: Dinamik Ölçü Formları -->
                     <div id="calculatorInputs">
                         
-                        <!-- GardÄ±rop Form AlanlarÄ± -->
-                        <div id="formGardÄ±rop" class="furniture-form-group">
+                        <!-- Gardırop Form Alanları -->
+                        <div id="formGardırop" class="furniture-form-group">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Dolap Eni (Metre)</label>
@@ -2374,16 +2374,16 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Kapak SayÄ±sÄ± (Adet)</label>
+                                    <label>Kapak Sayısı (Adet)</label>
                                     <input type="number" id="g_doors" value="6" min="1" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ã‡ekmece SayÄ±sÄ± (Adet)</label>
+                                    <label>Çekmece Sayısı (Adet)</label>
                                     <input type="number" id="g_drawers" value="4" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Ã‡ekmece Ray SÄ±nÄ±fÄ±</label>
+                                <label>Çekmece Ray Sınıfı</label>
                                 <select id="g_ray" onchange="hesaplaVeCiz()">
                                     <option value="r_tele">Teleskopik Klasik Ray</option>
                                     <option value="r_tandem" selected>Frenli Tandem Gizli Ray</option>
@@ -2395,24 +2395,24 @@
                                 <select id="g_material" onchange="hesaplaVeCiz()">
                                     <option value="lake" selected>Lake Kapak</option>
                                     <option value="mdf">MDF Lam Kapak</option>
-                                    <option value="cam">AlÃ¼minyum Cam Kapak</option>
-                                    <option value="kapaksiz">KapaksÄ±z (AÃ§Ä±k Dolap GÃ¶vdesi) - 6350 â‚º</option>
+                                    <option value="cam">Alüminyum Cam Kapak</option>
+                                    <option value="kapaksiz">Kapaksız (Açık Dolap Gövdesi) - 6350 ₺</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>ArkalÄ±k Malzemesi</label>
+                                <label>Arkalık Malzemesi</label>
                                 <select id="g_back" onchange="hesaplaVeCiz()">
-                                    <option value="ark4" selected>4mm BoyalÄ± MDF ArkalÄ±k</option>
-                                    <option value="ark8">8mm MDF Lam GÃ¼Ã§lendirilmiÅŸ ArkalÄ±k</option>
+                                    <option value="ark4" selected>4mm Boyalı MDF Arkalık</option>
+                                    <option value="ark8">8mm MDF Lam Güçlendirilmiş Arkalık</option>
                                 </select>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>MenteÅŸe Adedi</label>
+                                    <label>Menteşe Adedi</label>
                                     <input type="number" id="g_hinges" value="24" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>MenteÅŸe MarkasÄ±</label>
+                                    <label>Menteşe Markası</label>
                                     <select id="g_hinge_type" onchange="hesaplaVeCiz()">
                                         <option value="samet" selected>Samet Frenli</option>
                                         <option value="blum">Blum Premium</option>
@@ -2420,20 +2420,20 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="g_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
 
-                        <!-- Mutfak DolabÄ± Form AlanlarÄ± -->
+                        <!-- Mutfak Dolabı Form Alanları -->
                         <div id="formMutfak" class="furniture-form-group" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Alt Dolap UzunluÄŸu (MetretÃ¼l)</label>
+                                    <label>Alt Dolap Uzunluğu (Metretül)</label>
                                     <input type="number" id="k_lower_len" value="3.5" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ãœst Dolap UzunluÄŸu (MetretÃ¼l)</label>
+                                    <label>Üst Dolap Uzunluğu (Metretül)</label>
                                     <input type="number" id="k_upper_len" value="3.5" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
@@ -2442,16 +2442,16 @@
                                 <select id="k_material" onchange="hesaplaVeCiz()">
                                     <option value="lake" selected>Lake Kapak</option>
                                     <option value="mdf">MDF Lam Kapak</option>
-                                    <option value="cam">AlÃ¼minyum Ã‡erÃ§eveli Cam Kapak</option>
+                                    <option value="cam">Alüminyum Çerçeveli Cam Kapak</option>
                                 </select>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Ã‡ekmece Adedi (Evye & RaylÄ± Kasa)</label>
+                                    <label>Çekmece Adedi (Evye & Raylı Kasa)</label>
                                     <input type="number" id="k_drawers" value="3" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ray Sistem SÄ±nÄ±fÄ±</label>
+                                    <label>Ray Sistem Sınıfı</label>
                                     <select id="k_ray" onchange="hesaplaVeCiz()">
                                         <option value="r_tele">Teleskopik Klasik Ray</option>
                                         <option value="r_tandem" selected>Frenli Tandem Gizli Ray</option>
@@ -2461,11 +2461,11 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>MenteÅŸe Adedi</label>
+                                    <label>Menteşe Adedi</label>
                                     <input type="number" id="k_hinges" value="18" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>MenteÅŸe Kalitesi</label>
+                                    <label>Menteşe Kalitesi</label>
                                     <select id="k_hinge_type" onchange="hesaplaVeCiz()">
                                         <option value="samet" selected>Samet Frenli</option>
                                         <option value="blum">Blum Premium</option>
@@ -2473,22 +2473,22 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Mutfak Tezgah SeÃ§imi</label>
+                                <label>Mutfak Tezgah Seçimi</label>
                                 <select id="k_countertop" onchange="hesaplaVeCiz()">
-                                    <option value="yok">Tezgah Ä°stenmiyor (Sadece Dolaplar)</option>
-                                    <option value="laminat">Laminat Su GeÃ§irmez Tezgah</option>
-                                    <option value="ahsap">DoÄŸal AhÅŸap Masif Tezgah</option>
-                                    <option value="granit" selected>DoÄŸal Granit Tezgah</option>
-                                    <option value="cimstone">Ã‡imstone / Belenco Kuvars Tezgah</option>
+                                    <option value="yok">Tezgah İstenmiyor (Sadece Dolaplar)</option>
+                                    <option value="laminat">Laminat Su Geçirmez Tezgah</option>
+                                    <option value="ahsap">Doğal Ahşap Masif Tezgah</option>
+                                    <option value="granit" selected>Doğal Granit Tezgah</option>
+                                    <option value="cimstone">Çimstone / Belenco Kuvars Tezgah</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="k_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
 
-                        <!-- Vestiyer Form AlanlarÄ± -->
+                        <!-- Vestiyer Form Alanları -->
                         <div id="formVestiyer" class="furniture-form-group" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -2509,7 +2509,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Ã‡ekmece Adedi</label>
+                                    <label>Çekmece Adedi</label>
                                     <input type="number" id="v_drawers" value="2" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
@@ -2523,38 +2523,38 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>AskÄ± KancasÄ± Adedi</label>
+                                    <label>Askı Kancası Adedi</label>
                                     <input type="number" id="v_hooks" value="6" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>MenteÅŸe Adedi</label>
+                                    <label>Menteşe Adedi</label>
                                     <input type="number" id="v_hinges" value="10" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>MenteÅŸe Kalitesi</label>
+                                    <label>Menteşe Kalitesi</label>
                                     <select id="v_hinge_type" onchange="hesaplaVeCiz()">
                                         <option value="samet" selected>Samet Frenli</option>
                                         <option value="blum">Blum Premium</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Ayna DetayÄ±</label>
+                                    <label>Ayna Detayı</label>
                                     <select id="v_mirror" onchange="hesaplaVeCiz()">
-                                        <option value="yok">AynasÄ±z Model</option>
-                                        <option value="kucuk">KÃ¼Ã§Ã¼k BÃ¶lÃ¼m AynalÄ±</option>
-                                        <option value="boy" selected>Boy AynalÄ± Model</option>
+                                        <option value="yok">Aynasız Model</option>
+                                        <option value="kucuk">Küçük Bölüm Aynalı</option>
+                                        <option value="boy" selected>Boy Aynalı Model</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="v_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
 
-                        <!-- Banyo DolabÄ± Form AlanlarÄ± -->
+                        <!-- Banyo Dolabı Form Alanları -->
                         <div id="formBanyo" class="furniture-form-group" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -2567,7 +2567,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Dolap Malzemesi (Neme DayanÄ±klÄ±)</label>
+                                <label>Dolap Malzemesi (Neme Dayanıklı)</label>
                                 <select id="b_material" onchange="hesaplaVeCiz()">
                                     <option value="lake" selected>Lake Kaplama MDF</option>
                                     <option value="mdf">MDF Lam Kaplama</option>
@@ -2575,7 +2575,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Ã‡ekmece SayÄ±sÄ±</label>
+                                    <label>Çekmece Sayısı</label>
                                     <input type="number" id="b_drawers" value="2" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
@@ -2588,62 +2588,62 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>MenteÅŸe SayÄ±sÄ±</label>
+                                    <label>Menteşe Sayısı</label>
                                     <input type="number" id="b_hinges" value="4" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Lavabo & Ayna DonanÄ±mÄ±</label>
+                                    <label>Lavabo & Ayna Donanımı</label>
                                     <select id="b_extras" onchange="hesaplaVeCiz()">
-                                        <option value="yok">Sadece BoÅŸ Dolap GÃ¶vdesi</option>
-                                        <option value="ayna">Led AynalÄ± Ãœst ModÃ¼l</option>
+                                        <option value="yok">Sadece Boş Dolap Gövdesi</option>
+                                        <option value="ayna">Led Aynalı Üst Modül</option>
                                         <option value="lavabo">Porselen Lavabo Haznesi</option>
-                                        <option value="ikisi_de" selected>Lavabo + Dokunmatik Ledli Ayna TakÄ±mÄ±</option>
+                                        <option value="ikisi_de" selected>Lavabo + Dokunmatik Ledli Ayna Takımı</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="b_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
 
-                        <!-- Ã–zel TasarÄ±m Form AlanlarÄ± -->
+                        <!-- Özel Tasarım Form Alanları -->
                         <div id="formOzel" class="furniture-form-group" style="display: none;">
                             <div class="form-group">
-                                <label>YapÄ±lacak Projenin TanÄ±mÄ±</label>
-                                <textarea id="o_desc" rows="2" placeholder="Ã–rn: Salon TV Ãœnitesi, KitaplÄ±k ve Gizli IÅŸÄ±k YuvalÄ± AhÅŸap Giydirme Paneli"></textarea>
+                                <label>Yapılacak Projenin Tanımı</label>
+                                <textarea id="o_desc" rows="2" placeholder="Örn: Salon TV Ünitesi, Kitaplık ve Gizli Işık Yuvalı Ahşap Giydirme Paneli"></textarea>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Metot</label>
                                     <select id="o_method" onchange="hesaplaVeCiz()">
-                                        <option value="m2" selected>Metrekare (mÂ²) HesabÄ±</option>
-                                        <option value="mt">MetretÃ¼l (Boy) HesabÄ±</option>
-                                        <option value="sabit">Sabit Proje FiyatÄ±</option>
+                                        <option value="m2" selected>Metrekare (m²) Hesabı</option>
+                                        <option value="mt">Metretül (Boy) Hesabı</option>
+                                        <option value="sabit">Sabit Proje Fiyatı</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label id="lblOzelQty">Ã–lÃ§Ã¼ / Miktar</label>
+                                    <label id="lblOzelQty">Ölçü / Miktar</label>
                                     <input type="number" id="o_qty" value="5" min="1" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Birim Fiyat (â‚º)</label>
+                                    <label>Birim Fiyat (₺)</label>
                                     <input type="number" id="o_unit_price" value="3800" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ä°lave Aksesuar & Montaj FarkÄ± (â‚º)</label>
+                                    <label>İlave Aksesuar & Montaj Farkı (₺)</label>
                                     <input type="number" id="o_extras" value="2500" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="o_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
 
-                        <!-- U Dolap Form AlanlarÄ± -->
+                        <!-- U Dolap Form Alanları -->
                         <div id="formUDolap" class="furniture-form-group" style="display: none;">
                             <div class="form-row">
                                 <div class="form-group">
@@ -2655,21 +2655,21 @@
                                     <input type="number" id="u_back" value="3.0" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>SaÄŸ Duvar Eni (m)</label>
+                                    <label>Sağ Duvar Eni (m)</label>
                                     <input type="number" id="u_right" value="2.0" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Dolap Boyu / YÃ¼kseklik (m)</label>
+                                    <label>Dolap Boyu / Yükseklik (m)</label>
                                     <input type="number" id="u_height" value="2.5" step="0.1" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ä°Ã§ Ã‡ekmece SayÄ±sÄ±</label>
+                                    <label>İç Çekmece Sayısı</label>
                                     <input type="number" id="u_drawers" value="4" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>Ã‡ekmece Ray SÄ±nÄ±fÄ±</label>
+                                    <label>Çekmece Ray Sınıfı</label>
                                     <select id="u_ray" onchange="hesaplaVeCiz()">
                                         <option value="r_tele">Teleskopik Klasik Ray</option>
                                         <option value="r_tandem" selected>Frenli Tandem Gizli Ray</option>
@@ -2681,35 +2681,35 @@
                                 <div class="form-group">
                                     <label>Dolap Malzemesi</label>
                                     <select id="u_material" onchange="hesaplaVeCiz()">
-                                        <option value="kapaksiz" selected>KapaksÄ±z (AÃ§Ä±k Dolap) - 6350 â‚º</option>
+                                        <option value="kapaksiz" selected>Kapaksız (Açık Dolap) - 6350 ₺</option>
                                         <option value="lake">Lake Kapak</option>
                                         <option value="mdf">MDF Lam Kapak</option>
-                                        <option value="cam">AlÃ¼minyum Cam Kapak</option>
+                                        <option value="cam">Alüminyum Cam Kapak</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>ArkalÄ±k Malzemesi</label>
+                                    <label>Arkalık Malzemesi</label>
                                     <select id="u_back_panel" onchange="hesaplaVeCiz()">
-                                        <option value="ark4" selected>4mm BoyalÄ± MDF ArkalÄ±k</option>
-                                        <option value="ark8">8mm MDF Lam GÃ¼Ã§lendirilmiÅŸ ArkalÄ±k</option>
+                                        <option value="ark4" selected>4mm Boyalı MDF Arkalık</option>
+                                        <option value="ark8">8mm MDF Lam Güçlendirilmiş Arkalık</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>MenteÅŸe Adedi</label>
+                                    <label>Menteşe Adedi</label>
                                     <input type="number" id="u_hinges" value="0" min="0" oninput="hesaplaVeCiz()">
                                 </div>
                                 <div class="form-group">
-                                    <label>MenteÅŸe MarkasÄ±</label>
+                                    <label>Menteşe Markası</label>
                                     <select id="u_hinge_type" onchange="hesaplaVeCiz()">
-                                        <option value="samet" selected>Samet Frenli MenteÅŸe</option>
-                                        <option value="blum">Blum Premium MenteÅŸe</option>
+                                        <option value="samet" selected>Samet Frenli Menteşe</option>
+                                        <option value="blum">Blum Premium Menteşe</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>AlÄ±nan Kaparo TutarÄ± (â‚º)</label>
+                                <label>Alınan Kaparo Tutarı (₺)</label>
                                 <input type="number" id="u_advance" value="0" oninput="hesaplaVeCiz()">
                             </div>
                         </div>
@@ -2717,147 +2717,147 @@
                     </div>
                 </div>
 
-                <!-- 4. AdÄ±m: CanlÄ± CAD 2D Ã‡izim Ã–nizleme -->
+                <!-- 4. Adım: Canlı CAD 2D Çizim Önizleme -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">ğŸ¨ CanlÄ± 2D TasarÄ±m</h3>
+                        <h3 class="card-title">🎨 Canlı 2D Tasarım</h3>
                         <div class="preview-mode-toggle">
-                            <button type="button" id="btnModeBlueprint" onclick="setPreviewMode('blueprint')" class="btn-toggle active">Åematik</button>
-                            <button type="button" id="btnModeLux" onclick="setPreviewMode('lux')" class="btn-toggle">LÃ¼ks 2D</button>
+                            <button type="button" id="btnModeBlueprint" onclick="setPreviewMode('blueprint')" class="btn-toggle active">Şematik</button>
+                            <button type="button" id="btnModeLux" onclick="setPreviewMode('lux')" class="btn-toggle">Lüks 2D</button>
                         </div>
                     </div>
                     <div class="canvas-wrapper">
                         <canvas id="dolapCanvas" width="400" height="300"></canvas>
-                        <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Ã‡izim girdiÄŸiniz en, boy ve bÃ¶lmelere gÃ¶re Ã¶lÃ§eklenerek Ã§izilir.</p>
+                        <p style="font-size: 11px; color: var(--text-muted); text-align: center;">Çizim girdiğiniz en, boy ve bölmelere göre ölçeklenerek çizilir.</p>
                     </div>
                 </div>
 
-                <!-- 5. AdÄ±m: Teklif Maliyet Analizi Ã–zet KartÄ± -->
+                <!-- 5. Adım: Teklif Maliyet Analizi Özet Kartı -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">ğŸ’° GÃ¼ncel Hesaplama ve Maliyet Analizi</h3>
+                        <h3 class="card-title">💰 Güncel Hesaplama ve Maliyet Analizi</h3>
                     </div>
                     <div class="summary-box">
                         <div class="summary-row" style="border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px; display: flex; align-items: center;">
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--primary); font-weight: bold; text-transform: none; letter-spacing: normal; width: 100%;">
-                                <input type="checkbox" id="chkUseSheetCosting" onchange="hesaplaVeCiz()" style="width: auto; margin: 0; cursor: pointer; transform: scale(1.2);"> ğŸªµ Plaka BazlÄ± Hesapla (GerÃ§ek Fire Dahil)
+                                <input type="checkbox" id="chkUseSheetCosting" onchange="hesaplaVeCiz()" style="width: auto; margin: 0; cursor: pointer; transform: scale(1.2);"> 🪵 Plaka Bazlı Hesapla (Gerçek Fire Dahil)
                             </label>
                         </div>
                         <div class="summary-row">
-                            <span>Malzeme mÂ² veya TÃ¼l DetayÄ±:</span>
-                            <span id="lblM2">0.00 mÂ²</span>
+                            <span>Malzeme m² veya Tül Detayı:</span>
+                            <span id="lblM2">0.00 m²</span>
                         </div>
                         <div class="summary-row">
-                            <span>GÃ¶vde ve Kapak Maliyet TutarÄ±:</span>
-                            <span id="lblDolap">0 â‚º</span>
+                            <span>Gövde ve Kapak Maliyet Tutarı:</span>
+                            <span id="lblDolap">0 ₺</span>
                         </div>
                         <div class="summary-row">
-                            <span>Kasa DonanÄ±m / Ray TutarÄ±:</span>
-                            <span id="lblCekmece">0 â‚º</span>
+                            <span>Kasa Donanım / Ray Tutarı:</span>
+                            <span id="lblCekmece">0 ₺</span>
                         </div>
                         <div class="summary-row">
-                            <span>MenteÅŸe & BaÄŸlantÄ± TutarÄ±:</span>
-                            <span id="lblMentese">0 â‚º</span>
+                            <span>Menteşe & Bağlantı Tutarı:</span>
+                            <span id="lblMentese">0 ₺</span>
                         </div>
                         <div class="summary-row">
-                            <span>Tezgah / Ekstra Ä°lave Malzeme:</span>
-                            <span id="lblEkstralar">0 â‚º</span>
+                            <span>Tezgah / Ekstra İlave Malzeme:</span>
+                            <span id="lblEkstralar">0 ₺</span>
                         </div>
                         <div class="summary-row">
-                            <span>AtÃ¶lye Kesim/Bantlama Gideri:</span>
-                            <span id="lblKesimGider">0 â‚º</span>
+                            <span>Atölye Kesim/Bantlama Gideri:</span>
+                            <span id="lblKesimGider">0 ₺</span>
                         </div>
                         <div class="summary-row">
-                            <span>Montaj Ä°ÅŸÃ§iliÄŸi & Sevk Bedeli:</span>
-                            <span id="lblMontajBedel">0 â‚º</span>
+                            <span>Montaj İşçiliği & Sevk Bedeli:</span>
+                            <span id="lblMontajBedel">0 ₺</span>
                         </div>
                         <div class="summary-total">
                             <span>GENEL HESAPLANAN:</span>
-                            <span id="lblToplam">0 â‚º</span>
+                            <span id="lblToplam">0 ₺</span>
                         </div>
                         <div class="summary-balance">
-                            <span>TAHSÄ°L EDÄ°LECEK KALAN:</span>
-                            <span id="lblKalan">0 â‚º</span>
+                            <span>TAHSİL EDİLECEK KALAN:</span>
+                            <span id="lblKalan">0 ₺</span>
                         </div>
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                         <button class="btn btn-primary" id="btnKaydet" onclick="kaydetSistem()">
                             <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
-                            SipariÅŸi Ortak Bulut Havuzuna Kaydet
+                            Siparişi Ortak Bulut Havuzuna Kaydet
                         </button>
                         <div class="form-row" style="margin: 0; gap: 10px;">
                             <button class="btn btn-success" style="flex: 1;" onclick="whatsappSistem()">
                                 <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01m-2.9 14.15c-.22 0-.44-.1-.55-.26-.84-.87-1.7-1.74-2.5-2.66-.1-.13-.15-.31-.1-.47.05-.17.18-.3.35-.35h1c.14 0 .28.07.36.19l1.7 1.78.8-.82.16-.16c.15-.15.39-.15.54 0l.96.96c.15.15.15.39 0 .54l-1.37 1.37c-.1.1-.25.17-.4.21-.06.01-.13.02-.19.02z"/></svg>
-                                WhatsApp Ä°le GÃ¶nder
+                                WhatsApp İle Gönder
                             </button>
                             <button class="btn btn-secondary" style="flex: 1;" onclick="yazdirTeklif()">
                                 <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-                                PDF Teklif Ã‡Ä±ktÄ±sÄ± Al
+                                PDF Teklif Çıktısı Al
                             </button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 2: SÄ°PARÄ°Å TAKÄ°P LÄ°STESÄ° -->
+            <!-- SECTION 2: SİPARİŞ TAKİP LİSTESİ -->
             <section id="takipView" class="view-section">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">ğŸ—„ï¸ SipariÅŸ ve Teklif Takip Havuzu (TÃ¼m Ekip)</h2>
+                        <h2 class="card-title">🗄️ Sipariş ve Teklif Takip Havuzu (Tüm Ekip)</h2>
                     </div>
 
                     <!-- Search and filters -->
                     <div class="filter-bar">
-                        <input type="text" id="searchClient" placeholder="MÃ¼ÅŸteri adÄ±yla ara..." oninput="canliGezgin()">
+                        <input type="text" id="searchClient" placeholder="Müşteri adıyla ara..." oninput="canliGezgin()">
                         <select id="filterStatus" onchange="canliGezgin()">
-                            <option value="">TÃ¼m Durumlar</option>
-                            <option value="Teklif Verildi">ğŸŸ¡ Sadece Teklifler</option>
-                            <option value="OnaylandÄ± / Ä°malatta">ğŸ”µ Ä°malat AÅŸamasÄ±</option>
-                            <option value="Montaj AÅŸamasÄ±nda">ğŸŸ£ Montaj AÅŸamasÄ±</option>
-                            <option value="TamamlandÄ±">ğŸŸ¢ Teslim EdilmiÅŸ</option>
+                            <option value="">Tüm Durumlar</option>
+                            <option value="Teklif Verildi">🟡 Sadece Teklifler</option>
+                            <option value="Onaylandı / İmalatta">🔵 İmalat Aşaması</option>
+                            <option value="Montaj Aşamasında">🟣 Montaj Aşaması</option>
+                            <option value="Tamamlandı">🟢 Teslim Edilmiş</option>
                         </select>
                     </div>
 
                     <div id="archiveList" class="archive-list">
                         <!-- Loaded dynamically from Firebase -->
-                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">Veriler buluttan yÃ¼kleniyor, lÃ¼tfen bekleyin...</div>
+                        <div style="text-align: center; color: var(--text-muted); padding: 40px 0;">Veriler buluttan yükleniyor, lütfen bekleyin...</div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 3: MUHASEBE VE KASA TAKÄ°P -->
+            <!-- SECTION 3: MUHASEBE VE KASA TAKİP -->
             <section id="muhasebeView" class="view-section">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">ğŸ“Š DÃ¼kkan Muhasebe & Kasa RaporlarÄ±</h2>
+                        <h2 class="card-title">📊 Dükkan Muhasebe & Kasa Raporları</h2>
                     </div>
 
                     <!-- Summary Cards -->
                     <div class="accounting-summary">
                         <div class="stat-card ciro">
-                            <span class="stat-label">Toplam Ciro (Aktif SipariÅŸ)</span>
-                            <span class="stat-val ciro-text" id="m_ciro">0 â‚º</span>
+                            <span class="stat-label">Toplam Ciro (Aktif Sipariş)</span>
+                            <span class="stat-val ciro-text" id="m_ciro">0 ₺</span>
                         </div>
                         <div class="stat-card gider">
-                            <span class="stat-label">Toplam AtÃ¶lye Gideri</span>
-                            <span class="stat-val gider-text" id="m_gider">0 â‚º</span>
+                            <span class="stat-label">Toplam Atölye Gideri</span>
+                            <span class="stat-val gider-text" id="m_gider">0 ₺</span>
                         </div>
                         <div class="stat-card kar">
-                            <span class="stat-label">Kasa Net KÃ¢r Durumu</span>
-                            <span class="stat-val kar-text" id="m_kar">0 â‚º</span>
+                            <span class="stat-label">Kasa Net Kâr Durumu</span>
+                            <span class="stat-val kar-text" id="m_kar">0 ₺</span>
                         </div>
                         <div class="stat-card alacak">
                             <span class="stat-label">Sahadaki Toplam Alacak</span>
-                            <span class="stat-val alacak-text" id="m_alacak">0 â‚º</span>
+                            <span class="stat-val alacak-text" id="m_alacak">0 ₺</span>
                         </div>
                     </div>
 
                     <!-- Visual budget tracking -->
                     <div style="margin-bottom: 24px;">
                         <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; font-weight: 600;">
-                            <span style="color: var(--danger);">ğŸ’¸ Gider OranÄ± (<span id="giderOran">0%</span>)</span>
-                            <span style="color: var(--success);">ğŸ“ˆ Net KÃ¢r OranÄ± (<span id="karOran">0%</span>)</span>
+                            <span style="color: var(--danger);">💸 Gider Oranı (<span id="giderOran">0%</span>)</span>
+                            <span style="color: var(--success);">📈 Net Kâr Oranı (<span id="karOran">0%</span>)</span>
                         </div>
                         <div class="budget-bar-container">
                             <div class="budget-bar gider-fill" id="barGider" style="width: 0%;"></div>
@@ -2868,36 +2868,36 @@
                     <div class="form-row">
                         <!-- Add expense card -->
                         <div class="card" style="flex: 1; margin-bottom: 0;">
-                            <h3 style="font-size: 16px; margin-bottom: 15px;">ğŸ’¸ Yeni Gider KaydÄ± Ekle</h3>
+                            <h3 style="font-size: 16px; margin-bottom: 15px;">💸 Yeni Gider Kaydı Ekle</h3>
                             
                             <div class="form-group">
-                                <label>Gider Kalemi TÃ¼rÃ¼</label>
+                                <label>Gider Kalemi Türü</label>
                                 <select id="expType">
-                                    <option value="Kesim & Bantlama">Kesim & Bantlama Ã–demesi</option>
-                                    <option value="Aksesuar & MenteÅŸe">MenteÅŸe / Aksesuar AlÄ±mÄ±</option>
-                                    <option value="KÃ¶r Kasa & Kereste">Sunta / MDF Plaka AlÄ±mÄ±</option>
-                                    <option value="DÃ¼kkan Kira & Elektrik">DÃ¼kkan Sabit Gideri</option>
+                                    <option value="Kesim & Bantlama">Kesim & Bantlama Ödemesi</option>
+                                    <option value="Aksesuar & Menteşe">Menteşe / Aksesuar Alımı</option>
+                                    <option value="Kör Kasa & Kereste">Sunta / MDF Plaka Alımı</option>
+                                    <option value="Dükkan Kira & Elektrik">Dükkan Sabit Gideri</option>
                                     <option value="Yemek & Yol">Yemek & Yol Gideri</option>
-                                    <option value="DiÄŸer">DiÄŸer Giderler</option>
+                                    <option value="Diğer">Diğer Giderler</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Gider TutarÄ± (â‚º)</label>
-                                <input type="number" id="expAmount" placeholder="Ã–rn: 3500">
+                                <label>Gider Tutarı (₺)</label>
+                                <input type="number" id="expAmount" placeholder="Örn: 3500">
                             </div>
                             <div class="form-group">
-                                <label>AÃ§Ä±klama (Hangi MÃ¼ÅŸteri/Malzeme?)</label>
-                                <input type="text" id="expDesc" placeholder="Ã–rn: Ahmet Bey mutfak kulplarÄ±">
+                                <label>Açıklama (Hangi Müşteri/Malzeme?)</label>
+                                <input type="text" id="expDesc" placeholder="Örn: Ahmet Bey mutfak kulpları">
                             </div>
                             
                             <button class="btn btn-danger btn-block" onclick="giderKaydet()">
-                                ğŸ’¸ Gideri Kasaya Kaydet
+                                💸 Gideri Kasaya Kaydet
                             </button>
                         </div>
 
                         <!-- Son gider listesi -->
                         <div class="card" style="flex: 1; margin-bottom: 0;">
-                            <h3 style="font-size: 16px; margin-bottom: 15px;">ğŸ§¾ Son YapÄ±lan Gider Hareketleri</h3>
+                            <h3 style="font-size: 16px; margin-bottom: 15px;">🧾 Son Yapılan Gider Hareketleri</h3>
                             <div class="expense-list" id="giderList">
                                 <div style="text-align: center; color: var(--text-muted); padding: 20px 0;">Gider verisi bulunmuyor.</div>
                             </div>
@@ -2906,167 +2906,167 @@
                 </div>
             </section>
 
-            <!-- SECTION 4: MALZEME FÄ°YAT AYARLARI -->
+            <!-- SECTION 4: MALZEME FİYAT AYARLARI -->
             <section id="ayarlarView" class="view-section">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">âš™ï¸ Malzeme ve AtÃ¶lye Gider Fiyat Listesi</h2>
+                        <h2 class="card-title">⚙️ Malzeme ve Atölye Gider Fiyat Listesi</h2>
                     </div>
                     
                     <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
-                        Burada yapÄ±lan fiyat deÄŸiÅŸiklikleri buluta anÄ±nda yansÄ±r ve tÃ¼m ustalarÄ±n hesaplarÄ±nda ortak kullanÄ±lÄ±r.
+                        Burada yapılan fiyat değişiklikleri buluta anında yansır ve tüm ustaların hesaplarında ortak kullanılır.
                     </p>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary);">ğŸªµ Plaka & Levha Metrekare FiyatlarÄ±</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary);">🪵 Plaka & Levha Metrekare Fiyatları</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Lake Panel mÂ² (â‚º)</label>
+                            <label>Lake Panel m² (₺)</label>
                             <input type="number" id="p_lake" value="4800">
                         </div>
                         <div class="form-group">
-                            <label>MDF Lam Panel mÂ² (â‚º)</label>
+                            <label>MDF Lam Panel m² (₺)</label>
                             <input type="number" id="p_mdf" value="3200">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>AlÃ¼minyum Cam Kapak mÂ² (â‚º)</label>
+                            <label>Alüminyum Cam Kapak m² (₺)</label>
                             <input type="number" id="p_cam" value="1200">
                         </div>
                         <div class="form-group">
-                            <label>4mm ArkalÄ±k mÂ² (â‚º)</label>
+                            <label>4mm Arkalık m² (₺)</label>
                             <input type="number" id="p_ark4" value="450">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>KapaksÄ±z (AÃ§Ä±k Dolap) mÂ² (â‚º)</label>
+                            <label>Kapaksız (Açık Dolap) m² (₺)</label>
                             <input type="number" id="p_kapaksiz" value="6350">
                         </div>
                         <div class="form-group" style="visibility: hidden;">
-                            <label>BoÅŸ</label>
+                            <label>Boş</label>
                             <input type="number">
                         </div>
                     </div>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">ğŸ”§ Ã‡ekmece Ray FiyatlarÄ± (Adet)</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">🔧 Çekmece Ray Fiyatları (Adet)</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Teleskopik Ray (â‚º)</label>
+                            <label>Teleskopik Ray (₺)</label>
                             <input type="number" id="p_r_tele" value="400">
                         </div>
                         <div class="form-group">
-                            <label>Frenli Tandem Ray (â‚º)</label>
+                            <label>Frenli Tandem Ray (₺)</label>
                             <input type="number" id="p_r_tandem" value="950">
                         </div>
                         <div class="form-group">
-                            <label>Blum Movento Premium Ray (â‚º)</label>
+                            <label>Blum Movento Premium Ray (₺)</label>
                             <input type="number" id="p_r_blum" value="1800">
                         </div>
                     </div>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">ğŸ”© MenteÅŸe Kalite FiyatlarÄ± (Adet)</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">🔩 Menteşe Kalite Fiyatları (Adet)</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Samet Frenli MenteÅŸe (â‚º)</label>
+                            <label>Samet Frenli Menteşe (₺)</label>
                             <input type="number" id="p_samet" value="80">
                         </div>
                         <div class="form-group">
-                            <label>Blum Premium MenteÅŸe (â‚º)</label>
+                            <label>Blum Premium Menteşe (₺)</label>
                             <input type="number" id="p_blum" value="180">
                         </div>
                     </div>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">ğŸ³ Mutfak Tezgah MetretÃ¼l FiyatlarÄ±</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">🍳 Mutfak Tezgah Metretül Fiyatları</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Laminat Tezgah (â‚º/Metre)</label>
+                            <label>Laminat Tezgah (₺/Metre)</label>
                             <input type="number" id="p_t_laminat" value="1500">
                         </div>
                         <div class="form-group">
-                            <label>AhÅŸap Masif Tezgah (â‚º/Metre)</label>
+                            <label>Ahşap Masif Tezgah (₺/Metre)</label>
                             <input type="number" id="p_t_ahsap" value="3000">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>DoÄŸal Granit Tezgah (â‚º/Metre)</label>
+                            <label>Doğal Granit Tezgah (₺/Metre)</label>
                             <input type="number" id="p_t_granit" value="5000">
                         </div>
                         <div class="form-group">
-                            <label>Ã‡imstone/Belenco Kuvars (â‚º/Metre)</label>
+                            <label>Çimstone/Belenco Kuvars (₺/Metre)</label>
                             <input type="number" id="p_t_cimstone" value="7500">
                         </div>
                     </div>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">ğŸšª DiÄŸer Ã–zel Mobilya Birim FiyatlarÄ±</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">🚪 Diğer Özel Mobilya Birim Fiyatları</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Vestiyer GÃ¶vde/Kapak Ã–zel FiyatÄ± mÂ² (â‚º)</label>
+                            <label>Vestiyer Gövde/Kapak Özel Fiyatı m² (₺)</label>
                             <input type="number" id="p_vestiyer" value="3600">
                         </div>
                         <div class="form-group">
-                            <label>Banyo DolabÄ± Ã–zel FiyatÄ± mÂ² (â‚º)</label>
+                            <label>Banyo Dolabı Özel Fiyatı m² (₺)</label>
                             <input type="number" id="p_banyo" value="4000">
                         </div>
                     </div>
 
-                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">ğŸš› AtÃ¶lye Sabit Giderleri</h3>
+                    <h3 style="font-size: 15px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; color: var(--primary); margin-top: 15px;">🚛 Atölye Sabit Giderleri</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Bantlama/Kesim Gideri (â‚º/mÂ²)</label>
+                            <label>Bantlama/Kesim Gideri (₺/m²)</label>
                             <input type="number" id="p_kesim_m2" value="350">
                         </div>
                         <div class="form-group">
-                            <label>Nakliye & Montaj AtÃ¶lye Gideri (â‚º)</label>
+                            <label>Nakliye & Montaj Atölye Gideri (₺)</label>
                             <input type="number" id="p_montaj" value="3500">
                         </div>
                     </div>
 
                     <button class="btn btn-primary btn-block" style="margin-top: 15px;" onclick="fiyatlariBulutaKaydet()">
-                        ğŸ’¾ Yeni Fiyat Listesini Buluta Kilitle
+                        💾 Yeni Fiyat Listesini Buluta Kilitle
                     </button>
                 </div>
             </section>
 
-            <!-- SECTION: MÃœÅTERÄ° YORUMLARI -->
+            <!-- SECTION: MÜŞTERİ YORUMLARI -->
             <section id="reviewsView" class="view-section">
                 <div class="card">
                     <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 15px;">
-                        <h2 class="card-title" style="margin:0;">â­ MÃ¼ÅŸteri YorumlarÄ± & DeÄŸerlendirmeleri</h2>
+                        <h2 class="card-title" style="margin:0;">⭐ Müşteri Yorumları & Değerlendirmeleri</h2>
                         <span id="erpReviewsBadge" style="background-color: var(--primary); color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: bold;">0 Yorum</span>
                     </div>
                     <p style="color: var(--text-muted); font-size: 12.5px; margin-bottom: 20px; line-height: 1.4;">
-                        MÃ¼ÅŸterilerinizin teslimatÄ± tamamlanmÄ±ÅŸ sipariÅŸleri iÃ§in canlÄ± sipariÅŸ takip portalÄ±ndan gÃ¶nderdiÄŸi puanlama ve yorumlar aÅŸaÄŸÄ±da listelenmiÅŸtir.
+                        Müşterilerinizin teslimatı tamamlanmış siparişleri için canlı sipariş takip portalından gönderdiği puanlama ve yorumlar aşağıda listelenmiştir.
                     </p>
                     <div id="erpReviewsFeed" style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 30px 0;">Yorumlar yÃ¼kleniyor...</div>
+                        <div style="text-align: center; color: var(--text-muted); font-size: 12px; padding: 30px 0;">Yorumlar yükleniyor...</div>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION 5: 2D PLAKA KESÄ°M OPTÄ°MÄ°ZASYONU -->
+            <!-- SECTION 5: 2D PLAKA KESİM OPTİMİZASYONU -->
             <section id="kesimView" class="view-section">
                 <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 20px; align-items: start;">
                     
-                    <!-- Sol Panel: GiriÅŸ ve ParÃ§a GiriÅŸ Tablosu -->
+                    <!-- Sol Panel: Giriş ve Parça Giriş Tablosu -->
                     <div class="card" style="margin-bottom: 0;">
                         <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
-                            <h2 class="card-title">ğŸªµ Plaka ve Kesim Ã–lÃ§Ã¼ GiriÅŸi</h2>
+                            <h2 class="card-title">🪵 Plaka ve Kesim Ölçü Girişi</h2>
                             <button class="btn btn-secondary" style="font-size:11px; padding:6px 12px; margin:0;" onclick="tekliftenKesimListesiCikar()">
-                                âš¡ Tekliften ParÃ§alarÄ± Ã‡ek
+                                ⚡ Tekliften Parçaları Çek
                             </button>
                         </div>
                         
                         <div style="margin: 15px 0;">
-                            <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">ğŸ“ Plaka ve Kesim Parametreleri</h3>
+                            <h3 style="font-size: 14px; color: var(--primary); margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 4px;">📐 Plaka ve Kesim Parametreleri</h3>
                             <div class="form-row" style="gap:10px;">
                                 <div class="form-group" style="flex:2;">
                                     <label>Plaka Boyutu (Standart)</label>
                                     <select id="opt_stock_size" onchange="toggleOptCustomStock()">
                                         <option value="2800x2100" selected>2800 x 2100 mm (Standart MDF)</option>
-                                        <option value="3660x1830">3660 x 1830 mm (BÃ¼yÃ¼k MDF)</option>
-                                        <option value="custom">Ã–zel Boyut Belirt...</option>
+                                        <option value="3660x1830">3660 x 1830 mm (Büyük MDF)</option>
+                                        <option value="custom">Özel Boyut Belirt...</option>
                                     </select>
                                 </div>
                                 <div class="form-group" id="opt_custom_w_group" style="display:none; flex:1;">
@@ -3080,11 +3080,11 @@
                             </div>
                             <div class="form-row" style="gap:10px; margin-top: 10px;">
                                 <div class="form-group">
-                                    <label>BÄ±Ã§ak PayÄ± / Kerf (mm)</label>
+                                    <label>Bıçak Payı / Kerf (mm)</label>
                                     <input type="number" id="opt_kerf" value="4" min="0" max="20">
                                 </div>
                                 <div class="form-group">
-                                    <label>Kenar Temizleme PayÄ± (mm)</label>
+                                    <label>Kenar Temizleme Payı (mm)</label>
                                     <input type="number" id="opt_margin" value="10" min="0" max="100">
                                 </div>
                             </div>
@@ -3092,10 +3092,10 @@
 
                         <div style="margin-top: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
-                                <h3 style="font-size: 14px; color: var(--primary); margin:0;">ğŸ“‹ Kesilecek ParÃ§a Listesi</h3>
+                                <h3 style="font-size: 14px; color: var(--primary); margin:0;">📋 Kesilecek Parça Listesi</h3>
                                 <div style="display:flex; gap:6px;">
-                                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px; margin:0;" onclick="optYasarYeniSatir()">â• Yeni SatÄ±r</button>
-                                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px; margin:0; background:#991b1b; color:#fff; border:none;" onclick="optYasarListeyiTemizle()">ğŸ—‘ï¸ Hepsini Sil</button>
+                                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px; margin:0;" onclick="optYasarYeniSatir()">➕ Yeni Satır</button>
+                                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 8px; margin:0; background:#991b1b; color:#fff; border:none;" onclick="optYasarListeyiTemizle()">🗑️ Hepsini Sil</button>
                                 </div>
                             </div>
                             
@@ -3104,14 +3104,14 @@
                                 <table id="optPartsTable" style="width: 100%; border-collapse: collapse; font-size:12px; text-align: left;">
                                     <thead>
                                         <tr style="border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03);">
-                                            <th style="padding: 10px; color: var(--text-muted);">ParÃ§a AdÄ±</th>
+                                            <th style="padding: 10px; color: var(--text-muted);">Parça Adı</th>
                                             <th style="padding: 10px; color: var(--text-muted); width: 80px;">En (mm)</th>
                                             <th style="padding: 10px; color: var(--text-muted); width: 80px;">Boy (mm)</th>
                                             <th style="padding: 10px; color: var(--text-muted); width: 70px;">Adet</th>
                                             <th style="padding: 10px; color: var(--text-muted); width: 95px; text-align: center; vertical-align: middle;">
                                                  <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; justify-content: center;">
-                                                     <span style="white-space: nowrap;">Damar YÃ¶nlÃ¼</span>
-                                                     <input type="checkbox" id="toggleAllDamar" style="transform: scale(1.1); cursor: pointer;" onchange="optYasarHepsiniTikla(this.checked)" title="TÃ¼mÃ¼nÃ¼ SeÃ§ / KaldÄ±r">
+                                                     <span style="white-space: nowrap;">Damar Yönlü</span>
+                                                     <input type="checkbox" id="toggleAllDamar" style="transform: scale(1.1); cursor: pointer;" onchange="optYasarHepsiniTikla(this.checked)" title="Tümünü Seç / Kaldır">
                                                  </div>
                                              </th>
                                             <th style="padding: 10px; color: var(--text-muted); width: 50px; text-align: center;">Sil</th>
@@ -3125,16 +3125,16 @@
                         </div>
 
                         <button class="btn btn-primary btn-block" style="margin-top: 20px; font-weight: bold; background: linear-gradient(135deg, var(--primary) 0%, #0091ff 100%); color: #fff;" onclick="optimizasyonHesaplaCiz()">
-                            âš¡ Plaka Optimizasyonunu BaÅŸlat
+                            ⚡ Plaka Optimizasyonunu Başlat
                         </button>
                     </div>
 
-                    <!-- SaÄŸ Panel: SonuÃ§ Raporu ve Ã‡izimler -->
+                    <!-- Sağ Panel: Sonuç Raporu ve Çizimler -->
                     <div class="card" style="margin-bottom: 0; min-height: 100%;">
                         <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 10px;">
-                            <h2 class="card-title">ğŸ“Š Optimizasyon Analiz Raporu</h2>
+                            <h2 class="card-title">📊 Optimizasyon Analiz Raporu</h2>
                             <button id="btnOptPrint" class="btn btn-secondary" style="font-size:11px; padding:6px 12px; margin:0; display:none;" onclick="yazdirOptPlan()">
-                                ğŸ–¨ï¸ Kesim PlanÄ±nÄ± YazdÄ±r (PDF)
+                                🖨️ Kesim Planını Yazdır (PDF)
                             </button>
                         </div>
 
@@ -3149,7 +3149,7 @@
                                 <b id="optResYield" style="font-size:20px; color:var(--success);">-</b>
                             </div>
                             <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center;">
-                                <span style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px;">Toplam ParÃ§a</span>
+                                <span style="font-size:11px; color:var(--text-muted); display:block; margin-bottom:4px;">Toplam Parça</span>
                                 <b id="optResParts" style="font-size:20px; color:var(--primary);">-</b> <span style="font-size:11px; color:var(--text-muted);">Adet</span>
                             </div>
                             <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center;">
@@ -3161,7 +3161,7 @@
                         <!-- Layout Diagrams list -->
                         <div id="optLayoutsContainer" style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
                             <div style="text-align: center; color: var(--text-muted); padding: 50px 0; border: 1px dashed var(--border); border-radius: 8px;">
-                                Sol taraftaki listeyi hazÄ±rlayÄ±p "Optimizasyonu BaÅŸlat" butonuna basÄ±n.
+                                Sol taraftaki listeyi hazırlayıp "Optimizasyonu Başlat" butonuna basın.
                             </div>
                         </div>
                     </div>
@@ -3173,29 +3173,29 @@
     </div>
 </div>
 
-<!-- ğŸ–¨ï¸ YAZDIRILACAK TEKLÄ°F MÃœÅTERÄ° BELGESÄ° (YalnÄ±zca Print EsnasÄ±nda GÃ¶rÃ¼nÃ¼r) -->
+<!-- 🖨️ YAZDIRILACAK TEKLİF MÜŞTERİ BELGESİ (Yalnızca Print Esnasında Görünür) -->
 <div class="print-only" id="printDoc">
     <div class="print-header">
         <div class="print-title-block">
-            <h1 class="print-title">DOÄANÃ‡AY MOBÄ°LYA</h1>
-            <div class="print-subtitle">MÃ¼ÅŸteri Teklif SÃ¶zleÅŸmesi & TasarÄ±m DetayÄ±</div>
+            <h1 class="print-title">DOĞANÇAY MOBİLYA</h1>
+            <div class="print-subtitle">Müşteri Teklif Sözleşmesi & Tasarım Detayı</div>
         </div>
         <div style="text-align: right; font-size: 12px; line-height: 1.5;">
-            <strong>Adres:</strong> DoÄŸanÃ§ay Sanayi BÃ¶lgesi No:12/A<br>
-            <strong>Ä°letiÅŸim:</strong> +90 555 123 4567<br>
+            <strong>Adres:</strong> Doğançay Sanayi Bölgesi No:12/A<br>
+            <strong>İletişim:</strong> +90 555 123 4567<br>
             <strong>Tarih:</strong> <span id="printDate">25.06.2026</span>
         </div>
     </div>
 
     <div class="print-meta-grid">
         <div class="print-meta-box">
-            <div class="print-meta-title">MÃ¼ÅŸteri Bilgileri</div>
-            <strong>MÃ¼ÅŸteri AdÄ±:</strong> <span id="printCustomer">Mustafa YÄ±lmaz</span><br>
-            <strong>Teklifi HazÄ±rlayan:</strong> <span id="printStaff">Mustafa DoÄŸanÃ§ay</span>
+            <div class="print-meta-title">Müşteri Bilgileri</div>
+            <strong>Müşteri Adı:</strong> <span id="printCustomer">Mustafa Yılmaz</span><br>
+            <strong>Teklifi Hazırlayan:</strong> <span id="printStaff">Mustafa Doğançay</span>
         </div>
         <div class="print-meta-box">
-            <div class="print-meta-title">ÃœrÃ¼n Grubu</div>
-            <strong>Mobilya TÃ¼rÃ¼:</strong> <span id="printType">GardÄ±rop</span><br>
+            <div class="print-meta-title">Ürün Grubu</div>
+            <strong>Mobilya Türü:</strong> <span id="printType">Gardırop</span><br>
             <strong>Durum:</strong> Resmi Fiyat Teklif Formu
         </div>
     </div>
@@ -3203,74 +3203,74 @@
     <table class="print-specs-table">
         <thead>
             <tr>
-                <th style="width: 35%;">AÃ§Ä±klama / Kalem</th>
-                <th>TasarÄ±m Detay ve Malzeme Ã–zellikleri</th>
+                <th style="width: 35%;">Açıklama / Kalem</th>
+                <th>Tasarım Detay ve Malzeme Özellikleri</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td><strong>ÃœrÃ¼n DetaylarÄ± ve DonanÄ±mlar</strong></td>
-                <td><span id="printSpecs">3.00x2.50m GardÄ±rop - 6 Kapak (Lake) - 4 Ã‡ekmece (Frenli Tandem)</span></td>
+                <td><strong>Ürün Detayları ve Donanımlar</strong></td>
+                <td><span id="printSpecs">3.00x2.50m Gardırop - 6 Kapak (Lake) - 4 Çekmece (Frenli Tandem)</span></td>
             </tr>
         </tbody>
     </table>
 
-    <div class="print-canvas-title">TasarÄ±m 2D Ã–lÃ§Ã¼ ÅemasÄ±</div>
+    <div class="print-canvas-title">Tasarım 2D Ölçü Şeması</div>
     <div class="print-canvas-box">
-        <img id="printCanvasImg" src="" alt="Dolap 2D TasarÄ±m">
+        <img id="printCanvasImg" src="" alt="Dolap 2D Tasarım">
     </div>
 
     <div class="print-pricing-grid">
         <table class="print-pricing-table">
             <tr>
-                <td>Toplam Malzeme ve Ä°ÅŸÃ§ilik Bedeli:</td>
-                <td style="text-align: right;"><span id="printTotal">0,00 â‚º</span></td>
+                <td>Toplam Malzeme ve İşçilik Bedeli:</td>
+                <td style="text-align: right;"><span id="printTotal">0,00 ₺</span></td>
             </tr>
             <tr>
-                <td>AlÄ±nan Kaparo TutarÄ±:</td>
-                <td style="text-align: right; color: green;"><span id="printAdvance">0,00 â‚º</span></td>
+                <td>Alınan Kaparo Tutarı:</td>
+                <td style="text-align: right; color: green;"><span id="printAdvance">0,00 ₺</span></td>
             </tr>
             <tr class="total-row">
-                <td>Montaj Sonu Kalan Ã–deme:</td>
-                <td style="text-align: right; color: navy;"><span id="printBalance">0,00 â‚º</span></td>
+                <td>Montaj Sonu Kalan Ödeme:</td>
+                <td style="text-align: right; color: navy;"><span id="printBalance">0,00 ₺</span></td>
             </tr>
         </table>
     </div>
 
     <div class="print-footer-notes">
-        <strong>Teklif ÅartlarÄ± ve Teslimat Bilgileri:</strong><br>
-        1. Bu teklif formundaki fiyatlar, teklif tarihinden itibaren 15 gÃ¼n geÃ§erlidir.<br>
-        2. Ä°malat sÃ¼reci kaparo Ã¶demesinden sonra baÅŸlar, ortalama teslimat sÃ¼resi 20 ila 30 iÅŸ gÃ¼nÃ¼dÃ¼r.<br>
-        3. SipariÅŸte kullanÄ±lan ray ve menteÅŸe aksesuarlarÄ± TSE garantilidir. Kalan bakiye teslimatta nakit/havale olarak tahsil edilir.
+        <strong>Teklif Şartları ve Teslimat Bilgileri:</strong><br>
+        1. Bu teklif formundaki fiyatlar, teklif tarihinden itibaren 15 gün geçerlidir.<br>
+        2. İmalat süreci kaparo ödemesinden sonra başlar, ortalama teslimat süresi 20 ila 30 iş günüdür.<br>
+        3. Siparişte kullanılan ray ve menteşe aksesuarları TSE garantilidir. Kalan bakiye teslimatta nakit/havale olarak tahsil edilir.
     </div>
 
     <div class="print-signatures">
-        <div class="print-sig-col">MÃ¼ÅŸteri OnayÄ± (Ä°mza)</div>
-        <div class="print-sig-col">AtÃ¶lye KaÅŸe / Ä°mza</div>
+        <div class="print-sig-col">Müşteri Onayı (İmza)</div>
+        <div class="print-sig-col">Atölye Kaşe / İmza</div>
     </div>
 </div>
 
-<!-- ğŸ–¨ï¸ YAZDIRILACAK KESÄ°M OPTÄ°MÄ°ZASYON PLANI (YalnÄ±zca Print EsnasÄ±nda GÃ¶rÃ¼nÃ¼r) -->
+<!-- 🖨️ YAZDIRILACAK KESİM OPTİMİZASYON PLANI (Yalnızca Print Esnasında Görünür) -->
 <div class="print-only" id="printOptDoc">
     <div class="print-header">
         <div class="print-title-block">
-            <h1 class="print-title">DOÄANÃ‡AY MOBÄ°LYA</h1>
-            <div class="print-subtitle">2D Plaka Kesim Optimizasyon PlanÄ±</div>
+            <h1 class="print-title">DOĞANÇAY MOBİLYA</h1>
+            <div class="print-subtitle">2D Plaka Kesim Optimizasyon Planı</div>
         </div>
         <div style="text-align: right; font-size: 12px; line-height: 1.5;">
             <strong>Tarih:</strong> <span id="printOptDate">-</span><br>
-            <strong>MÃ¼ÅŸteri/Proje:</strong> <span id="printOptCustomer">AtÃ¶lye Kesim Listesi</span>
+            <strong>Müşteri/Proje:</strong> <span id="printOptCustomer">Atölye Kesim Listesi</span>
         </div>
     </div>
 
     <div class="print-meta-grid" style="margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
         <div class="print-meta-box" style="border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 12px; line-height: 1.6;">
-            <strong>KullanÄ±lan Plaka SayÄ±sÄ±:</strong> <span id="printOptResSheetsVal">-</span> Adet<br>
-            <strong>Optimizasyon VerimliliÄŸi:</strong> <span id="printOptResYieldVal">-</span>
+            <strong>Kullanılan Plaka Sayısı:</strong> <span id="printOptResSheetsVal">-</span> Adet<br>
+            <strong>Optimizasyon Verimliliği:</strong> <span id="printOptResYieldVal">-</span>
         </div>
         <div class="print-meta-box" style="border: 1px solid #333; padding: 10px; border-radius: 4px; font-size: 12px; line-height: 1.6;">
-            <strong>Toplam ParÃ§a SayÄ±sÄ±:</strong> <span id="printOptResPartsVal">-</span> Adet<br>
-            <strong>Toplam Fire OranÄ±:</strong> <span id="printOptResWasteVal">-</span>
+            <strong>Toplam Parça Sayısı:</strong> <span id="printOptResPartsVal">-</span> Adet<br>
+            <strong>Toplam Fire Oranı:</strong> <span id="printOptResWasteVal">-</span>
         </div>
     </div>
 
@@ -3284,5 +3284,4 @@
     <script src="js/optimizer.js"></script>
     <script src="js/reviews.js"></script>
     <script src="js/main.js"></script>
-</body>
 </html>

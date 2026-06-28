@@ -1,5 +1,5 @@
 // ğŸ”— Firebase Connection Parameters and Initialization
-    // ğŸ”— Firebase Connection Parameters
+    // 🔗 Firebase Connection Parameters
     const firebaseConfig = {
         apiKey: "AIzaSyAeGphNHF2187BaItx7lVReI006sCWUI04",
         authDomain: "dogancaymob.firebaseapp.com",

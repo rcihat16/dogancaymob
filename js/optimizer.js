@@ -23,7 +23,7 @@
         
         tr.innerHTML = `
             <td style="padding: 6px 10px;">
-                <input type="text" class="opt-part-name" value="${name}" placeholder="Ã–rn: Yan Dikme" style="width:100%; border:1px solid var(--border); border-radius:4px; padding:4px 6px; font-size:12px; background:var(--bg-dark); color:var(--text-main); box-sizing:border-box;">
+                <input type="text" class="opt-part-name" value="${name}" placeholder="Örn: Yan Dikme" style="width:100%; border:1px solid var(--border); border-radius:4px; padding:4px 6px; font-size:12px; background:var(--bg-dark); color:var(--text-main); box-sizing:border-box;">
             </td>
             <td style="padding: 6px 10px;">
                 <input type="number" class="opt-part-w" value="${w || ''}" placeholder="mm" style="width:100%; border:1px solid var(--border); border-radius:4px; padding:4px 6px; font-size:12px; background:var(--bg-dark); color:var(--text-main); box-sizing:border-box;">
@@ -65,20 +65,20 @@
 
     function tekliftenKesimListesiCikar() {
         let type = document.getElementById('mobilyaTuru').value;
-        if (type === 'gardÄ±rop' || type === 'vestiyer' || type === 'banyo') {
-            let w = parseFloat(document.getElementById(type === 'gardÄ±rop' ? 'g_width' : (type === 'vestiyer' ? 'v_width' : 'b_width')).value) || 0;
-            let h = parseFloat(document.getElementById(type === 'gardÄ±rop' ? 'g_height' : (type === 'vestiyer' ? 'v_height' : 'b_height')).value) || 0;
-            if (w <= 0 || h <= 0) { alert("LÃ¼tfen teklif ekranÄ±nda en ve boy deÄŸerlerini girin!"); return; }
+        if (type === 'gardırop' || type === 'vestiyer' || type === 'banyo') {
+            let w = parseFloat(document.getElementById(type === 'gardırop' ? 'g_width' : (type === 'vestiyer' ? 'v_width' : 'b_width')).value) || 0;
+            let h = parseFloat(document.getElementById(type === 'gardırop' ? 'g_height' : (type === 'vestiyer' ? 'v_height' : 'b_height')).value) || 0;
+            if (w <= 0 || h <= 0) { alert("Lütfen teklif ekranında en ve boy değerlerini girin!"); return; }
         } else if (type === 'udolap') {
             let left = parseFloat(document.getElementById('u_left').value) || 0;
             let back = parseFloat(document.getElementById('u_back').value) || 0;
             let right = parseFloat(document.getElementById('u_right').value) || 0;
             let h = parseFloat(document.getElementById('u_height').value) || 0;
-            if (left <= 0 || back <= 0 || right <= 0 || h <= 0) { alert("LÃ¼tfen teklif ekranÄ±nda tÃ¼m duvar Ã¶lÃ§Ã¼lerini girin!"); return; }
+            if (left <= 0 || back <= 0 || right <= 0 || h <= 0) { alert("Lütfen teklif ekranında tüm duvar ölçülerini girin!"); return; }
         } else if (type === 'mutfak') {
             let ul = parseFloat(document.getElementById('k_upper_len').value) || 0;
             let ll = parseFloat(document.getElementById('k_lower_len').value) || 0;
-            if (ul <= 0 && ll <= 0) { alert("LÃ¼tfen teklif ekranÄ±nda mutfak uzunluklarÄ±nÄ± girin!"); return; }
+            if (ul <= 0 && ll <= 0) { alert("Lütfen teklif ekranında mutfak uzunluklarını girin!"); return; }
         }
 
         let partsList = getPartsListFromCurrentOffer();
@@ -89,7 +89,7 @@
             optYasarEkleSatirVeri(p.name, p.w, p.h, p.qty, !p.rotate);
         });
         
-        alert("Teklif detaylarÄ±ndaki Ã¶lÃ§Ã¼lere gÃ¶re kesim parÃ§alarÄ± oluÅŸturulup tabloya eklendi!");
+        alert("Teklif detaylarındaki ölçülere göre kesim parçaları oluşturulup tabloya eklendi!");
     }
 
     // binary tree guillotine split structures
@@ -207,7 +207,7 @@
             let damarliInput = tr.querySelector('.opt-part-damarli');
             
             if (nameInput && wInput && hInput && qtyInput) {
-                let name = nameInput.value.trim() || "ParÃ§a";
+                let name = nameInput.value.trim() || "Parça";
                 let w = parseInt(wInput.value) || 0;
                 let h = parseInt(hInput.value) || 0;
                 let qty = parseInt(qtyInput.value) || 0;
@@ -221,7 +221,7 @@
         });
 
         if(partsInput.length === 0) {
-            alert("LÃ¼tfen optimizasyon iÃ§in en az bir geÃ§erli parÃ§a girin!");
+            alert("Lütfen optimizasyon için en az bir geçerli parça girin!");
             return;
         }
 
@@ -243,7 +243,7 @@
         let effStockH = stockH - 2 * margin;
 
         if (effStockW <= 0 || effStockH <= 0) {
-            alert("Kenar temizleme payÄ± plaka boyutunu aÅŸÄ±yor!");
+            alert("Kenar temizleme payı plaka boyutunu aşıyor!");
             return;
         }
 
@@ -252,7 +252,7 @@
             let fitsNormal = (p.w <= effStockW && p.h <= effStockH);
             let fitsRotated = p.rotate && (p.h <= effStockW && p.w <= effStockH);
             if(!fitsNormal && !fitsRotated) {
-                alert(`Hata: "${p.name}" (${p.w}x${p.h} mm) plaka boyutundan (${effStockW}x${effStockH} mm) bÃ¼yÃ¼ktÃ¼r!`);
+                alert(`Hata: "${p.name}" (${p.w}x${p.h} mm) plaka boyutundan (${effStockW}x${effStockH} mm) büyüktür!`);
                 return;
             }
         }
@@ -387,7 +387,7 @@
         container.innerHTML = "";
         
         if (sheets.length === 0) {
-            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 50px 0;">SÄ±ÄŸan parÃ§a bulunamadÄ±.</div>`;
+            container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 50px 0;">Sığan parça bulunamadı.</div>`;
             return;
         }
 
@@ -410,7 +410,7 @@
         document.getElementById('optResSheets').innerText = sheets.length;
         document.getElementById('optResYield').innerText = yieldPercentage.toFixed(1) + "%";
         document.getElementById('optResParts').innerText = totalPlacedCount;
-        document.getElementById('optResWaste').innerText = wasteArea.toFixed(2) + " mÂ²";
+        document.getElementById('optResWaste').innerText = wasteArea.toFixed(2) + " m²";
 
         sheets.forEach((sheet, idx) => {
             let card = document.createElement('div');
@@ -529,7 +529,7 @@
                 ctx.fillText(label, px + pw / 2, py + ph / 2 - fontSize/2 - 1);
                 ctx.font = `${fontSize - 1}px Inter`;
                 ctx.fillStyle = `hsla(${hue}, 90%, 25%, 0.75)`;
-                ctx.fillText(dims + (p.rotated ? " ğŸ”„" : ""), px + pw / 2, py + ph / 2 + fontSize/2 + 1);
+                ctx.fillText(dims + (p.rotated ? " 🔄" : ""), px + pw / 2, py + ph / 2 + fontSize/2 + 1);
             } else if (pw > 30 && ph > 15) {
                 ctx.fillText(dims, px + pw / 2, py + ph / 2);
             }
@@ -551,7 +551,7 @@
 
         document.getElementById('printOptDate').innerText = new Date().toLocaleDateString('tr-TR');
         let customer = document.getElementById('customerName').value.trim();
-        document.getElementById('printOptCustomer').innerText = customer ? (customer + " SipariÅŸ Kesim PlanÄ±") : "AtÃ¶lye Kesim Listesi";
+        document.getElementById('printOptCustomer').innerText = customer ? (customer + " Sipariş Kesim Planı") : "Atölye Kesim Listesi";
         
         document.getElementById('printOptResSheetsVal').innerText = document.getElementById('optResSheets').innerText;
         document.getElementById('printOptResYieldVal').innerText = document.getElementById('optResYield').innerText;
@@ -595,6 +595,6 @@
     }
 
     // ==========================================
-    // ğŸ“Š MÃœÅTERÄ° SÄ°PARÄ°Å TAKÄ°P PORTALI KODLARI
+    // 📊 MÜŞTERİ SİPARİŞ TAKİP PORTALI KODLARI
     // ==========================================
     let currentTrackingData = null;

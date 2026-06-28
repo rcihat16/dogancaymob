@@ -8,7 +8,7 @@
             return;
         }
         
-        // LÃ¼ks 2D Modu DokularÄ±
+        // Lüks 2D Modu Dokuları
         if (materialKey === 'lake') {
             // Parlak lake kaplama degrade
             let grad = ctx.createLinearGradient(x, y, x + w, y + h);
@@ -19,7 +19,7 @@
             ctx.fillStyle = grad;
             ctx.fillRect(x, y, w, h);
             
-            // Parlama / IÅŸÄ±ltÄ± Ã§izgisi
+            // Parlama / Işıltı çizgisi
             ctx.save();
             ctx.beginPath();
             ctx.rect(x, y, w, h);
@@ -36,7 +36,7 @@
             
             ctx.restore();
         } else if (materialKey === 'cam') {
-            // YansÄ±malÄ± cam kaplama
+            // Yansımalı cam kaplama
             let grad = ctx.createLinearGradient(x, y, x + w, y + h);
             grad.addColorStop(0, 'rgba(56, 189, 248, 0.35)');
             grad.addColorStop(0.5, 'rgba(14, 165, 233, 0.2)');
@@ -44,7 +44,7 @@
             ctx.fillStyle = grad;
             ctx.fillRect(x, y, w, h);
             
-            // AlÃ¼minyum profil Ã§erÃ§eve
+            // Alüminyum profil çerçeve
             ctx.strokeStyle = '#94a3b8';
             ctx.lineWidth = 4;
             ctx.strokeRect(x + 2, y + 2, w - 4, h - 4);
@@ -52,7 +52,7 @@
             ctx.lineWidth = 1;
             ctx.strokeRect(x, y, w, h);
             
-            // Cam yansÄ±ma ÅŸeritleri
+            // Cam yansıma şeritleri
             ctx.save();
             ctx.beginPath();
             ctx.rect(x + 4, y + 4, w - 8, h - 8);
@@ -67,7 +67,7 @@
             ctx.stroke();
             ctx.restore();
         } else if (materialKey === 'kapaksiz') {
-            // Koyu iÃ§ derinlik gÃ¶lgelemesi
+            // Koyu iç derinlik gölgelemesi
             let grad = ctx.createLinearGradient(x, y, x, y + h);
             grad.addColorStop(0, '#1e293b');
             grad.addColorStop(1, '#0f172a');
@@ -80,7 +80,7 @@
             ctx.fillStyle = radGrad;
             ctx.fillRect(x, y, w, h);
         } else {
-            // AhÅŸap / MDF Lam damarlÄ± dokusu
+            // Ahşap / MDF Lam damarlı dokusu
             let grad = ctx.createLinearGradient(x, y, x + w, y);
             grad.addColorStop(0, '#a16207');
             grad.addColorStop(0.5, '#b45309');
@@ -88,7 +88,7 @@
             ctx.fillStyle = grad;
             ctx.fillRect(x, y, w, h);
             
-            // DalgalÄ± aÄŸaÃ§ damar Ã§izgileri
+            // Dalgalı ağaç damar çizgileri
             ctx.save();
             ctx.beginPath();
             ctx.rect(x, y, w, h);
@@ -112,7 +112,7 @@
         let type = document.getElementById('mobilyaTuru').value;
         let partsList = [];
 
-        if (type === 'gardÄ±rop') {
+        if (type === 'gardırop') {
             let w = Math.round(parseFloat(document.getElementById('g_width').value) * 1000) || 0;
             let h = Math.round(parseFloat(document.getElementById('g_height').value) * 1000) || 0;
             let doors = parseInt(document.getElementById('g_doors').value) || 0;
@@ -120,26 +120,26 @@
             let mat = document.getElementById('g_material').value;
 
             if (w > 0 && h > 0) {
-                partsList.push({ name: "GardÄ±rop Yan Dikme", w: 600, h: h, qty: 2, rotate: false });
-                partsList.push({ name: "GardÄ±rop Tavan/Taban", w: 600, h: w - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Gardırop Yan Dikme", w: 600, h: h, qty: 2, rotate: false });
+                partsList.push({ name: "Gardırop Tavan/Taban", w: 600, h: w - 36, qty: 2, rotate: false });
                 let partitions = Math.max(1, Math.round(doors / 2));
                 if (partitions > 1) {
-                    partsList.push({ name: "GardÄ±rop Ara Dikme", w: 550, h: h - 180, qty: partitions - 1, rotate: false });
+                    partsList.push({ name: "Gardırop Ara Dikme", w: 550, h: h - 180, qty: partitions - 1, rotate: false });
                 }
-                partsList.push({ name: "GardÄ±rop Baza", w: 100, h: w - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Gardırop Baza", w: 100, h: w - 36, qty: 2, rotate: false });
                 let partitionWidth = Math.round((w - 36 - (partitions - 1)*18) / partitions);
-                partsList.push({ name: "GardÄ±rop Raf", w: 550, h: partitionWidth, qty: partitions * 3, rotate: true });
+                partsList.push({ name: "Gardırop Raf", w: 550, h: partitionWidth, qty: partitions * 3, rotate: true });
                 
                 if (mat !== 'kapaksiz') {
                     let doorW = Math.round((w / doors) - 4);
                     let doorH = h - 80;
-                    partsList.push({ name: "GardÄ±rop Kapak", w: doorW, h: doorH, qty: doors, rotate: false });
+                    partsList.push({ name: "Gardırop Kapak", w: doorW, h: doorH, qty: doors, rotate: false });
                 }
                 
                 if (drawers > 0) {
-                    partsList.push({ name: "Ã‡ekmece Ã–nÃ¼", w: partitionWidth - 10, h: 200, qty: drawers, rotate: false });
-                    partsList.push({ name: "Ã‡ekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                    partsList.push({ name: "Ã‡ekmece Kutu Ã–n/Arka", w: partitionWidth - 90, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Önü", w: partitionWidth - 10, h: 200, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: partitionWidth - 90, h: 120, qty: drawers * 2, rotate: true });
                 }
             }
         } 
@@ -153,32 +153,32 @@
 
             if (left > 0 && back > 0 && right > 0 && h > 0) {
                 partsList.push({ name: "U-Dolap Sol Yan", w: 600, h: h, qty: 1, rotate: false });
-                partsList.push({ name: "U-Dolap SaÄŸ Yan", w: 600, h: h, qty: 1, rotate: false });
-                partsList.push({ name: "KÃ¶ÅŸe Dikme (Sol)", w: 582, h: h - 100, qty: 1, rotate: false });
-                partsList.push({ name: "KÃ¶ÅŸe Dikme (SaÄŸ)", w: 582, h: h - 100, qty: 1, rotate: false });
+                partsList.push({ name: "U-Dolap Sağ Yan", w: 600, h: h, qty: 1, rotate: false });
+                partsList.push({ name: "Köşe Dikme (Sol)", w: 582, h: h - 100, qty: 1, rotate: false });
+                partsList.push({ name: "Köşe Dikme (Sağ)", w: 582, h: h - 100, qty: 1, rotate: false });
 
                 partsList.push({ name: "Sol Tavan/Taban", w: 600, h: left - 18, qty: 2, rotate: false });
                 partsList.push({ name: "Arka Tavan/Taban", w: 600, h: back - 36, qty: 2, rotate: false });
-                partsList.push({ name: "SaÄŸ Tavan/Taban", w: 600, h: right - 18, qty: 2, rotate: false });
+                partsList.push({ name: "Sağ Tavan/Taban", w: 600, h: right - 18, qty: 2, rotate: false });
 
                 partsList.push({ name: "Sol Baza", w: 100, h: left - 18, qty: 2, rotate: false });
                 partsList.push({ name: "Arka Baza", w: 100, h: back - 36, qty: 2, rotate: false });
-                partsList.push({ name: "SaÄŸ Baza", w: 100, h: right - 18, qty: 2, rotate: false });
+                partsList.push({ name: "Sağ Baza", w: 100, h: right - 18, qty: 2, rotate: false });
 
-                partsList.push({ name: "GÃ¶vde RafÄ± (Sol)", w: 550, h: 500, qty: 4, rotate: true });
-                partsList.push({ name: "GÃ¶vde RafÄ± (Arka)", w: 550, h: 600, qty: 6, rotate: true });
-                partsList.push({ name: "GÃ¶vde RafÄ± (SaÄŸ)", w: 550, h: 500, qty: 4, rotate: true });
+                partsList.push({ name: "Gövde Rafı (Sol)", w: 550, h: 500, qty: 4, rotate: true });
+                partsList.push({ name: "Gövde Rafı (Arka)", w: 550, h: 600, qty: 6, rotate: true });
+                partsList.push({ name: "Gövde Rafı (Sağ)", w: 550, h: 500, qty: 4, rotate: true });
 
                 if (mat !== 'kapaksiz') {
                     partsList.push({ name: "Sol Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
                     partsList.push({ name: "Arka Dolap Kapak", w: 496, h: h - 80, qty: 4, rotate: false });
-                    partsList.push({ name: "SaÄŸ Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
+                    partsList.push({ name: "Sağ Dolap Kapak", w: 450, h: h - 80, qty: 2, rotate: false });
                 }
 
                 if (drawers > 0) {
-                    partsList.push({ name: "Ã‡ekmece Ã–nÃ¼", w: 490, h: 200, qty: drawers, rotate: false });
-                    partsList.push({ name: "Ã‡ekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                    partsList.push({ name: "Ã‡ekmece Kutu Ã–n/Arka", w: 410, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Önü", w: 490, h: 200, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 410, h: 120, qty: drawers * 2, rotate: true });
                 }
             }
         } 
@@ -190,10 +190,10 @@
             if (ul > 0) {
                 let ulMm = Math.round(ul * 1000);
                 let modules = Math.ceil(ulMm / 600);
-                partsList.push({ name: "Ãœst Dolap Yan", w: 320, h: 800, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Ãœst Dolap Alt/Ãœst", w: 300, h: 564, qty: modules * 2, rotate: false });
-                partsList.push({ name: "Ãœst Dolap Raf", w: 300, h: 564, qty: modules, rotate: true });
-                partsList.push({ name: "Ãœst Dolap Kapak", w: 296, h: 796, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Üst Dolap Yan", w: 320, h: 800, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Üst Dolap Alt/Üst", w: 300, h: 564, qty: modules * 2, rotate: false });
+                partsList.push({ name: "Üst Dolap Raf", w: 300, h: 564, qty: modules, rotate: true });
+                partsList.push({ name: "Üst Dolap Kapak", w: 296, h: 796, qty: modules * 2, rotate: false });
             }
 
             if (ll > 0) {
@@ -207,9 +207,9 @@
             }
 
             if (drawers > 0) {
-                partsList.push({ name: "Mutfak Ã‡ekmece Ã–nÃ¼", w: 596, h: 176, qty: drawers, rotate: false });
-                partsList.push({ name: "Ã‡ekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
-                partsList.push({ name: "Ã‡ekmece Kutu Ã–n/Arka", w: 510, h: 120, qty: drawers * 2, rotate: true });
+                partsList.push({ name: "Mutfak Çekmece Önü", w: 596, h: 176, qty: drawers, rotate: false });
+                partsList.push({ name: "Çekmece Kutu Yan", w: 500, h: 120, qty: drawers * 2, rotate: true });
+                partsList.push({ name: "Çekmece Kutu Ön/Arka", w: 510, h: 120, qty: drawers * 2, rotate: true });
             }
         } 
         else if (type === 'vestiyer') {
@@ -221,13 +221,13 @@
                 partsList.push({ name: "Vestiyer Yan Dikme", w: 400, h: h, qty: 2, rotate: false });
                 partsList.push({ name: "Vestiyer Tavan/Taban", w: 400, h: w - 36, qty: 2, rotate: false });
                 partsList.push({ name: "Vestiyer Orta Dikme", w: 380, h: h - 180, qty: 1, rotate: false });
-                partsList.push({ name: "AyakkabÄ±lÄ±k RaflarÄ±", w: 380, h: Math.round(w / 2) - 27, qty: 6, rotate: true });
+                partsList.push({ name: "Ayakkabılık Rafları", w: 380, h: Math.round(w / 2) - 27, qty: 6, rotate: true });
                 partsList.push({ name: "Vestiyer Kapak", w: Math.round(w / 2) - 10, h: h - 80, qty: 2, rotate: false });
 
                 if (drawers > 0) {
-                    partsList.push({ name: "Vestiyer Ã‡ekmece Ã–nÃ¼", w: Math.round(w / 2) - 10, h: 180, qty: drawers, rotate: false });
-                    partsList.push({ name: "Ã‡ekmece Kutu Yan", w: 350, h: 120, qty: drawers * 2, rotate: true });
-                    partsList.push({ name: "Ã‡ekmece Kutu Ã–n/Arka", w: Math.round(w / 2) - 90, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Vestiyer Çekmece Önü", w: Math.round(w / 2) - 10, h: 180, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 350, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: Math.round(w / 2) - 90, h: 120, qty: drawers * 2, rotate: true });
                 }
             }
         }
@@ -237,19 +237,19 @@
             let drawers = parseInt(document.getElementById('b_drawers').value) || 0;
 
             if (w > 0 && h > 0) {
-                partsList.push({ name: "Banyo DolabÄ± Yan", w: 500, h: 750, qty: 2, rotate: false });
-                partsList.push({ name: "Banyo DolabÄ± Alt/Bant", w: 500, h: w - 36, qty: 2, rotate: false });
-                partsList.push({ name: "Banyo DolabÄ± Kapak", w: Math.round(w / 2) - 8, h: 716, qty: 2, rotate: false });
+                partsList.push({ name: "Banyo Dolabı Yan", w: 500, h: 750, qty: 2, rotate: false });
+                partsList.push({ name: "Banyo Dolabı Alt/Bant", w: 500, h: w - 36, qty: 2, rotate: false });
+                partsList.push({ name: "Banyo Dolabı Kapak", w: Math.round(w / 2) - 8, h: 716, qty: 2, rotate: false });
 
                 if (drawers > 0) {
-                    partsList.push({ name: "Ã‡ekmece Ã–nÃ¼", w: w - 10, h: 220, qty: drawers, rotate: false });
-                    partsList.push({ name: "Ã‡ekmece Kutu Yan", w: 450, h: 120, qty: drawers * 2, rotate: true });
-                    partsList.push({ name: "Ã‡ekmece Kutu Ã–n/Arka", w: w - 90, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Önü", w: w - 10, h: 220, qty: drawers, rotate: false });
+                    partsList.push({ name: "Çekmece Kutu Yan", w: 450, h: 120, qty: drawers * 2, rotate: true });
+                    partsList.push({ name: "Çekmece Kutu Ön/Arka", w: w - 90, h: 120, qty: drawers * 2, rotate: true });
                 }
             }
         } else {
-            partsList.push({ name: "Ã–zel TasarÄ±m Panel 1", w: 600, h: 1000, qty: 5, rotate: true });
-            partsList.push({ name: "Ã–zel TasarÄ±m Panel 2", w: 400, h: 800, qty: 10, rotate: true });
+            partsList.push({ name: "Özel Tasarım Panel 1", w: 600, h: 1000, qty: 5, rotate: true });
+            partsList.push({ name: "Özel Tasarım Panel 2", w: 400, h: 800, qty: 10, rotate: true });
         }
 
         return partsList;
@@ -320,7 +320,7 @@
         return sheets.length;
     }
 
-    // ğŸ“ HESAPLAMA MOTORU VE CAD CANVAS Ã‡Ä°ZÄ°CÄ°
+    // 📐 HESAPLAMA MOTORU VE CAD CANVAS ÇİZİCİ
     function hesaplaVeCiz() {
         let type = document.getElementById('mobilyaTuru').value;
         let canvas = document.getElementById('dolapCanvas'); 
@@ -354,7 +354,7 @@
         let matKey = "mdf";
         let rayKey = "r_tele";
 
-        if(type === 'gardÄ±rop') {
+        if(type === 'gardırop') {
             let w = parseFloat(document.getElementById('g_width').value) || 0;
             let h = parseFloat(document.getElementById('g_height').value) || 0;
             let doorsVal = document.getElementById('g_doors').value;
@@ -723,7 +723,7 @@
             // Draw segments
             drawWallSegment(ctx, xStart, yStart, sLeftW, sH, "Sol Duvar (" + left.toFixed(2) + " m)", matKey, drawers, 0);
             drawWallSegment(ctx, xStart + sLeftW, yStart, sBackW, sH, "Arka Duvar (" + back.toFixed(2) + " m)", matKey, 0, hinges);
-            drawWallSegment(ctx, xStart + sLeftW + sBackW, yStart, sRightW, sH, "SaÄŸ Duvar (" + right.toFixed(2) + " m)", matKey, 0, 0);
+            drawWallSegment(ctx, xStart + sLeftW + sBackW, yStart, sRightW, sH, "Sağ Duvar (" + right.toFixed(2) + " m)", matKey, 0, 0);
 
             // Draw Wall Seperators (Dashed vertical lines or gold strips)
             if (previewMode === 'lux') {
@@ -916,7 +916,7 @@
             }
 
             // Dimension labels
-            drawDimension(ctx, xStartU, 45, xStartU + sU, 45, "Ãœst: " + ul.toFixed(2) + " m", false);
+            drawDimension(ctx, xStartU, 45, xStartU + sU, 45, "Üst: " + ul.toFixed(2) + " m", false);
             drawDimension(ctx, xStartL, 235, xStartL + sL, 235, "Alt: " + ll.toFixed(2) + " m", false);
         }
         else if(type === 'vestiyer') {
@@ -1263,11 +1263,11 @@
             ctx.fillStyle = "#94a3b8";
             ctx.font = "bold 11px Inter";
             ctx.textAlign = "center";
-            ctx.fillText("Ã–ZEL TASARIM PROJELENDÄ°RME", 200, 240);
+            ctx.fillText("ÖZEL TASARIM PROJELENDİRME", 200, 240);
         }
 
         // CALCULATE FINAL SUMMARIES
-        let gÃ¶vdeSheetCount = 0;
+        let gövdeSheetCount = 0;
         let arkalikSheetCount = 0;
         let useSheetCosting = document.getElementById('chkUseSheetCosting') && document.getElementById('chkUseSheetCosting').checked;
 
@@ -1285,14 +1285,14 @@
             
             // Get parts list and run optimization dry run
             let parts = getPartsListFromCurrentOffer();
-            gÃ¶vdeSheetCount = calculateSheetsDryRun(parts);
+            gövdeSheetCount = calculateSheetsDryRun(parts);
             
             // Override dolapTutar
             let mPrice = dynamicPrices[matKey];
             if (type === 'vestiyer') mPrice = dynamicPrices.vestiyer_m2 || 3600;
             if (type === 'banyo') mPrice = dynamicPrices.banyo_m2 || 4000;
             let sheetPrice = sheetArea * mPrice;
-            dolapTutar = gÃ¶vdeSheetCount * sheetPrice;
+            dolapTutar = gövdeSheetCount * sheetPrice;
             
             // Override arkalikTutar
             let arkalikM2 = m2;
@@ -1303,7 +1303,7 @@
             arkalikSheetCount = Math.ceil(arkalikM2 / sheetArea);
             
             let backKey = 'ark4';
-            if (type === 'gardÄ±rop') backKey = document.getElementById('g_back').value;
+            if (type === 'gardırop') backKey = document.getElementById('g_back').value;
             if (type === 'udolap') backKey = document.getElementById('u_back_panel').value;
             
             let backMatPrice = (backKey === 'ark4' ? dynamicPrices.ark4 : dynamicPrices.mdf);
@@ -1311,7 +1311,7 @@
             arkalikTutar = arkalikSheetCount * backSheetPrice;
             
             // Override kesimGideri
-            kesimGideri = (gÃ¶vdeSheetCount + arkalikSheetCount) * sheetArea * (dynamicPrices.kesim_m2 || 350);
+            kesimGideri = (gövdeSheetCount + arkalikSheetCount) * sheetArea * (dynamicPrices.kesim_m2 || 350);
         }
 
         let toplam = dolapTutar + arkalikTutar + cekmeceTutar + menteseTutar + ekstralarTutar + montajTutar;
@@ -1319,20 +1319,20 @@
 
         // Populate Summary fields
         if (useSheetCosting && type !== 'ozel') {
-            document.getElementById('lblM2').innerText = `${gÃ¶vdeSheetCount} Plaka GÃ¶vde / ${arkalikSheetCount} Plaka ArkalÄ±k`;
+            document.getElementById('lblM2').innerText = `${gövdeSheetCount} Plaka Gövde / ${arkalikSheetCount} Plaka Arkalık`;
         } else {
-            document.getElementById('lblM2').innerText = type === 'ozel' ? (document.getElementById('o_qty').value + " " + document.getElementById('o_method').value.toUpperCase()) : (m2.toFixed(2) + " mÂ²");
+            document.getElementById('lblM2').innerText = type === 'ozel' ? (document.getElementById('o_qty').value + " " + document.getElementById('o_method').value.toUpperCase()) : (m2.toFixed(2) + " m²");
         }
-        document.getElementById('lblDolap').innerText = dolapTutar.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblCekmece').innerText = cekmeceTutar.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblMentese').innerText = menteseTutar.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblEkstralar').innerText = ekstralarTutar.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblKesimGider').innerText = kesimGideri.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblMontajBedel').innerText = montajTutar.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblToplam').innerText = toplam.toLocaleString('tr-TR') + " â‚º";
-        document.getElementById('lblKalan').innerText = kalan.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('lblDolap').innerText = dolapTutar.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblCekmece').innerText = cekmeceTutar.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblMentese').innerText = menteseTutar.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblEkstralar').innerText = ekstralarTutar.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblKesimGider').innerText = kesimGideri.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblMontajBedel').innerText = montajTutar.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblToplam').innerText = toplam.toLocaleString('tr-TR') + " ₺";
+        document.getElementById('lblKalan').innerText = kalan.toLocaleString('tr-TR') + " ₺";
 
-        return { m2, toplam, kaparo: advancePayment, kalan, kapakAdet, type, detailsText: getSpecificationText(), useSheetCosting, gÃ¶vdeSheetCount, arkalikSheetCount };
+        return { m2, toplam, kaparo: advancePayment, kalan, kapakAdet, type, detailsText: getSpecificationText(), useSheetCosting, gövdeSheetCount, arkalikSheetCount };
     }
 
     // Helper to draw CAD dimensions
@@ -1479,7 +1479,7 @@
         ctx.fillText(label, x + w/2, y + h - 6);
     }
 
-    // â˜ï¸ BULUT VERÄ° HAVUZUNA YENÄ° TEKLÄ°F KAYDET
+    // ☁️ BULUT VERİ HAVUZUNA YENİ TEKLİF KAYDET
 
 // ğŸ¨ KENDÄ°N TASARLA (DESIGNER) Ã‡Ä°ZÄ°M MOTORU
 // =======================================
@@ -1520,7 +1520,7 @@
         
         if(btnDoors) {
             btnDoors.classList.remove('active');
-            btnDoors.innerHTML = "ğŸšª";
+            btnDoors.innerHTML = "🚪";
             btnDoors.style.display = "flex";
         }
         if(btnRulers) btnRulers.classList.add('active');
@@ -1628,7 +1628,7 @@
             requiredSections = 4;
         }
         
-        document.getElementById('lblTotalSections').innerText = requiredSections + " BÃ¶lme";
+        document.getElementById('lblTotalSections').innerText = requiredSections + " Bölme";
         
         // Re-adjust modules array size
         let currentSections = designerCabinet.modules.length;
@@ -1675,7 +1675,7 @@
                     btn.style.color = '#475569';
                 }
                 
-                btn.innerText = 'BÃ¶lme ' + (i + 1);
+                btn.innerText = 'Bölme ' + (i + 1);
                 btn.onclick = (function(idx) {
                     return function() { selectDesignerModule(idx); };
                 })(i);
@@ -1718,7 +1718,7 @@
         
         let totalEstimatedPrice = Math.round(dolapTutar + arkalikTutar + montajTutar + cekmeceTutar + menteseTutar + ledTutar);
         
-        document.getElementById('designTotalPrice').innerText = totalEstimatedPrice.toLocaleString('tr-TR') + " â‚º";
+        document.getElementById('designTotalPrice').innerText = totalEstimatedPrice.toLocaleString('tr-TR') + " ₺";
         
         drawSelfDesignerCabinet();
     }
@@ -1912,7 +1912,7 @@
             ctx.fillStyle = "#64748b";
             ctx.font = "600 10px Inter";
             ctx.textAlign = "center";
-            ctx.fillText("Ä°nsan Boyu (1.75m)", 75, 368);
+            ctx.fillText("İnsan Boyu (1.75m)", 75, 368);
         }
         
         // Cabinet Interior Box Background
@@ -2203,8 +2203,8 @@
         let phone = document.getElementById('quoteClientPhone').value.trim();
         let note = document.getElementById('quoteClientAddress').value.trim();
         
-        if (!name) { alert("LÃ¼tfen adÄ±nÄ±zÄ± soyadÄ±nÄ±zÄ± giriniz!"); return; }
-        if (!phone) { alert("LÃ¼tfen telefon numaranÄ±zÄ± giriniz!"); return; }
+        if (!name) { alert("Lütfen adınızı soyadınızı giriniz!"); return; }
+        if (!phone) { alert("Lütfen telefon numaranızı giriniz!"); return; }
         
         let widthVal = parseInt(document.getElementById('designWidth').value) || 200;
         let heightVal = parseInt(document.getElementById('designHeight').value) || 220;
@@ -2233,8 +2233,8 @@
         
         let matName = "Lake Kapak";
         if (matKey === 'mdf') matName = "MDF Lam Kapak";
-        if (matKey === 'cam') matName = "AlÃ¼minyum Cam Kapak";
-        if (matKey === 'kapaksiz') matName = "KapaksÄ±z (AÃ§Ä±k Dolap)";
+        if (matKey === 'cam') matName = "Alüminyum Cam Kapak";
+        if (matKey === 'kapaksiz') matName = "Kapaksız (Açık Dolap)";
         
         let inputState = {
             g_width: w,
@@ -2262,13 +2262,13 @@
         let day = String(targetDate.getDate()).padStart(2, '0');
         let deliveryDateVal = `${year}-${month}-${day}`;
         
-        let detailText = `MÃ¼ÅŸteri Kendin Tasarla PlanÄ± - Ebat: ${widthVal}x${heightVal}cm, BÃ¶lmeler: ${designerCabinet.modules.join(', ')} - Notlar: ${note}`;
+        let detailText = `Müşteri Kendin Tasarla Planı - Ebat: ${widthVal}x${heightVal}cm, Bölmeler: ${designerCabinet.modules.join(', ')} - Notlar: ${note}`;
         
         db.collection("ortak_teklifler").doc(customCode).set({
-            musteri: "TasarÄ±m: " + name,
+            musteri: "Tasarım: " + name,
             telefon: phone,
             tahminiTeslimat: deliveryDateVal,
-            personel: "Berat Aziz DoÄŸanÃ§ay",
+            personel: "Berat Aziz Doğançay",
             durum: "Teklif Verildi",
             tarih: new Date().toLocaleDateString('tr-TR'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2279,18 +2279,18 @@
             toplamNum: totalPrice,
             kaparoNum: 0,
             kalanNum: totalPrice,
-            toplam: totalPrice.toLocaleString('tr-TR') + " â‚º",
-            kaparo: "0 â‚º",
-            kalan: totalPrice.toLocaleString('tr-TR') + " â‚º",
-            mobilyaTuru: "gardÄ±rop",
+            toplam: totalPrice.toLocaleString('tr-TR') + " ₺",
+            kaparo: "0 ₺",
+            kalan: totalPrice.toLocaleString('tr-TR') + " ₺",
+            mobilyaTuru: "gardırop",
             detaylar: detailText,
             inputState: inputState,
             odemeler: []
         }).then(() => {
-            alert(`TasarÄ±mÄ±nÄ±z baÅŸarÄ±yla kaydedildi ve Mustafa Usta'ya iletildi!\n\nSipariÅŸ Takip Kodunuz: ${customCode}\n\nBu kodla sipariÅŸinizin durumunu "SipariÅŸ Takibi" sekmesinden izleyebilirsiniz.`);
+            alert(`Tasarımınız başarıyla kaydedildi ve Mustafa Usta'ya iletildi!\n\nSipariş Takip Kodunuz: ${customCode}\n\nBu kodla siparişinizin durumunu "Sipariş Takibi" sekmesinden izleyebilirsiniz.`);
             closeDesignQuoteModal();
             takipKapat(); // return to login screen
         }).catch(err => {
-            alert("Teklif iletilirken hata oluÅŸtu: " + err.message);
+            alert("Teklif iletilirken hata oluştu: " + err.message);
         });
     }
