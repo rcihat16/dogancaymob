@@ -1,4 +1,4 @@
-// â­ MÃœÅTERÄ° YORUMLARI VE ERP ONAY SÄ°STEMÄ° (GLOBAL SCOPE)
+// ⭐ MÜŞTERİ YORUMLARI VE ERP ONAY SİSTEMİ (GLOBAL SCOPE)
 // =====================================================
 
 function initErpReviewsListener() {
@@ -8,7 +8,7 @@ function initErpReviewsListener() {
     
     db.collection("reviews").orderBy("timestamp", "desc").onSnapshot(snapshot => {
         if (snapshot.empty) {
-            feed.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:30px 0;">HenÃ¼z mÃ¼ÅŸteri yorumu bulunmamaktadÄ±r.</div>';
+            feed.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:30px 0;">Henüz müşteri yorumu bulunmamaktadır.</div>';
             if (badge) badge.innerText = "0 Yorum";
             return;
         }
@@ -20,7 +20,7 @@ function initErpReviewsListener() {
             let r = doc.data();
             let starsHtml = '';
             for (let i = 1; i <= 5; i++) {
-                starsHtml += `<span style="color: ${i <= r.rating ? '#fbbf24' : 'var(--border)'}; font-size: 18px; margin-right: 2px;">â˜…</span>`;
+                starsHtml += `<span style="color: ${i <= r.rating ? '#fbbf24' : 'var(--border)'}; font-size: 18px; margin-right: 2px;">★</span>`;
             }
 
             let statusBadge = '';
@@ -30,7 +30,7 @@ function initErpReviewsListener() {
             
             if (status === 'approved') {
                 statusColor = 'var(--success)';
-                statusText = 'YayÄ±nda';
+                statusText = 'Yayında';
             } else if (status === 'hidden') {
                 statusColor = 'var(--danger)';
                 statusText = 'Gizlendi';
@@ -45,12 +45,12 @@ function initErpReviewsListener() {
                 <div style="display: flex; gap: 8px; margin-top: 10px; justify-content: flex-end; border-top: 1px dashed var(--border); padding-top: 10px;">
                     ${status !== 'approved' ? `
                         <button type="button" class="btn" onclick="guncelleYorumDurumu('${doc.id}', 'approved')" style="padding: 4px 10px; font-size: 11px; background-color: var(--success); color: white; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.2s;">
-                            âœ“ YayÄ±nla
+                            ✓ Yayınla
                         </button>
                     ` : ''}
                     ${status !== 'hidden' ? `
                         <button type="button" class="btn" onclick="guncelleYorumDurumu('${doc.id}', 'hidden')" style="padding: 4px 10px; font-size: 11px; background-color: var(--danger); color: white; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.2s;">
-                            âŒ Gizle
+                            ❌ Gizle
                         </button>
                     ` : ''}
                 </div>
@@ -62,10 +62,10 @@ function initErpReviewsListener() {
                 <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
                     <div>
                         <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px;">
-                            <h4 style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-light);">${r.customerName || 'Ä°simsiz MÃ¼ÅŸteri'}</h4>
+                            <h4 style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-light);">${r.customerName || 'İsimsiz Müşteri'}</h4>
                             ${statusBadge}
                         </div>
-                        <span style="font-size: 11px; color: var(--primary); font-weight: 500;">SipariÅŸ TÃ¼rÃ¼: ${r.mobilyaTuru || 'Bilinmiyor'}</span>
+                        <span style="font-size: 11px; color: var(--primary); font-weight: 500;">Sipariş Türü: ${r.mobilyaTuru || 'Bilinmiyor'}</span>
                     </div>
                     <div style="text-align: right;">
                         <div style="margin-bottom: 3px;">${starsHtml}</div>
@@ -76,15 +76,15 @@ function initErpReviewsListener() {
                 <div style="background-color: var(--bg-dark); padding: 10px; border-radius: 6px; font-size: 12px; color: var(--text-muted); line-height: 1.4; border-left: 3px solid var(--primary);">
                     "${r.comment}"
                 </div>` : `
-                <div style="font-size: 11px; color: var(--text-muted); font-style: italic;">Yorum yazÄ±lmadÄ±, sadece puan verdi.</div>
+                <div style="font-size: 11px; color: var(--text-muted); font-style: italic;">Yorum yazılmadı, sadece puan verdi.</div>
                 `}
                 ${actionButtons}
             `;
             feed.appendChild(item);
         });
     }, err => {
-        console.error("ERP Yorum dinleme hatasÄ±:", err);
-        feed.innerHTML = '<div style="text-align:center; color:var(--danger); font-size:12px; padding:30px 0;">Yorumlar yÃ¼klenirken bir hata oluÅŸtu!</div>';
+        console.error("ERP Yorum dinleme hatası:", err);
+        feed.innerHTML = '<div style="text-align:center; color:var(--danger); font-size:12px; padding:30px 0;">Yorumlar yüklenirken bir hata oluştu!</div>';
     });
 }
 
@@ -94,7 +94,7 @@ function guncelleYorumDurumu(docId, status) {
     }).then(() => {
         loadLoginReviews();
     }).catch(err => {
-        alert("Yorum durumu gÃ¼ncellenirken hata oluÅŸtu: " + err.message);
+        alert("Yorum durumu güncellenirken hata oluştu: " + err.message);
     });
 }
 
@@ -115,11 +115,11 @@ function setInteractiveRating(rating) {
     let label = document.getElementById('interactiveRatingLabel');
     if (label) {
         let ratingTexts = {
-            1: "Ã‡ok KÃ¶tÃ¼ ğŸ˜¡",
-            2: "KÃ¶tÃ¼ ğŸ˜•",
-            3: "Orta ğŸ˜",
-            4: "Ä°yi ğŸ˜Š",
-            5: "Harika! ğŸ˜"
+            1: "Çok Kötü 😡",
+            2: "Kötü 😕",
+            3: "Orta 😐",
+            4: "İyi 😊",
+            5: "Harika! 😍"
         };
         label.innerText = ratingTexts[rating] || "-";
     }
@@ -137,12 +137,12 @@ function resetInteractiveRating() {
 
 function gonderMusteriYorumu() {
     if (currentInteractiveRating === 0) {
-        alert("LÃ¼tfen bir yÄ±ldÄ±z seÃ§erek puan veriniz!");
+        alert("Lütfen bir yıldız seçerek puan veriniz!");
         return;
     }
     
     if (!window.currentTrackingData || !window.currentTrackingData.id) {
-        alert("SipariÅŸ bilgisi bulunamadÄ±!");
+        alert("Sipariş bilgisi bulunamadı!");
         return;
     }
     
@@ -152,15 +152,15 @@ function gonderMusteriYorumu() {
     let btn = document.getElementById('btnSubmitReview');
     if (btn) {
         btn.disabled = true;
-        btn.innerText = "GÃ¶nderiliyor...";
+        btn.innerText = "Gönderiliyor...";
     }
     
     let reviewObj = {
         orderId: orderId,
         rating: currentInteractiveRating,
         comment: comment,
-        customerName: window.currentTrackingData.musteri || "Ä°simsiz MÃ¼ÅŸteri",
-        mobilyaTuru: window.currentTrackingData.mobilyaTuru || "Ã–zel Proje",
+        customerName: window.currentTrackingData.musteri || "İsimsiz Müşteri",
+        mobilyaTuru: window.currentTrackingData.mobilyaTuru || "Özel Proje",
         timestamp: new Date().toISOString(),
         status: "pending"
     };
@@ -168,18 +168,18 @@ function gonderMusteriYorumu() {
     db.collection("reviews").doc(orderId).set(reviewObj).then(() => {
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
-            starsHtml += `<span style="color: ${i <= currentInteractiveRating ? '#fbbf24' : 'var(--border)'}; font-size: 20px; margin-right: 2px;">â˜…</span>`;
+            starsHtml += `<span style="color: ${i <= currentInteractiveRating ? '#fbbf24' : 'var(--border)'}; font-size: 20px; margin-right: 2px;">★</span>`;
         }
         
         document.getElementById('trackReviewFormContainer').style.display = 'none';
         let resultContainer = document.getElementById('trackReviewResultContainer');
         resultContainer.innerHTML = `
             <div style="background-color: var(--bg-dark); padding: 12px; border-radius: 8px; border: 1px solid var(--border); text-align: center;">
-                <span style="font-size: 26px; display: block; margin-bottom: 8px;">ğŸ‰</span>
-                <span style="font-size: 13px; color: var(--success); font-weight: 700; display: block; margin-bottom: 5px;">DeÄŸerlendirmeniz Ä°Ã§in TeÅŸekkÃ¼r Ederiz!</span>
-                <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Geri bildiriminiz Mustafa Usta'ya iletildi. OnaylandÄ±ktan sonra yayÄ±na alÄ±nacaktÄ±r.</p>
+                <span style="font-size: 26px; display: block; margin-bottom: 8px;">🎉</span>
+                <span style="font-size: 13px; color: var(--success); font-weight: 700; display: block; margin-bottom: 5px;">Değerlendirmeniz İçin Teşekkür Ederiz!</span>
+                <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 10px;">Geri bildiriminiz Mustafa Usta'ya iletildi. Onaylandıktan sonra yayına alınacaktır.</p>
                 <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;">
-                    <span style="font-size: 12px; font-weight: 700; color: var(--text-light);">PuanÄ±nÄ±z:</span>
+                    <span style="font-size: 12px; font-weight: 700; color: var(--text-light);">Puanınız:</span>
                     <div>${starsHtml}</div>
                 </div>
                 ${comment ? `
@@ -190,13 +190,13 @@ function gonderMusteriYorumu() {
         `;
         resultContainer.style.display = 'block';
         
-        alert("DeÄŸerlendirmeniz baÅŸarÄ±yla gÃ¶nderildi. TeÅŸekkÃ¼r ederiz!");
+        alert("Değerlendirmeniz başarıyla gönderildi. Teşekkür ederiz!");
         loadLoginReviews();
     }).catch(err => {
-        alert("Yorum gÃ¶nderilirken hata oluÅŸtu: " + err.message);
+        alert("Yorum gönderilirken hata oluştu: " + err.message);
         if (btn) {
             btn.disabled = false;
-            btn.innerText = "DeÄŸerlendirmeyi GÃ¶nder";
+            btn.innerText = "Değerlendirmeyi Gönder";
         }
     });
 }
@@ -217,10 +217,10 @@ function loadLoginReviews() {
                 approvedCount++;
                 let starsHtml = '';
                 for (let i = 1; i <= 5; i++) {
-                    starsHtml += i <= r.rating ? 'â˜…' : 'â˜†';
+                    starsHtml += i <= r.rating ? '★' : '☆';
                 }
                 
-                let formattedName = "MÃ¼ÅŸteri";
+                let formattedName = "Müşteri";
                 if (r.customerName) {
                     let parts = r.customerName.trim().split(/\s+/);
                     if (parts.length > 1) {
@@ -240,13 +240,13 @@ function loadLoginReviews() {
                             </div>
                             <div>
                                 <h5 style="margin: 0; font-size: 11px; font-weight: 700; color: var(--text-main);">${formattedName}</h5>
-                                <span style="font-size: 9px; color: var(--success); font-weight: 600;">âœ“ OnaylÄ± MÃ¼ÅŸteri</span>
+                                <span style="font-size: 9px; color: var(--success); font-weight: 600;">✓ Onaylı Müşteri</span>
                             </div>
                         </div>
                         <div style="color: #fbbf24; font-size: 10px;">${starsHtml}</div>
                     </div>
                     <p style="margin: 0; font-size: 11px; color: var(--text-muted); line-height: 1.4; font-style: italic;">
-                        "${r.comment || 'Ã‡ok memnun kaldÄ±m, harika bir hizmet!'}"
+                        "${r.comment || 'Çok memnun kaldım, harika bir hizmet!'}"
                     </p>
                 `;
                 container.appendChild(item);
@@ -256,12 +256,12 @@ function loadLoginReviews() {
         // Fallback: If no approved reviews exist, render premium default reviews
         if (approvedCount === 0) {
             let defaultReviews = [
-                { name: "Ahmet A.", rating: 5, comment: "Mustafa Usta ve ekibine Ã§ok teÅŸekkÃ¼r ederiz. Mutfak dolaplarÄ±mÄ±zÄ± tam gÃ¼nÃ¼nde ve kusursuz iÅŸÃ§ilikle teslim ettiler. GÃ¼venilir ve profesyonel hizmet!" },
-                { name: "Selin K.", rating: 5, comment: "GardÄ±rop tasarÄ±mÄ± iÃ§in tam hayal ettiÄŸimiz gibi bir Ã§izim yapÄ±ldÄ±. Hem CAD Ã§izimi hem de imalat aÅŸamasÄ± son derece ÅŸeffaftÄ±. Ã‡ok memnun kaldÄ±k." },
-                { name: "Mehmet T.", rating: 5, comment: "CanlÄ± sipariÅŸ takip sistemi sayesinde atÃ¶lyeden evimize kadar her anÄ± takip edebildik. DoÄŸanÃ§ay Mobilya kalitesi gerÃ§ekten baÅŸka." }
+                { name: "Ahmet A.", rating: 5, comment: "Mustafa Usta ve ekibine çok teşekkür ederiz. Mutfak dolaplarımızı tam gününde ve kusursuz işçilikle teslim ettiler. Güvenilir ve profesyonel hizmet!" },
+                { name: "Selin K.", rating: 5, comment: "Gardırop tasarımı için tam hayal ettiğimiz gibi bir çizim yapıldı. Hem CAD çizimi hem de imalat aşaması son derece şeffaftı. Çok memnun kaldık." },
+                { name: "Mehmet T.", rating: 5, comment: "Canlı sipariş takip sistemi sayesinde atölyeden evimize kadar her anı takip edebildik. Doğançay Mobilya kalitesi gerçekten başka." }
             ];
             defaultReviews.forEach(r => {
-                let starsHtml = 'â˜…'.repeat(r.rating) + 'â˜†'.repeat(5 - r.rating);
+                let starsHtml = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
                 let item = document.createElement('div');
                 item.className = 'testimonial-card';
                 item.innerHTML = `
@@ -272,7 +272,7 @@ function loadLoginReviews() {
                             </div>
                             <div>
                                 <h5 style="margin: 0; font-size: 11px; font-weight: 700; color: var(--text-main);">${r.name}</h5>
-                                <span style="font-size: 9px; color: var(--success); font-weight: 600;">âœ“ OnaylÄ± MÃ¼ÅŸteri</span>
+                                <span style="font-size: 9px; color: var(--success); font-weight: 600;">✓ Onaylı Müşteri</span>
                             </div>
                         </div>
                         <div style="color: #fbbf24; font-size: 10px;">${starsHtml}</div>
@@ -285,6 +285,6 @@ function loadLoginReviews() {
             });
         }
     }).catch(err => {
-        console.log("GiriÅŸ yorumlarÄ± yÃ¼kleme hatasÄ±:", err);
+        console.log("Giriş yorumları yükleme hatası:", err);
     });
 }

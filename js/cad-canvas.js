@@ -2294,3 +2294,4 @@
             alert("Teklif iletilirken hata oluştu: " + err.message);
         });
     }
+</script>

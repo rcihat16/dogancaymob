@@ -597,4 +597,4 @@
     // ==========================================
     // 📊 MÜŞTERİ SİPARİŞ TAKİP PORTALI KODLARI
     // ==========================================
-    var currentTrackingData = null;
+    let currentTrackingData = null;
